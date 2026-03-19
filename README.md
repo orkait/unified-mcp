@@ -15,8 +15,8 @@
 
 <br/>
 
-> Plugin-based MCP server that gives your AI assistant deep knowledge of frontend libraries —
-> API refs, patterns, code generation — all through a single process with namespaced tools.
+> Plugin-based MCP server that gives your AI assistant deep knowledge of frontend libraries -
+> API refs, patterns, code generation - all through a single process with namespaced tools.
 
 </div>
 
@@ -33,11 +33,11 @@
 
 ## 🛠️ Tools
 
-### ⚛️ React Flow — `reactflow_*`
+### ⚛️ React Flow - `reactflow_*`
 
 | Tool | What it does |
 |------|-------------|
-| `reactflow_list_apis` | Browse all 56 APIs grouped by kind — components, hooks, utilities, types |
+| `reactflow_list_apis` | Browse all 56 APIs grouped by kind - components, hooks, utilities, types |
 | `reactflow_get_api` | Full reference for any API: props table, usage snippet, examples, tips |
 | `reactflow_search_docs` | Full-text search across all docs and code examples |
 | `reactflow_get_examples` | Curated code examples by category |
@@ -55,11 +55,11 @@
 
 ---
 
-### 🎬 Motion for React — `motion_*`
+### 🎬 Motion for React - `motion_*`
 
 | Tool | What it does |
 |------|-------------|
-| `motion_list_apis` | Browse all 33 APIs grouped by kind — components, hooks, functions |
+| `motion_list_apis` | Browse all 33 APIs grouped by kind - components, hooks, functions |
 | `motion_get_api` | Full reference for any API: props table, usage snippet, examples, tips |
 | `motion_search_docs` | Full-text search across all docs and code examples |
 | `motion_get_examples` | Curated animation examples by category |
@@ -88,7 +88,7 @@
 
 ### 🐳 Docker (recommended)
 
-Build once, reuse forever. The wrapper script keeps **one** named container alive and runs each MCP session inside it via `docker exec` — no duplicate containers, no matter how many AI sessions are open.
+Build once, reuse forever. The wrapper script keeps **one** named container alive and runs each MCP session inside it via `docker exec` - no duplicate containers, no matter how many AI sessions are open.
 
 ```bash
 git clone https://github.com/orkait/unified-mcp.git
@@ -100,7 +100,7 @@ docker build -t frontend-mcp .
 Add to your MCP config:
 
 <details>
-<summary><strong>Claude Code</strong> — <code>~/.claude.json</code></summary>
+<summary><strong>Claude Code</strong> - <code>~/.claude.json</code></summary>
 
 ```json
 {
@@ -115,7 +115,7 @@ Add to your MCP config:
 </details>
 
 <details>
-<summary><strong>Claude Desktop / Cursor / Windsurf</strong> — their respective config files</summary>
+<summary><strong>Claude Desktop / Cursor / Windsurf</strong> - their respective config files</summary>
 
 ```json
 {
@@ -155,20 +155,20 @@ npm install && npm run build
 ## 💡 Why unified?
 
 Running separate MCP servers per library means one Docker container per server at startup.
-Two libraries = two containers. Ten libraries = ten containers — every session.
+Two libraries = two containers. Ten libraries = ten containers - every session.
 
 `unified-mcp` runs everything in **one process**. All plugins share the same server, same connection, same container.
 
-Tool names are namespaced per plugin (`reactflow_list_apis` vs `motion_list_apis`) so there are zero naming conflicts — the LLM always knows which library a tool belongs to.
+Tool names are namespaced per plugin (`reactflow_list_apis` vs `motion_list_apis`) so there are zero naming conflicts - the LLM always knows which library a tool belongs to.
 
 ---
 
 ## 🔌 Adding a Plugin
 
 1. Create `src/plugins/<name>/` with:
-   - `data.ts` or `data/` — your library's reference data (keep code examples in `snippets/<name>/`)
-   - `tools/<tool-name>.ts` — one file per tool, each exporting `register(server)`; prefix all tool names with `<name>_`
-   - `index.ts` — export `const <name>Plugin: Plugin = { name: "<name>", register }`
+   - `data.ts` or `data/` - your library's reference data (keep code examples in `snippets/<name>/`)
+   - `tools/<tool-name>.ts` - one file per tool, each exporting `register(server)`; prefix all tool names with `<name>_`
+   - `index.ts` - export `const <name>Plugin: Plugin = { name: "<name>", register }`
 
 2. Register in `src/index.ts`:
    ```typescript
@@ -191,7 +191,7 @@ No changes to your MCP config required.
 
 ```
 src/
-├── index.ts               # Entry — creates McpServer, loads plugins, starts StdioTransport
+├── index.ts               # Entry - creates McpServer, loads plugins, starts StdioTransport
 ├── registry.ts            # Plugin interface + loadPlugins()
 └── plugins/
     ├── reactflow/
