@@ -124,11 +124,7 @@ const motionComponent: ApiEntry = {
     { name: "onLayoutAnimationComplete", type: "() => void", description: "Layout animation complete callback." },
     { name: "propagate", type: "{ tap?: boolean }", description: "Control gesture propagation." },
   ],
-  usage: `<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
-/>`,
+  usage: snippet("usage/motion.md"),
   examples: [
     {
       title: "Basic fade in",
@@ -363,16 +359,7 @@ const animatePresence: ApiEntry = {
     { name: "propagate", type: "boolean", description: "If true, nested AnimatePresence children fire exit animations when parent exits." },
     { name: "root", type: "ShadowRoot | HTMLElement", description: "Root element for popLayout styles. Defaults to document.head. Set to a ShadowRoot for shadow DOM usage." },
   ],
-  usage: `<AnimatePresence>
-  {show && (
-    <motion.div
-      key="modal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    />
-  )}
-</AnimatePresence>`,
+  usage: snippet("usage/AnimatePresence.md"),
   examples: [
     {
       title: "Modal with exit animation",
@@ -436,10 +423,7 @@ const layoutGroup: ApiEntry = {
   props: [
     { name: "id", type: "string", description: "Namespace layoutId values to prevent conflicts between multiple instances." },
   ],
-  usage: `<LayoutGroup>
-  <Accordion />
-  <Accordion />
-</LayoutGroup>`,
+  usage: snippet("usage/LayoutGroup.md"),
   examples: [
     {
       title: "Synchronized accordion items",
@@ -477,11 +461,7 @@ const lazyMotion: ApiEntry = {
     { name: "features", type: "FeatureBundle | () => Promise<FeatureBundle>", description: "domAnimation (~15kb: animations, variants, exit, tap, hover, focus) or domMax (~25kb: adds pan, drag, layout)." },
     { name: "strict", type: "boolean", description: "If true, throws error if motion component is used instead of m." },
   ],
-  usage: `import { domAnimation } from "motion";
-
-<LazyMotion features={domAnimation}>
-  <m.div animate={{ opacity: 1 }} />
-</LazyMotion>`,
+  usage: snippet("usage/LazyMotion.md"),
   examples: [
     {
       title: "Async feature loading",
@@ -512,10 +492,7 @@ const motionConfig: ApiEntry = {
     { name: "reducedMotion", type: "'never' | 'user' | 'always'", description: "never: ignore device setting. user: respect prefers-reduced-motion. always: force reduced motion.", default: "'never'" },
     { name: "nonce", type: "string", description: "CSP nonce attribute for generated style blocks." },
   ],
-  usage: `<MotionConfig transition={{ duration: 0.5, ease: "easeOut" }}>
-  <motion.div animate={{ x: 100 }} />
-  <motion.div animate={{ opacity: 1 }} />
-</MotionConfig>`,
+  usage: snippet("usage/MotionConfig.md"),
   examples: [
     {
       title: "Global spring transition",
@@ -546,15 +523,7 @@ const reorderGroup: ApiEntry = {
     { name: "values", type: "T[]", description: "Array representing the current list order." },
     { name: "onReorder", type: "(newOrder: T[]) => void", description: "Callback with reordered array." },
   ],
-  usage: `const [items, setItems] = useState([1, 2, 3]);
-
-<Reorder.Group axis="y" values={items} onReorder={setItems}>
-  {items.map(item => (
-    <Reorder.Item key={item} value={item}>
-      {item}
-    </Reorder.Item>
-  ))}
-</Reorder.Group>`,
+  usage: snippet("usage/Reorder.Group.md"),
   examples: [
     {
       title: "Reorderable list with exit animations",
@@ -590,9 +559,7 @@ const reorderItem: ApiEntry = {
     { name: "as", type: "string", description: "Rendered element.", default: "'li'" },
     { name: "value", type: "T", description: "The value this item represents in the values array." },
   ],
-  usage: `<Reorder.Item value={item} whileDrag={{ scale: 1.05 }}>
-  {item}
-</Reorder.Item>`,
+  usage: snippet("usage/Reorder.Item.md"),
   examples: [],
   relatedApis: ["Reorder.Group"],
 };
@@ -608,11 +575,7 @@ const useAnimate: ApiEntry = {
     "Imperative animation control scoped to a component subtree. Returns [scope, animate]. The scope ref is attached to a container, and animate() can target elements within it by CSS selector.",
   importPath: 'import { useAnimate } from "motion/react"',
   returns: "[scope: RefObject, animate: AnimateFunction]",
-  usage: `const [scope, animate] = useAnimate();
-
-// On mount or event:
-await animate(scope.current, { opacity: 1 }, { duration: 0.5 });
-await animate("li", { x: 0 }, { delay: stagger(0.1) });`,
+  usage: snippet("usage/useAnimate.md"),
   examples: [
     {
       title: "Staggered list entrance",
@@ -676,16 +639,7 @@ const useMotionValue: ApiEntry = {
     "Creates a motion value that tracks state and velocity without triggering React re-renders. Pass to motion component style or SVG attribute props.",
   importPath: 'import { useMotionValue } from "motion/react"',
   returns: "MotionValue<T>",
-  usage: `const x = useMotionValue(0);
-
-// Read/write
-x.get();         // current value
-x.set(100);      // set (batched to next frame)
-x.jump(50);      // immediate set, reset velocity
-x.getVelocity(); // per-second velocity
-x.isAnimating(); // boolean
-x.stop();        // stop active animation
-x.on("change", v => console.log(v));`,
+  usage: snippet("usage/useMotionValue.md"),
   examples: [
     {
       title: "Track drag position",
@@ -718,20 +672,7 @@ const useTransform: ApiEntry = {
     "Creates a derived motion value from one or more source motion values via mapping or a transform function.",
   importPath: 'import { useTransform } from "motion/react"',
   returns: "MotionValue<T>",
-  usage: `// Transform function
-const doubled = useTransform(() => x.get() * 2);
-
-// Value mapping
-const opacity = useTransform(x, [-100, 0, 100], [0, 1, 0]);
-
-// Color mapping
-const color = useTransform(x, [0, 100], ["#f00", "#00f"]);
-
-// Multiple outputs
-const { opacity, scale } = useTransform(offset, [0, 600], {
-  opacity: [1, 0.4],
-  scale: [1, 0.6],
-});`,
+  usage: snippet("usage/useTransform.md"),
   examples: [
     {
       title: "Parallax scroll effect",
@@ -771,13 +712,7 @@ const useSpring: ApiEntry = {
     "Creates a motion value that animates to targets with spring physics. Can track another motion value.",
   importPath: 'import { useSpring } from "motion/react"',
   returns: "MotionValue<number>",
-  usage: `// Direct control
-const x = useSpring(0);
-x.set(100); // springs to 100
-
-// Track another value
-const scrollY = useMotionValue(0);
-const smoothY = useSpring(scrollY, { stiffness: 100, damping: 30 });`,
+  usage: snippet("usage/useSpring.md"),
   examples: [
     {
       title: "Smooth scroll tracking",
@@ -834,19 +769,7 @@ const useScroll: ApiEntry = {
     "Creates scroll-linked motion values. Tracks window or element scroll position. Supports hardware-accelerated ScrollTimeline.",
   importPath: 'import { useScroll } from "motion/react"',
   returns: "{ scrollX, scrollY, scrollXProgress, scrollYProgress }",
-  usage: `// Window scroll
-const { scrollYProgress } = useScroll();
-
-// Element scroll
-const ref = useRef(null);
-const { scrollYProgress } = useScroll({ container: ref });
-
-// Track element through viewport
-const ref = useRef(null);
-const { scrollYProgress } = useScroll({
-  target: ref,
-  offset: ["start end", "end start"]
-});`,
+  usage: snippet("usage/useScroll.md"),
   examples: [
     {
       title: "Scroll progress bar",
@@ -930,10 +853,7 @@ const useInView: ApiEntry = {
   description: "Detects when an element is in the viewport. Returns a boolean that triggers re-renders.",
   importPath: 'import { useInView } from "motion/react"',
   returns: "boolean",
-  usage: `const ref = useRef(null);
-const isInView = useInView(ref, { once: true });
-
-return <div ref={ref}>{isInView && "Visible!"}</div>;`,
+  usage: snippet("usage/useInView.md"),
   examples: [
     {
       title: "Trigger animation when in view",
@@ -973,15 +893,7 @@ const useMotionValueEvent: ApiEntry = {
   description:
     "Lifecycle-managed event listener for motion values. Automatically cleans up on unmount.",
   importPath: 'import { useMotionValueEvent } from "motion/react"',
-  usage: `const x = useMotionValue(0);
-
-useMotionValueEvent(x, "change", (latest) => {
-  console.log("x changed to", latest);
-});
-
-useMotionValueEvent(x, "animationComplete", () => {
-  console.log("Animation finished");
-});`,
+  usage: snippet("usage/useMotionValueEvent.md"),
   examples: [
     {
       title: "Detect scroll direction",
@@ -1009,10 +921,7 @@ const useVelocity: ApiEntry = {
     "Returns a motion value tracking the velocity (per second) of another numerical motion value.",
   importPath: 'import { useVelocity } from "motion/react"',
   returns: "MotionValue<number>",
-  usage: `const x = useMotionValue(0);
-const xVelocity = useVelocity(x);
-// Chain for acceleration:
-const xAcceleration = useVelocity(xVelocity);`,
+  usage: snippet("usage/useVelocity.md"),
   examples: [
     {
       title: "Velocity-based skew on drag",
@@ -1036,10 +945,7 @@ const useTime: ApiEntry = {
     "Returns a motion value that updates every frame with milliseconds since creation. Useful for perpetual animations.",
   importPath: 'import { useTime } from "motion/react"',
   returns: "MotionValue<number>",
-  usage: `const time = useTime();
-const rotate = useTransform(time, [0, 4000], [0, 360], { clamp: false });
-
-return <motion.div style={{ rotate }} />;`,
+  usage: snippet("usage/useTime.md"),
   examples: [
     {
       title: "Perpetual rotation",
@@ -1062,10 +968,7 @@ const useMotionTemplate: ApiEntry = {
     "Tagged template literal that creates a motion value from a string containing other motion values.",
   importPath: 'import { useMotionTemplate } from "motion/react"',
   returns: "MotionValue<string>",
-  usage: `const blur = useMotionValue(10);
-const filter = useMotionTemplate\`blur(\${blur}px)\`;
-
-return <motion.div style={{ filter }} />;`,
+  usage: snippet("usage/useMotionTemplate.md"),
   examples: [
     {
       title: "Dynamic gradient",
@@ -1088,12 +991,7 @@ const useDragControls: ApiEntry = {
   description: "Manual drag initiation from any element, not just the dragged element itself.",
   importPath: 'import { useDragControls } from "motion/react"',
   returns: "DragControls",
-  usage: `const controls = useDragControls();
-
-<div onPointerDown={(e) => controls.start(e)}>Drag handle</div>
-<motion.div drag dragControls={controls} dragListener={false}>
-  Draggable content
-</motion.div>`,
+  usage: snippet("usage/useDragControls.md"),
   examples: [
     {
       title: "Custom drag handle",
@@ -1120,9 +1018,7 @@ const useAnimationFrame: ApiEntry = {
   kind: "hook",
   description: "Runs a callback every animation frame. Callback receives (time, delta).",
   importPath: 'import { useAnimationFrame } from "motion/react"',
-  usage: `useAnimationFrame((time, delta) => {
-  ref.current.style.transform = \`rotateY(\${time * 0.1}deg)\`;
-});`,
+  usage: snippet("usage/useAnimationFrame.md"),
   examples: [
     {
       title: "Continuous rotation",
@@ -1150,13 +1046,7 @@ const useReducedMotion: ApiEntry = {
     "Returns true if the device has Reduced Motion enabled (prefers-reduced-motion: reduce). Reactively updates.",
   importPath: 'import { useReducedMotion } from "motion/react"',
   returns: "boolean",
-  usage: `const prefersReduced = useReducedMotion();
-
-return (
-  <motion.div
-    animate={{ x: prefersReduced ? 0 : 100 }}
-  />
-);`,
+  usage: snippet("usage/useReducedMotion.md"),
   examples: [],
   tips: ["Prefer MotionConfig reducedMotion='user' for app-wide reduced motion handling."],
   relatedApis: ["MotionConfig"],
@@ -1168,7 +1058,7 @@ const useIsPresent: ApiEntry = {
   description: "Returns boolean indicating whether the component is still present in the tree (for AnimatePresence exit flow).",
   importPath: 'import { useIsPresent } from "motion/react"',
   returns: "boolean",
-  usage: `const isPresent = useIsPresent();`,
+  usage: snippet("usage/useIsPresent.md"),
   examples: [],
   relatedApis: ["AnimatePresence", "usePresence"],
 };
@@ -1180,14 +1070,7 @@ const usePresence: ApiEntry = {
     "Returns [isPresent, safeToRemove] for manual exit animation control with AnimatePresence. Call safeToRemove() when your custom exit animation is done.",
   importPath: 'import { usePresence } from "motion/react"',
   returns: "[isPresent: boolean, safeToRemove: () => void]",
-  usage: `const [isPresent, safeToRemove] = usePresence();
-
-useEffect(() => {
-  if (!isPresent) {
-    // run custom exit animation, then:
-    safeToRemove();
-  }
-}, [isPresent]);`,
+  usage: snippet("usage/usePresence.md"),
   examples: [],
   relatedApis: ["AnimatePresence", "useIsPresent", "useAnimate"],
 };
@@ -1198,8 +1081,7 @@ const usePresenceData: ApiEntry = {
   description: "Access the custom prop data from the parent AnimatePresence.",
   importPath: 'import { usePresenceData } from "motion/react"',
   returns: "any",
-  usage: `// Parent: <AnimatePresence custom={{ direction: 1 }}>
-const data = usePresenceData(); // { direction: 1 }`,
+  usage: snippet("usage/usePresenceData.md"),
   examples: [],
   relatedApis: ["AnimatePresence"],
 };
@@ -1214,16 +1096,7 @@ const staggerFn: ApiEntry = {
   description:
     "Creates staggered delays for animation sequences. Use with useAnimate's animate() or with delayChildren in variant transitions.",
   importPath: 'import { stagger } from "motion/react"',
-  usage: `// With useAnimate
-animate("li", { opacity: 1 }, { delay: stagger(0.1) });
-
-// From center
-animate("li", { opacity: 1 }, { delay: stagger(0.1, { from: "center" }) });
-
-// With variants
-const container = {
-  show: { transition: { delayChildren: stagger(0.1) } }
-};`,
+  usage: snippet("usage/stagger.md"),
   examples: [
     {
       title: "Staggered list with easing",
@@ -1250,18 +1123,7 @@ const animateFn: ApiEntry = {
     "Imperative animate function. Targets CSS selectors, DOM elements, motion values, or objects. Supports timeline sequences.",
   importPath: 'import { animate } from "motion/react"',
   returns: "AnimationControls (time, speed, duration, play, pause, stop, cancel, complete, then)",
-  usage: `// Single element
-animate("#box", { x: 100 }, { duration: 0.5 });
-
-// Motion value
-const x = motionValue(0);
-animate(x, 100, { type: "spring" });
-
-// Timeline sequence
-animate([
-  ["#title", { opacity: 1 }, { duration: 0.5 }],
-  ["#content", { y: 0 }, { duration: 0.3, at: "-0.2" }],
-]);`,
+  usage: snippet("usage/animate.md"),
   examples: [
     {
       title: "Timeline with sequencing",
@@ -1296,8 +1158,7 @@ const useWillChange: ApiEntry = {
   description: "Returns an optimized will-change MotionValue. Pass to style.willChange to automatically manage will-change CSS property during animations.",
   importPath: 'import { useWillChange } from "motion/react"',
   returns: "WillChange",
-  usage: `const willChange = useWillChange();
-return <motion.div style={{ willChange }} animate={{ x: 100 }} />;`,
+  usage: snippet("usage/useWillChange.md"),
   examples: [],
   relatedApis: ["useMotionValue"],
 };
@@ -1308,9 +1169,7 @@ const useCycle: ApiEntry = {
   description: "Cycles through a list of values. Returns [currentValue, cycleFunction]. Call cycle() to advance, or cycle(index) to jump.",
   importPath: 'import { useCycle } from "motion/react"',
   returns: "[T, (index?: number) => void]",
-  usage: `const [color, cycleColor] = useCycle("#f00", "#0f0", "#00f");
-
-return <motion.div animate={{ backgroundColor: color }} onClick={() => cycleColor()} />;`,
+  usage: snippet("usage/useCycle.md"),
   examples: [
     {
       title: "Toggle animation state",
@@ -1335,7 +1194,7 @@ const usePageInView: ApiEntry = {
   description: "Returns true when the current page/tab is the user's active tab. Uses document.visibilitychange. Useful for pausing animations or video when tab is hidden.",
   importPath: 'import { usePageInView } from "motion/react"',
   returns: "boolean",
-  usage: `const isPageInView = usePageInView();`,
+  usage: snippet("usage/usePageInView.md"),
   examples: [
     {
       title: "Pause video when tab hidden",
@@ -1366,10 +1225,7 @@ const hoverFn: ApiEntry = {
   description: "Standalone hover gesture function. Under 1kb. Returns a cleanup function. The callback can return a cleanup that fires on hover end.",
   importPath: 'import { hover } from "motion"',
   returns: "() => void (cleanup)",
-  usage: `const cleanup = hover(element, (event) => {
-  console.log("hover start");
-  return () => console.log("hover end");
-});`,
+  usage: snippet("usage/hover.md"),
   examples: [
     {
       title: "Standalone hover with React ref",
@@ -1401,10 +1257,7 @@ const pressFn: ApiEntry = {
   description: "Standalone press gesture function with keyboard accessibility (Enter/Space). Returns a cleanup function.",
   importPath: 'import { press } from "motion"',
   returns: "() => void (cleanup)",
-  usage: `const cleanup = press(element, (event) => {
-  console.log("press start");
-  return () => console.log("press end");
-});`,
+  usage: snippet("usage/press.md"),
   examples: [],
   tips: ["Keyboard accessible: responds to Enter and Space keys.", "Import from 'motion' (not 'motion/react')."],
   relatedApis: ["motion", "hover"],
@@ -1416,13 +1269,7 @@ const scrollFn: ApiEntry = {
   description: "Standalone scroll-linked animation function. Framework-agnostic. Can accept a callback or an animation to link to scroll progress.",
   importPath: 'import { scroll } from "motion"',
   returns: "() => void (cleanup)",
-  usage: `// Callback
-scroll((progress) => {
-  console.log(progress); // 0-1
-});
-
-// Link animation to scroll
-scroll(animate("#progress", { scaleX: [0, 1] }));`,
+  usage: snippet("usage/scroll.md"),
   examples: [],
   tips: ["Framework-agnostic — works without React.", "Import from 'motion' (not 'motion/react')."],
   relatedApis: ["useScroll", "animate"],
@@ -1434,10 +1281,7 @@ const inViewFn: ApiEntry = {
   description: "Standalone IntersectionObserver wrapper. Framework-agnostic. Callback can return a cleanup function that fires when element leaves viewport.",
   importPath: 'import { inView } from "motion"',
   returns: "() => void (cleanup)",
-  usage: `const cleanup = inView(element, (entry) => {
-  console.log("in view");
-  return () => console.log("left view");
-});`,
+  usage: snippet("usage/inView.md"),
   examples: [],
   tips: ["Framework-agnostic — works without React.", "Import from 'motion' (not 'motion/react')."],
   relatedApis: ["useInView"],

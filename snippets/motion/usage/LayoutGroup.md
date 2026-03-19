@@ -1,0 +1,4 @@
+<LayoutGroup>
+  <Accordion />
+  <Accordion />
+</LayoutGroup>
