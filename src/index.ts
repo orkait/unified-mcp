@@ -7,7 +7,7 @@ import { reactflowPlugin } from "./plugins/reactflow/index.js";
 import { motionPlugin } from "./plugins/motion/index.js";
 
 const server = new McpServer({
-  name: "frontend-mcp",
+  name: "unified-mcp",
   version: "1.0.0",
 });
 

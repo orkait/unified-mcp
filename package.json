@@ -1,10 +1,10 @@
 {
-  "name": "@orkait-ai/frontend-mcp",
+  "name": "@orkait-ai/unified-mcp",
   "version": "1.0.0",
   "description": "Unified MCP server for frontend libraries: React Flow, Motion for React, and more",
   "main": "dist/index.js",
   "bin": {
-    "frontend-mcp": "dist/index.js"
+    "unified-mcp": "dist/index.js"
   },
   "type": "module",
   "scripts": {
