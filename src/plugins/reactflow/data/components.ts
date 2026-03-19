@@ -440,6 +440,37 @@ function CustomEdge({ sourceX, sourceY, targetX, targetY }) {
   relatedApis: ["EdgeLabelRenderer", "getBezierPath", "getSmoothStepPath"],
 };
 
+const edgeTextComponent: ApiEntry = {
+  name: "EdgeText",
+  kind: "component",
+  description:
+    "Helper component for displaying text within custom edges. Renders as an SVG text element with an optional background.",
+  importPath: "import { EdgeText } from '@xyflow/react'",
+  props: [
+    { name: "x", type: "number", description: "X position of the label." },
+    { name: "y", type: "number", description: "Y position of the label." },
+    { name: "label", type: "ReactNode", description: "Label content." },
+    { name: "labelStyle", type: "CSSProperties", description: "Label SVG text styles." },
+    { name: "labelShowBg", type: "boolean", description: "Show background rect behind label.", default: "false" },
+    { name: "labelBgStyle", type: "CSSProperties", description: "Background rect styles." },
+    { name: "labelBgPadding", type: "[number, number]", description: "Padding around label background.", default: "[2, 4]" },
+    { name: "labelBgBorderRadius", type: "number", description: "Border radius of label background.", default: "2" },
+  ],
+  usage: `import { EdgeText, getBezierPath } from '@xyflow/react';
+
+function CustomEdge({ sourceX, sourceY, targetX, targetY, label }) {
+  const [edgePath, labelX, labelY] = getBezierPath({ sourceX, sourceY, targetX, targetY });
+  return (
+    <>
+      <path d={edgePath} className="react-flow__edge-path" />
+      <EdgeText x={labelX} y={labelY} label={label} labelShowBg />
+    </>
+  );
+}`,
+  examples: [],
+  relatedApis: ["BaseEdge", "EdgeLabelRenderer", "getBezierPath"],
+};
+
 const viewportPortalComponent: ApiEntry = {
   name: "ViewportPortal",
   kind: "component",
@@ -602,6 +633,7 @@ export const COMPONENT_APIS: ApiEntry[] = [
   edgeLabelRendererComponent,
   edgeToolbarComponent,
   baseEdgeComponent,
+  edgeTextComponent,
   viewportPortalComponent,
   nodeResizeControlComponent,
   controlButtonComponent,
