@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONTAINER="frontend-mcp-daemon"
-IMAGE="frontend-mcp"
+CONTAINER="unified-mcp-daemon"
+IMAGE="unified-mcp"
 
 # Start the daemon container if it's not already running
 if ! docker ps -q --filter "name=^${CONTAINER}$" 2>/dev/null | grep -q .; then

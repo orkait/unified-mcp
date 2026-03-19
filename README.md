@@ -94,7 +94,7 @@ Build once, reuse forever. The wrapper script keeps **one** named container aliv
 git clone https://github.com/orkait/unified-mcp.git
 cd unified-mcp
 npm install && npm run build
-docker build -t frontend-mcp .
+docker build -t unified-mcp .
 ```
 
 Add to your MCP config:
@@ -105,7 +105,7 @@ Add to your MCP config:
 ```json
 {
   "mcpServers": {
-    "frontend-mcp": {
+    "unified-mcp": {
       "command": "/absolute/path/to/unified-mcp/scripts/start-mcp.sh"
     }
   }
@@ -120,7 +120,7 @@ Add to your MCP config:
 ```json
 {
   "mcpServers": {
-    "frontend-mcp": {
+    "unified-mcp": {
       "command": "/absolute/path/to/unified-mcp/scripts/start-mcp.sh"
     }
   }
@@ -142,7 +142,7 @@ npm install && npm run build
 ```json
 {
   "mcpServers": {
-    "frontend-mcp": {
+    "unified-mcp": {
       "command": "node",
       "args": ["/absolute/path/to/unified-mcp/dist/index.js"]
     }
@@ -179,8 +179,8 @@ Tool names are namespaced per plugin (`reactflow_list_apis` vs `motion_list_apis
 3. Rebuild and redeploy:
    ```bash
    npm run build
-   docker build -t frontend-mcp .
-   docker rm -f frontend-mcp-daemon   # next session recreates it
+   docker build -t unified-mcp .
+   docker rm -f unified-mcp-daemon   # next session recreates it
    ```
 
 No changes to your MCP config required.
