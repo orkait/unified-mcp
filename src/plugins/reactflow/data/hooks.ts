@@ -1,3 +1,4 @@
+import { snippet } from "./loader.js";
 import type { ApiEntry } from "./types.js";
 
 const useReactFlowHook: ApiEntry = {
@@ -7,10 +8,7 @@ const useReactFlowHook: ApiEntry = {
     "Returns a ReactFlowInstance to update nodes/edges, manipulate the viewport, or query flow state. Does NOT cause re-renders on state changes.",
   importPath: "import { useReactFlow } from '@xyflow/react'",
   returns: "ReactFlowInstance",
-  usage: `const { getNodes, setNodes, addNodes, getEdges, setEdges, addEdges,
-  fitView, zoomIn, zoomOut, getViewport, setViewport,
-  screenToFlowPosition, deleteElements, updateNode, updateNodeData,
-  getIntersectingNodes, toObject } = useReactFlow();`,
+  usage: snippet("usage/useReactFlow.md"),
   examples: [
     {
       title: "Add node on button click",
@@ -56,9 +54,7 @@ const useNodesStateHook: ApiEntry = {
     "Like React's useState but with a built-in change handler for nodes. Quick prototyping of controlled flows without Zustand.",
   importPath: "import { useNodesState } from '@xyflow/react'",
   returns: "[Node[], setNodes, onNodesChange]",
-  usage: `const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-
-<ReactFlow nodes={nodes} onNodesChange={onNodesChange} />`,
+  usage: snippet("usage/useNodesState.md"),
   examples: [
     {
       title: "Minimal controlled flow",
@@ -97,7 +93,7 @@ const useEdgesStateHook: ApiEntry = {
     "Like React's useState but with a built-in change handler for edges. Quick prototyping of controlled flows without Zustand.",
   importPath: "import { useEdgesState } from '@xyflow/react'",
   returns: "[Edge[], setEdges, onEdgesChange]",
-  usage: `const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);`,
+  usage: snippet("usage/useEdgesState.md"),
   examples: [],
   relatedApis: ["useNodesState", "applyEdgeChanges", "addEdge"],
 };
@@ -109,7 +105,7 @@ const useNodesHook: ApiEntry = {
     "Returns the current nodes array. Components using this hook re-render whenever ANY node changes (position, selection, etc).",
   importPath: "import { useNodes } from '@xyflow/react'",
   returns: "Node[]",
-  usage: `const nodes = useNodes();`,
+  usage: snippet("usage/useNodes.md"),
   examples: [],
   tips: ["Can cause excessive re-renders. Prefer useReactFlow().getNodes() for on-demand access, or useNodesData for specific node data."],
   relatedApis: ["useEdges", "useReactFlow", "useNodesData"],
@@ -122,7 +118,7 @@ const useEdgesHook: ApiEntry = {
     "Returns the current edges array. Components using this hook re-render whenever any edge changes.",
   importPath: "import { useEdges } from '@xyflow/react'",
   returns: "Edge[]",
-  usage: `const edges = useEdges();`,
+  usage: snippet("usage/useEdges.md"),
   examples: [],
   tips: ["Can cause excessive re-renders. Prefer useReactFlow().getEdges() for on-demand access."],
   relatedApis: ["useNodes", "useReactFlow"],
@@ -135,9 +131,7 @@ const useNodesDataHook: ApiEntry = {
     "Subscribe to data changes of specific nodes by ID. More efficient than useNodes when you only need certain nodes' data.",
   importPath: "import { useNodesData } from '@xyflow/react'",
   returns: "Pick<Node, 'id' | 'data' | 'type'>[]",
-  usage: `const nodesData = useNodesData(['node-1', 'node-2']);
-// or single node:
-const nodeData = useNodesData('node-1');`,
+  usage: snippet("usage/useNodesData.md"),
   examples: [
     {
       title: "Display connected node data",
@@ -166,10 +160,7 @@ const useNodeIdHook: ApiEntry = {
     "Returns the ID of the node it is used inside. Useful deep in the render tree without prop drilling.",
   importPath: "import { useNodeId } from '@xyflow/react'",
   returns: "string | null",
-  usage: `function DeepChildComponent() {
-  const nodeId = useNodeId();
-  return <span>Node: {nodeId}</span>;
-}`,
+  usage: snippet("usage/useNodeId.md"),
   examples: [],
   relatedApis: ["useInternalNode", "useNodesData"],
 };
@@ -181,8 +172,7 @@ const useConnectionHook: ApiEntry = {
     "Returns the current connection state during an active connection interaction. Returns null properties when no connection is active. Useful for colorizing handles based on validity.",
   importPath: "import { useConnection } from '@xyflow/react'",
   returns: "ConnectionState",
-  usage: `const connection = useConnection();
-// connection.inProgress, connection.fromNode, connection.fromHandle, etc.`,
+  usage: snippet("usage/useConnection.md"),
   examples: [
     {
       title: "Colorize handle during connection",
@@ -212,7 +202,7 @@ const useHandleConnectionsHook: ApiEntry = {
     "Returns an array of connections for a specific handle. Re-renders when edge changes affect the handle.",
   importPath: "import { useHandleConnections } from '@xyflow/react'",
   returns: "HandleConnection[]",
-  usage: `const connections = useHandleConnections({ type: 'target', id: 'my-handle' });`,
+  usage: snippet("usage/useHandleConnections.md"),
   examples: [],
   relatedApis: ["useNodeConnections", "useConnection", "Handle"],
 };
@@ -223,7 +213,7 @@ const useNodeConnectionsHook: ApiEntry = {
   description: "Returns an array of connections for a node. Can filter by handle type and ID.",
   importPath: "import { useNodeConnections } from '@xyflow/react'",
   returns: "NodeConnection[]",
-  usage: `const connections = useNodeConnections({ type: 'target', handleId: 'input-a' });`,
+  usage: snippet("usage/useNodeConnections.md"),
   examples: [],
   relatedApis: ["useHandleConnections", "useConnection"],
 };
@@ -233,12 +223,7 @@ const useOnSelectionChangeHook: ApiEntry = {
   kind: "hook",
   description: "Listen for changes to both node and edge selection.",
   importPath: "import { useOnSelectionChange } from '@xyflow/react'",
-  usage: `useOnSelectionChange({
-  onChange: ({ nodes, edges }) => {
-    console.log('Selected nodes:', nodes);
-    console.log('Selected edges:', edges);
-  },
-});`,
+  usage: snippet("usage/useOnSelectionChange.md"),
   examples: [],
   relatedApis: ["useReactFlow", "ReactFlow"],
 };
@@ -249,11 +234,7 @@ const useOnViewportChangeHook: ApiEntry = {
   description:
     "Listen for viewport changes (pan, zoom). Provides callbacks for start, change, and end phases.",
   importPath: "import { useOnViewportChange } from '@xyflow/react'",
-  usage: `useOnViewportChange({
-  onStart: (viewport) => console.log('move start', viewport),
-  onChange: (viewport) => console.log('moving', viewport),
-  onEnd: (viewport) => console.log('move end', viewport),
-});`,
+  usage: snippet("usage/useOnViewportChange.md"),
   examples: [],
   relatedApis: ["useViewport", "useReactFlow"],
 };
@@ -264,7 +245,7 @@ const useViewportHook: ApiEntry = {
   description: "Returns the current viewport { x, y, zoom }. Re-renders on every viewport change.",
   importPath: "import { useViewport } from '@xyflow/react'",
   returns: "Viewport",
-  usage: `const { x, y, zoom } = useViewport();`,
+  usage: snippet("usage/useViewport.md"),
   examples: [],
   tips: ["Causes re-render on every pan/zoom. Use useOnViewportChange for event-based approach, or useReactFlow().getViewport() for on-demand."],
   relatedApis: ["useOnViewportChange", "useReactFlow"],
@@ -276,8 +257,7 @@ const useStoreHook: ApiEntry = {
   description:
     "Subscribe to internal React Flow Zustand store. Re-exported from Zustand. Use selectors to minimize re-renders.",
   importPath: "import { useStore } from '@xyflow/react'",
-  usage: `const nodes = useStore((state) => state.nodes);
-const zoom = useStore((state) => state.transform[2]);`,
+  usage: snippet("usage/useStore.md"),
   examples: [],
   tips: ["Always use a selector function to avoid re-rendering on every state change.", "For most use cases, prefer useReactFlow, useNodes, or useEdges instead."],
   relatedApis: ["useStoreApi", "useReactFlow"],
@@ -290,9 +270,7 @@ const useStoreApiHook: ApiEntry = {
     "Returns the Zustand store object directly for on-demand state access without causing re-renders.",
   importPath: "import { useStoreApi } from '@xyflow/react'",
   returns: "StoreApi",
-  usage: `const store = useStoreApi();
-// Access state on demand:
-const nodes = store.getState().nodes;`,
+  usage: snippet("usage/useStoreApi.md"),
   examples: [],
   relatedApis: ["useStore", "useReactFlow"],
 };
@@ -304,13 +282,7 @@ const useNodesInitializedHook: ApiEntry = {
     "Returns whether all nodes have been measured and given width/height. Returns false when new nodes are added, then true once measured.",
   importPath: "import { useNodesInitialized } from '@xyflow/react'",
   returns: "boolean",
-  usage: `const initialized = useNodesInitialized();
-
-useEffect(() => {
-  if (initialized) {
-    // Safe to run layout algorithms or fitView
-  }
-}, [initialized]);`,
+  usage: snippet("usage/useNodesInitialized.md"),
   examples: [
     {
       title: "Auto-layout on mount",
@@ -340,9 +312,7 @@ const useUpdateNodeInternalsHook: ApiEntry = {
     "Notify React Flow when you programmatically add/remove handles or change handle positions on a node.",
   importPath: "import { useUpdateNodeInternals } from '@xyflow/react'",
   returns: "(nodeId: string | string[]) => void",
-  usage: `const updateNodeInternals = useUpdateNodeInternals();
-// After modifying handles:
-updateNodeInternals('node-1');`,
+  usage: snippet("usage/useUpdateNodeInternals.md"),
   examples: [],
   tips: ["Call this after dynamically adding/removing Handle components inside a custom node."],
   relatedApis: ["Handle"],
@@ -354,8 +324,7 @@ const useKeyPressHook: ApiEntry = {
   description: "Listen for specific key codes and returns whether they are currently pressed.",
   importPath: "import { useKeyPress } from '@xyflow/react'",
   returns: "boolean",
-  usage: `const shiftPressed = useKeyPress('Shift');
-const ctrlZ = useKeyPress(['Control+z', 'Meta+z']);`,
+  usage: snippet("usage/useKeyPress.md"),
   examples: [],
   relatedApis: ["ReactFlow"],
 };
@@ -366,8 +335,7 @@ const useInternalNodeHook: ApiEntry = {
   description: "Returns an InternalNode object with additional computed properties like positionAbsolute and measured dimensions.",
   importPath: "import { useInternalNode } from '@xyflow/react'",
   returns: "InternalNode | undefined",
-  usage: `const internalNode = useInternalNode('node-1');
-// internalNode.internals.positionAbsolute, internalNode.measured.width, etc.`,
+  usage: snippet("usage/useInternalNode.md"),
   examples: [],
   relatedApis: ["useReactFlow", "useNodeId"],
 };

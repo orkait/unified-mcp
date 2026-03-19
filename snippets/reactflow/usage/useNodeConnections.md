@@ -1,0 +1,1 @@
+const connections = useNodeConnections({ type: 'target', handleId: 'input-a' });

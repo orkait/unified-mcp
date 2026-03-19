@@ -1,0 +1,1 @@
+const connections = useHandleConnections({ type: 'target', id: 'my-handle' });

@@ -1,0 +1,1 @@
+if (isEdge(element)) { /* element is Edge */ }

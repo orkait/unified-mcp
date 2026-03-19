@@ -1,0 +1,1 @@
+const viewport = getViewportForBounds(bounds, width, height, minZoom, maxZoom, padding);

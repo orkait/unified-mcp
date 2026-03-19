@@ -1,3 +1,4 @@
+import { snippet } from "./loader.js";
 import type { ApiEntry } from "./types.js";
 
 const addEdgeUtil: ApiEntry = {
@@ -7,10 +8,7 @@ const addEdgeUtil: ApiEntry = {
     "Convenience function to add a new edge to an array. Validates and prevents duplicates.",
   importPath: "import { addEdge } from '@xyflow/react'",
   returns: "Edge[]",
-  usage: `const onConnect = useCallback(
-  (connection) => setEdges((eds) => addEdge(connection, eds)),
-  [setEdges],
-);`,
+  usage: snippet("usage/addEdge.md"),
   examples: [],
   relatedApis: ["ReactFlow", "useEdgesState"],
 };
@@ -22,9 +20,7 @@ const applyNodeChangesUtil: ApiEntry = {
     "Apply an array of NodeChange objects to your nodes array. Used in Zustand stores for controlled flows.",
   importPath: "import { applyNodeChanges } from '@xyflow/react'",
   returns: "Node[]",
-  usage: `onNodesChange: (changes) => {
-  set({ nodes: applyNodeChanges(changes, get().nodes) });
-},`,
+  usage: snippet("usage/applyNodeChanges.md"),
   examples: [],
   relatedApis: ["applyEdgeChanges", "useNodesState"],
 };
@@ -36,9 +32,7 @@ const applyEdgeChangesUtil: ApiEntry = {
     "Apply an array of EdgeChange objects to your edges array. Used in Zustand stores for controlled flows.",
   importPath: "import { applyEdgeChanges } from '@xyflow/react'",
   returns: "Edge[]",
-  usage: `onEdgesChange: (changes) => {
-  set({ edges: applyEdgeChanges(changes, get().edges) });
-},`,
+  usage: snippet("usage/applyEdgeChanges.md"),
   examples: [],
   relatedApis: ["applyNodeChanges", "useEdgesState"],
 };
@@ -49,11 +43,7 @@ const getBezierPathUtil: ApiEntry = {
   description: "Returns SVG path string and label position for a bezier edge between two points.",
   importPath: "import { getBezierPath } from '@xyflow/react'",
   returns: "[path: string, labelX: number, labelY: number, offsetX: number, offsetY: number]",
-  usage: `const [edgePath, labelX, labelY] = getBezierPath({
-  sourceX, sourceY, targetX, targetY,
-  sourcePosition, targetPosition,
-  curvature: 0.25, // optional
-});`,
+  usage: snippet("usage/getBezierPath.md"),
   examples: [],
   relatedApis: ["getSmoothStepPath", "getStraightPath", "getSimpleBezierPath", "BaseEdge"],
 };
@@ -64,12 +54,7 @@ const getSmoothStepPathUtil: ApiEntry = {
   description: "Returns SVG path string for a stepped/rounded edge with configurable border radius.",
   importPath: "import { getSmoothStepPath } from '@xyflow/react'",
   returns: "[path, labelX, labelY, offsetX, offsetY]",
-  usage: `const [edgePath, labelX, labelY] = getSmoothStepPath({
-  sourceX, sourceY, targetX, targetY,
-  sourcePosition, targetPosition,
-  borderRadius: 8, // rounded corners
-  offset: 25, // step offset
-});`,
+  usage: snippet("usage/getSmoothStepPath.md"),
   examples: [],
   relatedApis: ["getBezierPath", "getStraightPath"],
 };
@@ -80,9 +65,7 @@ const getStraightPathUtil: ApiEntry = {
   description: "Calculates a straight line path between two points.",
   importPath: "import { getStraightPath } from '@xyflow/react'",
   returns: "[path, labelX, labelY]",
-  usage: `const [edgePath, labelX, labelY] = getStraightPath({
-  sourceX, sourceY, targetX, targetY,
-});`,
+  usage: snippet("usage/getStraightPath.md"),
   examples: [],
   relatedApis: ["getBezierPath", "getSmoothStepPath"],
 };
@@ -93,9 +76,7 @@ const getSimpleBezierPathUtil: ApiEntry = {
   description: "Returns SVG path for a simple bezier curve (less pronounced curve than getBezierPath).",
   importPath: "import { getSimpleBezierPath } from '@xyflow/react'",
   returns: "[path, labelX, labelY, offsetX, offsetY]",
-  usage: `const [edgePath] = getSimpleBezierPath({
-  sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition,
-});`,
+  usage: snippet("usage/getSimpleBezierPath.md"),
   examples: [],
   relatedApis: ["getBezierPath"],
 };
@@ -106,7 +87,7 @@ const getConnectedEdgesUtil: ApiEntry = {
   description: "Given nodes and all edges, returns edges that connect any of the given nodes together.",
   importPath: "import { getConnectedEdges } from '@xyflow/react'",
   returns: "Edge[]",
-  usage: `const connected = getConnectedEdges(selectedNodes, allEdges);`,
+  usage: snippet("usage/getConnectedEdges.md"),
   examples: [],
   relatedApis: ["getIncomers", "getOutgoers"],
 };
@@ -117,7 +98,7 @@ const getIncomersUtil: ApiEntry = {
   description: "Returns nodes connected to the given node as the source of an edge (upstream nodes).",
   importPath: "import { getIncomers } from '@xyflow/react'",
   returns: "Node[]",
-  usage: `const incomers = getIncomers(node, nodes, edges);`,
+  usage: snippet("usage/getIncomers.md"),
   examples: [],
   relatedApis: ["getOutgoers", "getConnectedEdges"],
 };
@@ -128,7 +109,7 @@ const getOutgoersUtil: ApiEntry = {
   description: "Returns nodes connected to the given node as the target of an edge (downstream nodes).",
   importPath: "import { getOutgoers } from '@xyflow/react'",
   returns: "Node[]",
-  usage: `const outgoers = getOutgoers(node, nodes, edges);`,
+  usage: snippet("usage/getOutgoers.md"),
   examples: [],
   relatedApis: ["getIncomers", "getConnectedEdges"],
 };
@@ -139,7 +120,7 @@ const getNodesBoundsUtil: ApiEntry = {
   description: "Returns the bounding box containing all given nodes. Useful with getViewportForBounds.",
   importPath: "import { getNodesBounds } from '@xyflow/react'",
   returns: "Rect",
-  usage: `const bounds = getNodesBounds(nodes);`,
+  usage: snippet("usage/getNodesBounds.md"),
   examples: [],
   relatedApis: ["getViewportForBounds"],
 };
@@ -150,7 +131,7 @@ const getViewportForBoundsUtil: ApiEntry = {
   description: "Returns the viewport to fit given bounds. Useful for server-side viewport calculation or custom fit-view logic.",
   importPath: "import { getViewportForBounds } from '@xyflow/react'",
   returns: "Viewport",
-  usage: `const viewport = getViewportForBounds(bounds, width, height, minZoom, maxZoom, padding);`,
+  usage: snippet("usage/getViewportForBounds.md"),
   examples: [],
   relatedApis: ["getNodesBounds", "useReactFlow"],
 };
@@ -161,9 +142,7 @@ const reconnectEdgeUtil: ApiEntry = {
   description: "Reconnect an existing edge with new source/target. Used in onReconnect handlers.",
   importPath: "import { reconnectEdge } from '@xyflow/react'",
   returns: "Edge[]",
-  usage: `const onReconnect = useCallback((oldEdge, newConnection) => {
-  setEdges((els) => reconnectEdge(oldEdge, newConnection, els));
-}, []);`,
+  usage: snippet("usage/reconnectEdge.md"),
   examples: [
     {
       title: "Edge reconnection",
@@ -187,7 +166,7 @@ const isNodeUtil: ApiEntry = {
   description: "Type guard to check if an object is a valid Node.",
   importPath: "import { isNode } from '@xyflow/react'",
   returns: "boolean",
-  usage: `if (isNode(element)) { /* element is Node */ }`,
+  usage: snippet("usage/isNode.md"),
   examples: [],
   relatedApis: ["isEdge"],
 };
@@ -198,7 +177,7 @@ const isEdgeUtil: ApiEntry = {
   description: "Type guard to check if an object is a valid Edge.",
   importPath: "import { isEdge } from '@xyflow/react'",
   returns: "boolean",
-  usage: `if (isEdge(element)) { /* element is Edge */ }`,
+  usage: snippet("usage/isEdge.md"),
   examples: [],
   relatedApis: ["isNode"],
 };

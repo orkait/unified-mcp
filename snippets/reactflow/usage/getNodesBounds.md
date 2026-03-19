@@ -1,0 +1,1 @@
+const bounds = getNodesBounds(nodes);

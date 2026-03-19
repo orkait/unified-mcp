@@ -1,0 +1,1 @@
+const outgoers = getOutgoers(node, nodes, edges);

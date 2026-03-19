@@ -1,0 +1,1 @@
+const connected = getConnectedEdges(selectedNodes, allEdges);

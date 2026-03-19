@@ -1,0 +1,1 @@
+if (isNode(element)) { /* element is Node */ }

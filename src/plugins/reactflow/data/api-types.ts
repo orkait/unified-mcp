@@ -1,3 +1,4 @@
+import { snippet } from "./loader.js";
 import type { ApiEntry } from "./types.js";
 
 const nodeType: ApiEntry = {
@@ -26,12 +27,7 @@ const nodeType: ApiEntry = {
     { name: "origin", type: "NodeOrigin", description: "Origin point [0-1, 0-1] for positioning.", default: "[0, 0]" },
     { name: "measured", type: "{ width?: number; height?: number }", description: "Read-only measured dimensions." },
   ],
-  usage: `const node: Node = {
-  id: '1',
-  type: 'custom',
-  position: { x: 100, y: 200 },
-  data: { label: 'My Node', status: 'active' },
-};`,
+  usage: snippet("usage/Node.md"),
   examples: [
     {
       title: "Typed custom node data",
@@ -82,14 +78,7 @@ const edgeType: ApiEntry = {
     { name: "zIndex", type: "number", description: "Z-index." },
     { name: "interactionWidth", type: "number", description: "Width of invisible click target.", default: "20" },
   ],
-  usage: `const edge: Edge = {
-  id: 'e1-2',
-  source: '1',
-  target: '2',
-  type: 'smoothstep',
-  animated: true,
-  label: 'connects to',
-};`,
+  usage: snippet("usage/Edge.md"),
   examples: [],
   tips: [
     "Default edge types: 'default' (bezier), 'straight', 'step', 'smoothstep', 'simplebezier'.",
@@ -124,27 +113,7 @@ const nodePropsType: ApiEntry = {
     { name: "sourcePosition", type: "Position", description: "Source handle position (default nodes only)." },
     { name: "targetPosition", type: "Position", description: "Target handle position (default nodes only)." },
   ],
-  usage: `import type { NodeProps, Node } from '@xyflow/react';
-
-// Step 1: Define your node type
-type CounterNode = Node<{ initialCount?: number }, 'counter'>;
-
-// Step 2: Use NodeProps<YourNodeType> as the prop type
-export default function CounterNode(props: NodeProps<CounterNode>) {
-  const [count, setCount] = useState(props.data?.initialCount ?? 0);
-
-  return (
-    <div>
-      <p>Count: {count}</p>
-      <button className="nodrag" onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </div>
-  );
-}
-
-// Step 3: Register in nodeTypes (outside component!)
-const nodeTypes = { counter: CounterNode };`,
+  usage: snippet("usage/NodeProps.md"),
   examples: [],
   tips: [
     "The generic parameter is a Node type (not raw data). Use Node<MyData, 'myType'> to define it.",
@@ -189,25 +158,7 @@ const edgePropsType: ApiEntry = {
     { name: "style", type: "CSSProperties", description: "Edge SVG path styles." },
     { name: "interactionWidth", type: "number", description: "Width of invisible click target." },
   ],
-  usage: `import type { EdgeProps, Edge } from '@xyflow/react';
-import { BaseEdge, getBezierPath } from '@xyflow/react';
-
-// Step 1: Define your edge type (optional)
-type CustomEdgeType = Edge<{ weight: number }, 'weighted'>;
-
-// Step 2: Use EdgeProps<YourEdgeType>
-function WeightedEdge({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, style }: EdgeProps<CustomEdgeType>) {
-  const [edgePath, labelX, labelY] = getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition });
-  return (
-    <>
-      <BaseEdge path={edgePath} style={style} />
-      <text x={labelX} y={labelY} textAnchor="middle">{data?.weight}</text>
-    </>
-  );
-}
-
-// Step 3: Register in edgeTypes (outside component!)
-const edgeTypes = { weighted: WeightedEdge };`,
+  usage: snippet("usage/EdgeProps.md"),
   examples: [],
   tips: [
     "The generic parameter is an Edge type (not raw data). Use Edge<MyData, 'myType'> to define it.",
@@ -228,9 +179,7 @@ const connectionType: ApiEntry = {
     { name: "sourceHandle", type: "string | null", description: "Source handle ID." },
     { name: "targetHandle", type: "string | null", description: "Target handle ID." },
   ],
-  usage: `const onConnect = (connection: Connection) => {
-  setEdges((eds) => addEdge(connection, eds));
-};`,
+  usage: snippet("usage/Connection.md"),
   examples: [],
   relatedApis: ["Edge", "addEdge", "useConnection"],
 };
@@ -245,7 +194,7 @@ const viewportType: ApiEntry = {
     { name: "y", type: "number", description: "Y offset." },
     { name: "zoom", type: "number", description: "Zoom level." },
   ],
-  usage: `const viewport: Viewport = { x: 0, y: 0, zoom: 1 };`,
+  usage: snippet("usage/Viewport.md"),
   examples: [],
   relatedApis: ["useViewport", "useReactFlow"],
 };
@@ -283,16 +232,7 @@ const reactFlowInstanceType: ApiEntry = {
     { name: "isNodeIntersecting()", type: "(node, area, partially?) => boolean", description: "Check if node intersects area." },
     { name: "getNodesBounds()", type: "(nodes) => Rect", description: "Get bounding box of nodes." },
   ],
-  usage: `const reactFlow = useReactFlow();
-
-// Add a node
-reactFlow.addNodes({ id: 'new', position: { x: 100, y: 100 }, data: { label: 'New' } });
-
-// Fit view with animation
-reactFlow.fitView({ duration: 500, padding: 0.2 });
-
-// Export flow
-const json = reactFlow.toObject();`,
+  usage: snippet("usage/ReactFlowInstance.md"),
   examples: [],
   relatedApis: ["useReactFlow", "ReactFlowProvider"],
 };

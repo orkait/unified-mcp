@@ -1,0 +1,1 @@
+const incomers = getIncomers(node, nodes, edges);
