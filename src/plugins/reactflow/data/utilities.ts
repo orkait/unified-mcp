@@ -147,14 +147,7 @@ const reconnectEdgeUtil: ApiEntry = {
     {
       title: "Edge reconnection",
       category: "connections",
-      code: `<ReactFlow
-  edgesReconnectable
-  onReconnect={(oldEdge, newConnection) =>
-    setEdges((els) => reconnectEdge(oldEdge, newConnection, els))
-  }
-  onReconnectStart={() => setIsReconnecting(true)}
-  onReconnectEnd={() => setIsReconnecting(false)}
-/>`,
+      code: snippet("examples/reconnectEdge/edge-reconnection.md"),
     },
   ],
   relatedApis: ["addEdge", "ReactFlow"],

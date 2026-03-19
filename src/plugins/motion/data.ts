@@ -129,207 +129,84 @@ const motionComponent: ApiEntry = {
     {
       title: "Basic fade in",
       category: "animation",
-      code: `<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-/>`,
+      code: snippet("examples/motion/basic-fade-in.md"),
     },
     {
       title: "Hover and tap",
       category: "gestures",
-      code: `<motion.button
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.95 }}
->
-  Click me
-</motion.button>`,
+      code: snippet("examples/motion/hover-and-tap.md"),
     },
     {
       title: "Keyframes",
       category: "keyframes",
-      code: `<motion.div
-  animate={{ x: [0, 100, 0] }}
-  transition={{ duration: 2, repeat: Infinity }}
-/>`,
+      code: snippet("examples/motion/keyframes.md"),
     },
     {
       title: "Wildcard keyframe (start from current value)",
       category: "keyframes",
-      code: `<motion.div animate={{ x: [null, 100, 0] }} />`,
+      code: snippet("examples/motion/wildcard-keyframe-start-from-current-value.md"),
     },
     {
       title: "Variants with orchestration",
       category: "variants",
-      code: `const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      when: "beforeChildren",
-      delayChildren: stagger(0.1)
-    }
-  }
-};
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  show: { y: 0, opacity: 1 }
-};
-
-<motion.ul variants={container} initial="hidden" animate="show">
-  {items.map(i => (
-    <motion.li key={i} variants={item} />
-  ))}
-</motion.ul>`,
+      code: snippet("examples/motion/variants-with-orchestration.md"),
     },
     {
       title: "Drag with constraints",
       category: "drag",
-      code: `const constraintsRef = useRef(null);
-
-<motion.div ref={constraintsRef} style={{ overflow: "hidden" }}>
-  <motion.div
-    drag
-    dragConstraints={constraintsRef}
-    dragElastic={0.2}
-  />
-</motion.div>`,
+      code: snippet("examples/motion/drag-with-constraints.md"),
     },
     {
       title: "Scroll-triggered entrance",
       category: "scroll",
-      code: `<motion.div
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.5 }}
-/>`,
+      code: snippet("examples/motion/scroll-triggered-entrance.md"),
     },
     {
       title: "Layout animation",
       category: "layout",
-      code: `function Toggle() {
-  const [isOn, setIsOn] = useState(false);
-  return (
-    <div
-      onClick={() => setIsOn(!isOn)}
-      style={{ justifyContent: isOn ? "flex-end" : "flex-start" }}
-    >
-      <motion.div layout />
-    </div>
-  );
-}`,
+      code: snippet("examples/motion/layout-animation.md"),
     },
     {
       title: "Shared layout with layoutId",
       category: "layout",
-      code: `function Tabs({ tabs, selected }) {
-  return tabs.map(tab => (
-    <li key={tab.id} onClick={() => select(tab)}>
-      {tab.label}
-      {selected === tab && (
-        <motion.div layoutId="underline" className="underline" />
-      )}
-    </li>
-  ));
-}`,
+      code: snippet("examples/motion/shared-layout-with-layoutid.md"),
     },
     {
       title: "SVG line drawing",
       category: "svg",
-      code: `<motion.circle
-  cx="50" cy="50" r="40"
-  initial={{ pathLength: 0 }}
-  animate={{ pathLength: 1 }}
-  transition={{ duration: 2 }}
-/>`,
+      code: snippet("examples/motion/svg-line-drawing.md"),
     },
     {
       title: "SVG path morphing",
       category: "svg",
-      code: `<motion.path
-  d="M 0,0 l 0,10 l 10,10"
-  animate={{ d: "M 0,0 l 10,0 l 10,10" }}
-  transition={{ duration: 1 }}
-/>`,
+      code: snippet("examples/motion/svg-path-morphing.md"),
       description: "Paths must have same number and type of instructions.",
     },
     {
       title: "Scroll image reveal with clipPath",
       category: "scroll",
-      code: `function ImageReveal() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"]
-  });
-  const clipPath = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["inset(0% 50% 0% 50%)", "inset(0% 0% 0% 0%)"]
-  );
-
-  return (
-    <motion.div ref={ref} style={{ clipPath }}>
-      <img src="/photo.jpg" alt="Revealed" />
-    </motion.div>
-  );
-}`,
+      code: snippet("examples/motion/scroll-image-reveal-with-clippath.md"),
     },
     {
       title: "Snap-to-grid drag",
       category: "drag",
-      code: `<motion.div
-  drag
-  dragTransition={{
-    power: 0,
-    modifyTarget: target => Math.round(target / 50) * 50
-  }}
-/>`,
+      code: snippet("examples/motion/snap-to-grid-drag.md"),
     },
     {
       title: "Animate counter without re-renders",
       category: "animation",
-      code: `function Counter() {
-  const count = useMotionValue(0);
-
-  useEffect(() => {
-    const controls = animate(count, 100, { duration: 5 });
-    return () => controls.stop();
-  }, []);
-
-  return <motion.pre>{count}</motion.pre>;
-}`,
+      code: snippet("examples/motion/animate-counter-without-re-renders.md"),
       description: "Pass a MotionValue as child to render its latest value.",
     },
     {
       title: "Animate CSS variables",
       category: "animation",
-      code: `<motion.div
-  initial={{ "--radius": "0px" }}
-  animate={{ "--radius": "20px" }}
-  style={{ borderRadius: "var(--radius)" }}
-/>`,
+      code: snippet("examples/motion/animate-css-variables.md"),
     },
     {
       title: "Dynamic variants with custom",
       category: "variants",
-      code: `const variants = {
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1 }
-  }),
-  hidden: { opacity: 0, y: 30 }
-};
-
-{items.map((item, i) => (
-  <motion.div
-    key={item}
-    custom={i}
-    variants={variants}
-    initial="hidden"
-    animate="visible"
-  />
-))}`,
+      code: snippet("examples/motion/dynamic-variants-with-custom.md"),
     },
   ],
   tips: [
@@ -364,45 +241,12 @@ const animatePresence: ApiEntry = {
     {
       title: "Modal with exit animation",
       category: "exit",
-      code: `function Modal({ isOpen, onClose }) {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          key="backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            key="modal"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            onClick={e => e.stopPropagation()}
-          >
-            Modal content
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}`,
+      code: snippet("examples/AnimatePresence/modal-with-exit-animation.md"),
     },
     {
       title: "Page transitions with wait mode",
       category: "exit",
-      code: `<AnimatePresence mode="wait">
-  <motion.div
-    key={pathname}
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-  >
-    {children}
-  </motion.div>
-</AnimatePresence>`,
+      code: snippet("examples/AnimatePresence/page-transitions-with-wait-mode.md"),
     },
   ],
   tips: [
@@ -428,24 +272,7 @@ const layoutGroup: ApiEntry = {
     {
       title: "Synchronized accordion items",
       category: "layout",
-      code: `<LayoutGroup>
-  {items.map(item => (
-    <motion.div key={item.id} layout>
-      <motion.h3 layout>{item.title}</motion.h3>
-      <AnimatePresence>
-        {expanded === item.id && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            {item.content}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  ))}
-</LayoutGroup>`,
+      code: snippet("examples/LayoutGroup/synchronized-accordion-items.md"),
     },
   ],
   relatedApis: ["motion", "AnimatePresence"],
@@ -466,12 +293,7 @@ const lazyMotion: ApiEntry = {
     {
       title: "Async feature loading",
       category: "performance",
-      code: `const loadFeatures = () =>
-  import("motion").then(mod => mod.domMax);
-
-<LazyMotion features={loadFeatures}>
-  <m.div drag whileHover={{ scale: 1.1 }} />
-</LazyMotion>`,
+      code: snippet("examples/LazyMotion/async-feature-loading.md"),
     },
   ],
   tips: [
@@ -497,16 +319,12 @@ const motionConfig: ApiEntry = {
     {
       title: "Global spring transition",
       category: "transitions",
-      code: `<MotionConfig transition={{ type: "spring", bounce: 0.3 }}>
-  {children}
-</MotionConfig>`,
+      code: snippet("examples/MotionConfig/global-spring-transition.md"),
     },
     {
       title: "Respect reduced motion",
       category: "performance",
-      code: `<MotionConfig reducedMotion="user">
-  <App />
-</MotionConfig>`,
+      code: snippet("examples/MotionConfig/respect-reduced-motion.md"),
     },
   ],
   relatedApis: ["motion", "LazyMotion"],
@@ -528,23 +346,7 @@ const reorderGroup: ApiEntry = {
     {
       title: "Reorderable list with exit animations",
       category: "reorder",
-      code: `const [items, setItems] = useState(["A", "B", "C", "D"]);
-
-<Reorder.Group axis="y" values={items} onReorder={setItems}>
-  <AnimatePresence>
-    {items.map(item => (
-      <Reorder.Item
-        key={item}
-        value={item}
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: "auto" }}
-        exit={{ opacity: 0, height: 0 }}
-      >
-        {item}
-      </Reorder.Item>
-    ))}
-  </AnimatePresence>
-</Reorder.Group>`,
+      code: snippet("examples/Reorder.Group/reorderable-list-with-exit-animations.md"),
     },
   ],
   relatedApis: ["Reorder.Item", "AnimatePresence"],
@@ -580,48 +382,17 @@ const useAnimate: ApiEntry = {
     {
       title: "Staggered list entrance",
       category: "animation",
-      code: `function StaggerList() {
-  const [scope, animate] = useAnimate();
-
-  useEffect(() => {
-    animate("li", { opacity: 1, y: 0 }, { delay: stagger(0.1) });
-  }, []);
-
-  return (
-    <ul ref={scope}>
-      {items.map(item => (
-        <li key={item} style={{ opacity: 0, y: 20 }}>{item}</li>
-      ))}
-    </ul>
-  );
-}`,
+      code: snippet("examples/useAnimate/staggered-list-entrance.md"),
     },
     {
       title: "Animation sequence",
       category: "animation",
-      code: `const [scope, animate] = useAnimate();
-
-async function handleClick() {
-  await animate(scope.current, { scale: 1.2 });
-  await animate(scope.current, { rotate: 360 });
-  await animate(scope.current, { scale: 1 });
-}`,
+      code: snippet("examples/useAnimate/animation-sequence.md"),
     },
     {
       title: "Exit animation with usePresence",
       category: "exit",
-      code: `function ExitComponent() {
-  const [isPresent, safeToRemove] = usePresence();
-  const [scope, animate] = useAnimate();
-
-  useEffect(() => {
-    if (!isPresent) {
-      animate(scope.current, { opacity: 0 }).then(safeToRemove);
-    }
-  }, [isPresent]);
-
-  return <div ref={scope}>Content</div>;
-}`,
+      code: snippet("examples/useAnimate/exit-animation-with-usepresence.md"),
     },
   ],
   tips: [
@@ -644,17 +415,7 @@ const useMotionValue: ApiEntry = {
     {
       title: "Track drag position",
       category: "drag",
-      code: `function DragTracker() {
-  const x = useMotionValue(0);
-  const background = useTransform(x, [-200, 200], ["#ff0000", "#0000ff"]);
-
-  return (
-    <motion.div
-      drag="x"
-      style={{ x, background }}
-    />
-  );
-}`,
+      code: snippet("examples/useMotionValue/track-drag-position.md"),
     },
   ],
   tips: [
@@ -677,24 +438,12 @@ const useTransform: ApiEntry = {
     {
       title: "Parallax scroll effect",
       category: "scroll",
-      code: `function Parallax() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -300]);
-
-  return <motion.div style={{ y }} />;
-}`,
+      code: snippet("examples/useTransform/parallax-scroll-effect.md"),
     },
     {
       title: "Scroll-linked color change",
       category: "scroll",
-      code: `const { scrollYProgress } = useScroll();
-const background = useTransform(
-  scrollYProgress,
-  [0, 0.5, 1],
-  ["#ffffff", "#ff0000", "#000000"]
-);
-
-return <motion.div style={{ background }} />;`,
+      code: snippet("examples/useTransform/scroll-linked-color-change.md"),
     },
   ],
   props: [
@@ -717,37 +466,12 @@ const useSpring: ApiEntry = {
     {
       title: "Smooth scroll tracking",
       category: "scroll",
-      code: `function SmoothScroll() {
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  return <motion.div style={{ scaleX: smoothProgress }} />;
-}`,
+      code: snippet("examples/useSpring/smooth-scroll-tracking.md"),
     },
     {
       title: "Mouse follower",
       category: "animation",
-      code: `function Cursor() {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 300, damping: 25 });
-  const springY = useSpring(y, { stiffness: 300, damping: 25 });
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
-    };
-    window.addEventListener("mousemove", handler);
-    return () => window.removeEventListener("mousemove", handler);
-  }, []);
-
-  return <motion.div style={{ x: springX, y: springY }} />;
-}`,
+      code: snippet("examples/useSpring/mouse-follower.md"),
     },
   ],
   props: [
@@ -774,62 +498,17 @@ const useScroll: ApiEntry = {
     {
       title: "Scroll progress bar",
       category: "scroll",
-      code: `function ProgressBar() {
-  const { scrollYProgress } = useScroll();
-
-  return (
-    <motion.div
-      style={{
-        scaleX: scrollYProgress,
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 4,
-        background: "#0066ff",
-        transformOrigin: "left",
-      }}
-    />
-  );
-}`,
+      code: snippet("examples/useScroll/scroll-progress-bar.md"),
     },
     {
       title: "Element reveal on scroll",
       category: "scroll",
-      code: `function RevealSection() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"]
-  });
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, 0]);
-
-  return (
-    <motion.section ref={ref} style={{ opacity, y }}>
-      Content revealed on scroll
-    </motion.section>
-  );
-}`,
+      code: snippet("examples/useScroll/element-reveal-on-scroll.md"),
     },
     {
       title: "Horizontal scroll section",
       category: "scroll",
-      code: `function HorizontalScroll() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
-
-  return (
-    <section ref={containerRef} style={{ height: "400vh" }}>
-      <div style={{ position: "sticky", top: 0, overflow: "hidden" }}>
-        <motion.div style={{ x, display: "flex" }}>
-          {panels.map(panel => <Panel key={panel.id} {...panel} />)}
-        </motion.div>
-      </div>
-    </section>
-  );
-}`,
+      code: snippet("examples/useScroll/horizontal-scroll-section.md"),
     },
   ],
   props: [
@@ -858,23 +537,7 @@ const useInView: ApiEntry = {
     {
       title: "Trigger animation when in view",
       category: "scroll",
-      code: `function AnimateOnView() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: isInView ? 1 : 0,
-        transform: isInView ? "translateY(0)" : "translateY(50px)",
-        transition: "all 0.6s ease-out"
-      }}
-    >
-      Content
-    </div>
-  );
-}`,
+      code: snippet("examples/useInView/trigger-animation-when-in-view.md"),
     },
   ],
   props: [
@@ -898,17 +561,7 @@ const useMotionValueEvent: ApiEntry = {
     {
       title: "Detect scroll direction",
       category: "scroll",
-      code: `function ScrollDirection() {
-  const { scrollY } = useScroll();
-  const [direction, setDirection] = useState("down");
-
-  useMotionValueEvent(scrollY, "change", (current) => {
-    const prev = scrollY.getPrevious();
-    setDirection(current > prev ? "down" : "up");
-  });
-
-  return <div>Scrolling {direction}</div>;
-}`,
+      code: snippet("examples/useMotionValueEvent/detect-scroll-direction.md"),
     },
   ],
   relatedApis: ["useMotionValue", "useScroll"],
@@ -926,13 +579,7 @@ const useVelocity: ApiEntry = {
     {
       title: "Velocity-based skew on drag",
       category: "drag",
-      code: `function SkewDrag() {
-  const x = useMotionValue(0);
-  const xVelocity = useVelocity(x);
-  const skewX = useTransform(xVelocity, [-1000, 0, 1000], [-15, 0, 15]);
-
-  return <motion.div drag="x" style={{ x, skewX }} />;
-}`,
+      code: snippet("examples/useVelocity/velocity-based-skew-on-drag.md"),
     },
   ],
   relatedApis: ["useMotionValue", "useTransform"],
@@ -950,12 +597,7 @@ const useTime: ApiEntry = {
     {
       title: "Perpetual rotation",
       category: "animation",
-      code: `function Spinner() {
-  const time = useTime();
-  const rotate = useTransform(time, [0, 2000], [0, 360], { clamp: false });
-
-  return <motion.div style={{ rotate, width: 50, height: 50 }} />;
-}`,
+      code: snippet("examples/useTime/perpetual-rotation.md"),
     },
   ],
   relatedApis: ["useTransform", "useMotionValue"],
@@ -973,13 +615,7 @@ const useMotionTemplate: ApiEntry = {
     {
       title: "Dynamic gradient",
       category: "animation",
-      code: `function DynamicGradient() {
-  const x = useMotionValue(0);
-  const angle = useTransform(x, [-200, 200], [0, 360]);
-  const background = useMotionTemplate\`linear-gradient(\${angle}deg, #ff0000, #0000ff)\`;
-
-  return <motion.div drag="x" style={{ x, background }} />;
-}`,
+      code: snippet("examples/useMotionTemplate/dynamic-gradient.md"),
     },
   ],
   relatedApis: ["useMotionValue", "useTransform"],
@@ -996,18 +632,7 @@ const useDragControls: ApiEntry = {
     {
       title: "Custom drag handle",
       category: "drag",
-      code: `function DragCard() {
-  const controls = useDragControls();
-
-  return (
-    <motion.div drag="y" dragControls={controls} dragListener={false}>
-      <div onPointerDown={(e) => controls.start(e)}>
-        ⠿ Drag here
-      </div>
-      <div>Card content (not draggable from here)</div>
-    </motion.div>
-  );
-}`,
+      code: snippet("examples/useDragControls/custom-drag-handle.md"),
     },
   ],
   relatedApis: ["motion"],
@@ -1023,17 +648,7 @@ const useAnimationFrame: ApiEntry = {
     {
       title: "Continuous rotation",
       category: "animation",
-      code: `function RotatingCube() {
-  const ref = useRef(null);
-
-  useAnimationFrame((time) => {
-    if (ref.current) {
-      ref.current.style.transform = \`rotateY(\${time * 0.05}deg)\`;
-    }
-  });
-
-  return <div ref={ref}>Rotating</div>;
-}`,
+      code: snippet("examples/useAnimationFrame/continuous-rotation.md"),
     },
   ],
   relatedApis: ["useTime"],
@@ -1101,11 +716,7 @@ const staggerFn: ApiEntry = {
     {
       title: "Staggered list with easing",
       category: "animation",
-      code: `const [scope, animate] = useAnimate();
-
-animate("li", { opacity: 1, x: 0 }, {
-  delay: stagger(0.1, { startDelay: 0.2, from: "center", ease: "easeOut" })
-});`,
+      code: snippet("examples/stagger/staggered-list-with-easing.md"),
     },
   ],
   props: [
@@ -1128,16 +739,7 @@ const animateFn: ApiEntry = {
     {
       title: "Timeline with sequencing",
       category: "animation",
-      code: `async function playIntro() {
-  const controls = animate([
-    [".title", { opacity: [0, 1], y: [20, 0] }, { duration: 0.6 }],
-    [".subtitle", { opacity: [0, 1] }, { duration: 0.4, at: "-0.2" }],
-    [".cta", { scale: [0.8, 1], opacity: [0, 1] }, { duration: 0.3, at: "+0.1" }],
-  ]);
-
-  await controls;
-  console.log("Intro complete");
-}`,
+      code: snippet("examples/animate/timeline-with-sequencing.md"),
     },
   ],
   tips: [
@@ -1174,15 +776,7 @@ const useCycle: ApiEntry = {
     {
       title: "Toggle animation state",
       category: "animation",
-      code: `function Toggle() {
-  const [isOn, toggle] = useCycle(false, true);
-  return (
-    <motion.div
-      animate={{ scale: isOn ? 1.2 : 1 }}
-      onClick={() => toggle()}
-    />
-  );
-}`,
+      code: snippet("examples/useCycle/toggle-animation-state.md"),
     },
   ],
   relatedApis: ["motion"],
@@ -1199,17 +793,7 @@ const usePageInView: ApiEntry = {
     {
       title: "Pause video when tab hidden",
       category: "performance",
-      code: `function VideoPlayer() {
-  const videoRef = useRef(null);
-  const isPageVisible = usePageInView();
-
-  useEffect(() => {
-    if (!videoRef.current) return;
-    isPageVisible ? videoRef.current.play() : videoRef.current.pause();
-  }, [isPageVisible]);
-
-  return <video ref={videoRef} src="/video.mp4" />;
-}`,
+      code: snippet("examples/usePageInView/pause-video-when-tab-hidden.md"),
     },
   ],
   relatedApis: ["useInView"],
@@ -1230,21 +814,7 @@ const hoverFn: ApiEntry = {
     {
       title: "Standalone hover with React ref",
       category: "hover",
-      code: `import { hover } from "motion"
-import { useRef, useEffect } from "react"
-
-function HoverButton() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    return hover(ref.current, () => {
-      ref.current.style.scale = "1.1";
-      return () => { ref.current.style.scale = "1"; };
-    });
-  }, []);
-
-  return <button ref={ref}>Hover me</button>;
-}`,
+      code: snippet("examples/hover/standalone-hover-with-react-ref.md"),
     },
   ],
   tips: ["Under 1kb — smallest hover animation possible.", "Import from 'motion' (not 'motion/react')."],

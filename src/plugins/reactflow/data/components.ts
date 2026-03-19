@@ -70,43 +70,12 @@ const reactFlowComponent: ApiEntry = {
     {
       title: "Controlled flow with Zustand",
       category: "state-management",
-      code: `import { ReactFlow } from '@xyflow/react';
-import useFlowStore from './store';
-
-const selector = (s) => ({
-  nodes: s.nodes, edges: s.edges,
-  onNodesChange: s.onNodesChange,
-  onEdgesChange: s.onEdgesChange,
-  onConnect: s.onConnect,
-});
-
-export default function Flow() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useFlowStore(selector);
-  return (
-    <ReactFlow
-      nodes={nodes} edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      fitView
-    />
-  );
-}`,
+      code: snippet("examples/ReactFlow/controlled-flow-zustand.md"),
     },
     {
       title: "Uncontrolled flow",
       category: "quickstart",
-      code: `import { ReactFlow } from '@xyflow/react';
-
-const defaultNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'Hello' } },
-  { id: '2', position: { x: 200, y: 100 }, data: { label: 'World' } },
-];
-const defaultEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
-export default function Flow() {
-  return <ReactFlow defaultNodes={defaultNodes} defaultEdges={defaultEdges} fitView />;
-}`,
+      code: snippet("examples/ReactFlow/uncontrolled-flow.md"),
     },
   ],
   tips: [
@@ -137,9 +106,7 @@ const backgroundComponent: ApiEntry = {
     {
       title: "Cross pattern background",
       category: "styling",
-      code: `import { Background, BackgroundVariant } from '@xyflow/react';
-
-<Background variant={BackgroundVariant.Cross} gap={24} size={2} color="#ddd" />`,
+      code: snippet("examples/Background/cross-pattern-background.md"),
     },
   ],
   relatedApis: ["ReactFlow", "MiniMap", "Controls"],
@@ -163,13 +130,7 @@ const controlsComponent: ApiEntry = {
     {
       title: "Custom control button",
       category: "interaction",
-      code: `import { Controls, ControlButton } from '@xyflow/react';
-
-<Controls>
-  <ControlButton onClick={() => console.log('custom action')}>
-    <Icon />
-  </ControlButton>
-</Controls>`,
+      code: snippet("examples/Controls/custom-control-button.md"),
     },
   ],
   relatedApis: ["ReactFlow", "ControlButton", "Panel"],
@@ -229,17 +190,7 @@ const handleComponent: ApiEntry = {
     {
       title: "Multiple handles",
       category: "custom-nodes",
-      code: `function MultiHandleNode({ data }) {
-  return (
-    <div className="p-4 border rounded bg-white">
-      <Handle type="target" position={Position.Top} id="a" />
-      <Handle type="target" position={Position.Left} id="b" />
-      <div>{data.label}</div>
-      <Handle type="source" position={Position.Bottom} id="c" />
-      <Handle type="source" position={Position.Right} id="d" />
-    </div>
-  );
-}`,
+      code: snippet("examples/Handle/multiple-handles.md"),
     },
   ],
   tips: [
@@ -271,16 +222,7 @@ const nodeResizerComponent: ApiEntry = {
     {
       title: "Resizable node with handles",
       category: "custom-nodes",
-      code: `function ResizableNode({ data, selected }) {
-  return (
-    <>
-      <NodeResizer isVisible={selected} minWidth={150} minHeight={80} />
-      <Handle type="target" position={Position.Left} />
-      <div className="p-4 h-full flex items-center justify-center">{data.label}</div>
-      <Handle type="source" position={Position.Right} />
-    </>
-  );
-}`,
+      code: snippet("examples/NodeResizer/resizable-node-with-handles.md"),
     },
   ],
   relatedApis: ["NodeResizeControl", "Handle"],
@@ -315,29 +257,7 @@ const edgeLabelRendererComponent: ApiEntry = {
     {
       title: "Edge with delete button",
       category: "custom-edges",
-      code: `function ButtonEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }) {
-  const [edgePath, labelX, labelY] = getBezierPath({
-    sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition,
-  });
-  const { setEdges } = useReactFlow();
-
-  return (
-    <>
-      <BaseEdge path={edgePath} />
-      <EdgeLabelRenderer>
-        <div style={{
-          position: 'absolute',
-          transform: \`translate(-50%, -50%) translate(\${labelX}px,\${labelY}px)\`,
-          pointerEvents: 'all',
-        }} className="nodrag nopan">
-          <button onClick={() => setEdges((es) => es.filter((e) => e.id !== id))}>
-            Delete
-          </button>
-        </div>
-      </EdgeLabelRenderer>
-    </>
-  );
-}`,
+      code: snippet("examples/EdgeLabelRenderer/edge-with-delete-button.md"),
     },
   ],
   relatedApis: ["BaseEdge", "getBezierPath", "EdgeToolbar"],
@@ -453,20 +373,7 @@ const controlButtonComponent: ApiEntry = {
     {
       title: "Custom control with layout button",
       category: "interaction",
-      code: `import { Controls, ControlButton } from '@xyflow/react';
-
-function FlowControls({ onLayout }) {
-  return (
-    <Controls>
-      <ControlButton onClick={() => onLayout('TB')} title="Vertical layout">
-        ↕
-      </ControlButton>
-      <ControlButton onClick={() => onLayout('LR')} title="Horizontal layout">
-        ↔
-      </ControlButton>
-    </Controls>
-  );
-}`,
+      code: snippet("examples/ControlButton/custom-control-with-layout-button.md"),
     },
   ],
   relatedApis: ["Controls", "Panel"],

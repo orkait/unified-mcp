@@ -1,0 +1,1 @@
+<motion.div animate={{ x: [null, 100, 0] }} />

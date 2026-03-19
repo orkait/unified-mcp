@@ -13,30 +13,12 @@ const useReactFlowHook: ApiEntry = {
     {
       title: "Add node on button click",
       category: "interaction",
-      code: `function AddNodeButton() {
-  const { addNodes, screenToFlowPosition } = useReactFlow();
-  const onClick = () => {
-    addNodes({
-      id: crypto.randomUUID(),
-      position: screenToFlowPosition({ x: 200, y: 200 }),
-      data: { label: 'New Node' },
-    });
-  };
-  return <button onClick={onClick}>Add Node</button>;
-}`,
+      code: snippet("examples/useReactFlow/add-node-on-button-click.md"),
     },
     {
       title: "Delete selected elements",
       category: "interaction",
-      code: `function DeleteButton() {
-  const { deleteElements, getNodes, getEdges } = useReactFlow();
-  const onClick = async () => {
-    const selectedNodes = getNodes().filter((n) => n.selected);
-    const selectedEdges = getEdges().filter((e) => e.selected);
-    await deleteElements({ nodes: selectedNodes, edges: selectedEdges });
-  };
-  return <button onClick={onClick}>Delete Selected</button>;
-}`,
+      code: snippet("examples/useReactFlow/delete-selected-elements.md"),
     },
   ],
   tips: [
@@ -59,27 +41,7 @@ const useNodesStateHook: ApiEntry = {
     {
       title: "Minimal controlled flow",
       category: "quickstart",
-      code: `import { ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react';
-
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'A' } },
-  { id: '2', position: { x: 200, y: 100 }, data: { label: 'B' } },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
-export default function Flow() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect = useCallback((connection) => setEdges((eds) => addEdge(connection, eds)), [setEdges]);
-
-  return (
-    <ReactFlow
-      nodes={nodes} edges={edges}
-      onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
-      onConnect={onConnect} fitView
-    />
-  );
-}`,
+      code: snippet("examples/useNodesState/minimal-controlled-flow.md"),
     },
   ],
   tips: ["For production apps with complex state, prefer Zustand with applyNodeChanges/applyEdgeChanges."],
@@ -136,18 +98,7 @@ const useNodesDataHook: ApiEntry = {
     {
       title: "Display connected node data",
       category: "custom-nodes",
-      code: `function DisplayNode({ id }) {
-  const connections = useHandleConnections({ type: 'target' });
-  const sourceIds = connections.map((c) => c.source);
-  const sourcesData = useNodesData(sourceIds);
-
-  return (
-    <div>
-      <Handle type="target" position={Position.Left} />
-      <div>Connected sources: {sourcesData.map((d) => d.data.label).join(', ')}</div>
-    </div>
-  );
-}`,
+      code: snippet("examples/useNodesData/display-connected-node-data.md"),
     },
   ],
   relatedApis: ["useNodes", "useHandleConnections", "useNodeConnections"],
@@ -177,19 +128,7 @@ const useConnectionHook: ApiEntry = {
     {
       title: "Colorize handle during connection",
       category: "connections",
-      code: `function CustomHandle({ type, position, id }) {
-  const connection = useConnection();
-  const isTarget = connection.inProgress && connection.fromNode?.id !== useNodeId();
-
-  return (
-    <Handle
-      type={type}
-      position={position}
-      id={id}
-      style={{ background: isTarget ? '#22c55e' : '#6b7280' }}
-    />
-  );
-}`,
+      code: snippet("examples/useConnection/colorize-handle-during-connection.md"),
     },
   ],
   relatedApis: ["useHandleConnections", "Handle"],
@@ -287,19 +226,7 @@ const useNodesInitializedHook: ApiEntry = {
     {
       title: "Auto-layout on mount",
       category: "layout",
-      code: `function LayoutFlow() {
-  const { fitView } = useReactFlow();
-  const initialized = useNodesInitialized();
-
-  useEffect(() => {
-    if (initialized) {
-      // Run Dagre/ELK layout here, then fitView
-      fitView({ duration: 300 });
-    }
-  }, [initialized, fitView]);
-
-  return <ReactFlow nodes={nodes} edges={edges} />;
-}`,
+      code: snippet("examples/useNodesInitialized/auto-layout-on-mount.md"),
     },
   ],
   relatedApis: ["useReactFlow"],
