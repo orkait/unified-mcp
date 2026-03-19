@@ -22,6 +22,14 @@
 
 ---
 
+## 🤝 Companion
+
+This MCP server pairs with **[unified-skill](https://github.com/orkait/unified-skill)** - a Claude Code skill that teaches your AI assistant when and how to use these tools. The skill handles judgment and gotchas; this server handles the data.
+
+Install both to get the full experience.
+
+---
+
 ## 🧩 Plugins
 
 | Plugin | Library | Tools | What's included |
