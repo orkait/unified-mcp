@@ -1,12 +1,3 @@
-import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { createSnippetLoader } from "../../shared/loader-factory.js";
 
-const snippetsDir = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "../../../snippets/motion"
-);
-
-export function snippet(rel: string): string {
-  return readFileSync(join(snippetsDir, rel), "utf-8").trim();
-}
+export const snippet = createSnippetLoader("motion");
