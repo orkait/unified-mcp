@@ -34,9 +34,16 @@
 
 ## 🚀 Install
 
-The easiest way to use Hyperstack is via our pre-built Docker image. Docker will automatically download and run the server without any manual cloning or installation required.
+### ⚡ Agent-First Install (Easiest)
+If you are using an AI agent (like Claude Code), simply ask it:
+> "Install https://github.com/orkait/hyperstack as an MCP server in my system"
 
-Add the following to your MCP config (`~/.claude.json` or Cursor config):
+The agent will read this README, pull the pre-built Docker image, and configure your system automatically.
+
+---
+
+### 🐳 Docker (Manual)
+If you prefer to configure it yourself, add the following to your MCP config (`~/.claude.json` or Cursor config):
 
 ```json
 {
