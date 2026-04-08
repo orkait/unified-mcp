@@ -67,11 +67,13 @@ Follow this state machine for every non-trivial task. Do not skip phases.
 ### Phase 3: Execution (The Implementation)
 -   **Actions:** Apply surgical changes. Use real commands from MCP patterns.
 -   **Skill:** Use `skills/design-patterns-skill/SKILL.md` to select the correct abstraction (Factory, Strategy, etc.).
+-   **Debugging:** If you encounter a failure during implementation, invoke `skills/debug-discipline/SKILL.md` before attempting any fix.
 -   **Rules:** No `rAF`. No redundant comments. No speculative code.
 
 ### Phase 4: Verification (The Audit)
 -   **Actions:** Self-verify against failure modes.
 -   **Skill:** Use `skills/security-review/SKILL.md` for API/Infrastructure logic.
+-   **Completion gate:** Invoke `skills/ship-gate/SKILL.md` before claiming any phase or task is done.
 -   **Output:** Use `skills/readme-writer/SKILL.md` to document the outcome with evidence.
 
 ---
@@ -101,7 +103,16 @@ Use these tools for **100% accurate** API details, props, code examples, and pat
 
 These are static guidelines in the `skills/` directory. Read them using file tools.
 
-- **Engineering Discipline** (`skills/engineering-discipline/SKILL.md`): The 8-step Senior SDE framework.
+### Workflow Skills (process gates — follow in order)
+- **Blueprint** (`skills/blueprint/SKILL.md`): MCP-surveyed design with hard gate before any code.
+- **Forge Plan** (`skills/forge-plan/SKILL.md`): MCP-verified implementation plan after design approval.
+- **Run Plan** (`skills/run-plan/SKILL.md`): Validate and execute an existing plan or spec.
+- **Debug Discipline** (`skills/debug-discipline/SKILL.md`): Root cause first. MCP-informed. 3-strike escalation.
+- **Ship Gate** (`skills/ship-gate/SKILL.md`): Evidence required before any completion claim.
+- **Deliver** (`skills/deliver/SKILL.md`): Final verification and delivery — terminal state of every workflow.
+
+### Domain Skills (execution guidance)
+- **Engineering Discipline** (`skills/engineering-discipline/SKILL.md`): The Senior SDE phase-gate framework.
 - **Behaviour Analysis** (`skills/behaviour-analysis/SKILL.md`): State audits & Nielsen heuristics.
 - **Design Patterns** (`skills/design-patterns-skill/SKILL.md`): Clean Code & Pragmatic patterns.
 - **Security Review** (`skills/security-review/SKILL.md`): OWASP audits & vulnerability checklists.
