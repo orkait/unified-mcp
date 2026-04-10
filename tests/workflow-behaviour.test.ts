@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import test from "node:test";
 
 test("publish workflow verifies the package across the supported OS and Bun matrix before publishing", async () => {
-  const workflow = await readFile(resolve(".github/workflows/publish.yml"), "utf8");
+  const workflow = (await readFile(resolve(".github/workflows/publish.yml"), "utf8")).replace(/\r\n/g, "\n");
 
   assert.match(workflow, /pull_request:/, "workflow should validate on pull requests");
   assert.match(workflow, /strategy:\s*\n(?:\s+.*\n)*?\s+matrix:/, "workflow should define a matrix strategy");
