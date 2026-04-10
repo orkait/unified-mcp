@@ -20,4 +20,5 @@ test("publish workflow verifies the package across the supported OS and Bun matr
     /if:\s*github\.event_name\s*!=\s*'pull_request'/,
     "publish job should not push images from pull request runs",
   );
+  assert.match(workflow, /gh release create/, "workflow should auto-create a release on version bump");
 });
