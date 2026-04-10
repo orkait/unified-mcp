@@ -72,7 +72,7 @@ jobs:
             --generate-notes
 
   build-and-push-image:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'release'
     needs: verify
     runs-on: ubuntu-latest
     permissions:

@@ -17,8 +17,8 @@ test("publish workflow verifies the package across the supported OS and Bun matr
   assert.match(workflow, /needs:\s*verify/, "publish job should wait for the verification matrix");
   assert.match(
     workflow,
-    /if:\s*github\.event_name\s*!=\s*'pull_request'/,
-    "publish job should not push images from pull request runs",
+    /if:\s*github\.event_name\s*==\s*'release'/,
+    "publish job should only run on release events",
   );
   assert.match(workflow, /gh release create/, "workflow should auto-create a release on version bump");
 });
