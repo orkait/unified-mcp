@@ -101,6 +101,19 @@ Each CLI invocation spawns a new `bun` process inside the existing `hyperstack-m
 
 **Important:** Some environments (like Qwen Code) use `settings.json` at the root level rather than a dedicated `.mcp.json` file. The `mcpServers` object goes at the top level of the settings file. Do not nest it inside another key.
 
+**Name mismatch repair:** If the MCP config references `hyperstack-mcp` but the container has a different name (e.g., a random Docker name like `kind_bouman` from a previous `docker run`), fix it before proceeding:
+
+```bash
+# Find the actual running hyperstack container
+ACTUAL_NAME=$(docker ps --filter "ancestor=ghcr.io/orkait/hyperstack:main" --format "{{.Names}}" | head -1)
+if [ -n "$ACTUAL_NAME" ] && [ "$ACTUAL_NAME" != "hyperstack-mcp" ]; then
+  docker rename "$ACTUAL_NAME" hyperstack-mcp
+  echo "Renamed container '$ACTUAL_NAME' → 'hyperstack-mcp'"
+fi
+```
+
+This is a common issue when the user ran `docker run` directly (without `--name`) before following these instructions, or when the image was pulled under a different container name. The `docker exec` MCP config requires the name to match exactly.
+
 **Why not `docker run --rm` per session?** `docker run` creates a brand-new container on every invocation. Over several sessions this piles up container state, spends 100–300ms per session on cold startup, and (without proper stdin lifecycle handling) can leave orphaned containers running after Claude exits. The `exec` pattern has none of these problems.
 
 **Upgrading the image:**
@@ -142,10 +155,21 @@ There is no build step. Bun runs TypeScript directly from source.
 
 **Pre-check: confirm the MCP server starts before opening the IDE.**
 
-For Docker (Option A), first confirm the persistent container is running:
+For Docker (Option A), first confirm the persistent container is running AND the name matches the config:
+
 ```bash
+# Step 1 — Check container is running
 docker ps --filter name=hyperstack-mcp
+
+# Step 2 — If empty, check if a differently-named hyperstack container exists
+ACTUAL_NAME=$(docker ps --filter "ancestor=ghcr.io/orkait/hyperstack:main" --format "{{.Names}}" | head -1)
+if [ -n "$ACTUAL_NAME" ] && [ "$ACTUAL_NAME" != "hyperstack-mcp" ]; then
+  docker rename "$ACTUAL_NAME" hyperstack-mcp
+  echo "Renamed '$ACTUAL_NAME' → 'hyperstack-mcp' — config will now work"
+fi
 ```
+
+If no hyperstack container is running at all, go back to Step 2 of Option A.
 
 Then test the exec path directly:
 ```bash
@@ -213,9 +237,16 @@ If installation failed at any step, report the specific error and what would nee
 
 Most common causes:
 
-1. **Persistent container not running.** Check: `docker ps --filter name=hyperstack-mcp`. If empty, run Step 2 from Option A to start it.
-2. **Image not pulled.** Run `docker pull ghcr.io/orkait/hyperstack:main` and retry.
-3. **Wrong container name in config.** The config must use `hyperstack-mcp` as the exec target — must match the `--name` used in Step 2.
+1. **Container name mismatch.** The MCP config says `hyperstack-mcp` but the container has a random Docker name (e.g., `kind_bouman`). Fix:
+   ```bash
+   ACTUAL=$(docker ps --filter "ancestor=ghcr.io/orkait/hyperstack:main" --format "{{.Names}}" | head -1)
+   [ -n "$ACTUAL" ] && [ "$ACTUAL" != "hyperstack-mcp" ] && docker rename "$ACTUAL" hyperstack-mcp
+   ```
+   This is the #1 cause of "tool not found" errors on fresh installs where the user ran `docker run` without `--name` at some point.
+
+2. **Persistent container not running.** Check: `docker ps --filter name=hyperstack-mcp`. If empty, run Step 2 from Option A to start it.
+3. **Image not pulled.** Run `docker pull ghcr.io/orkait/hyperstack:main` and retry.
+4. **Wrong container name in config.** The config must use `hyperstack-mcp` as the exec target — must match the `--name` used in Step 2.
 
 ### MCP server shows as failed / cannot pull the Docker image
 
