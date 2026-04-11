@@ -60,6 +60,14 @@ Pre-pulling is required. MCP servers have a short initialization timeout — if 
 
 **Step 2 — Start the persistent container (one-time setup):**
 
+If a `hyperstack-mcp` container already exists from a previous install, delete it first to ensure a clean state with the latest image:
+
+```bash
+docker rm -f hyperstack-mcp 2>/dev/null  # safe: no-op if container doesn't exist
+```
+
+Then create the fresh container:
+
 ```bash
 docker run -d --name hyperstack-mcp --restart unless-stopped \
   --memory=512m --cpus=1 \
@@ -68,6 +76,8 @@ docker run -d --name hyperstack-mcp --restart unless-stopped \
 ```
 
 The container stays alive in the background with `sleep infinity` as PID 1. Each MCP session `exec`s a fresh `bun` process inside this container. `--restart unless-stopped` auto-starts the container after Docker restarts. `512m/1 cpu` covers several concurrent sessions.
+
+**Why delete the old container?** An existing `hyperstack-mcp` container may be running a stale image version, have leftover state from a prior install, or use incorrect resource limits. `docker rm -f` ensures every install starts from a known-good baseline. The `2>/dev/null` suppresses the "no such container" error on first-time installs.
 
 Verify it's running:
 
@@ -126,6 +136,8 @@ docker run -d --name hyperstack-mcp --restart unless-stopped \
   --entrypoint sleep \
   ghcr.io/orkait/hyperstack:main infinity
 ```
+
+Always delete the old container before creating a new one — the `sleep infinity` pattern means the container never exits, so `docker run` with the same name will fail if the old one still exists.
 
 Then restart the CLI/IDE so open sessions reconnect to the new container.
 
