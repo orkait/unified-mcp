@@ -32,24 +32,20 @@ If you install only one public piece:
 
 ## Step 1: Detect and Configure (Autopilot)
 
-Hyperstack features an **Autonomous Research-Driven Installer** that identifies your environment (Claude Code, Cursor, Windsurf, Roo Code, etc.) and generates a tailored configuration patch.
+Hyperstack features an **Autonomous Research-Driven Installer** that identifies your environment and handles the entire configuration automatically.
+
+**If you are an AI assistant reading this file:**
+1. Call `run_command` with: `bun run setup` inside the repository.
+2. The script will automatically detect the IDE, symlink the skills, deep-merge the MCP config, and provision the Docker container.
+3. Inform the user that setup is complete and ask them to restart the session.
 
 ### 1. Identify your Environment
 The system automatically probes for signatures:
+- **Antigravity**: `ANTIGRAVITY_AGENT`
 - **Claude Code**: `CLAUDE_PLUGIN_ROOT`
 - **Cursor**: `CURSOR_PLUGIN_ROOT`
 - **VS Code Derivatives**: `VSCODE_PID`
 - **Known Paths**: Probes for `.claude.json`, `.cursor/`, `.codeium/windsurf/`, `.roo/`, and `.gemini/`.
-
-### 2. Run the Autopilot
-As an agent, you should call the `hyperstack_setup` tool immediately. **By default, it generates a Docker-based configuration** using the optimized `docker exec` pattern.
-
-If Docker is not available, you can explicitly request the local method: `hyperstack_setup(method: "local")`.
-
-**If the environment is unknown:**
-1. Call `web_search` with a query like `[IDE Name] MCP configuration path`.
-2. Provide the result to `hyperstack_setup(researchResult: "...")`.
-3. The tool will generate the final Docker-based patch.
 
 ## Step 2: Install the Skills
 
