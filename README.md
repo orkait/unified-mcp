@@ -35,7 +35,9 @@ Unlike standard "polite" instructions, Hyperstack uses **Iron Laws** and a **Ses
 
 The fastest way to install Hyperstack is to let your AI agent do it for you. This works with **Cursor, Windsurf, Roo Code, Claude Code, or Gemini**. Simply paste this command:
 
-> **Fetch and follow the instructions at https://raw.githubusercontent.com/orkait/hyperstack/main/install.md**
+```text
+Fetch and follow the instructions at https://raw.githubusercontent.com/orkait/hyperstack/main/install.md
+```
 
 The autopilot will autonomously detect your environment, install the MCP server (Docker or Local), and **automatically link the Skills repository**. This is the only step required.
 
