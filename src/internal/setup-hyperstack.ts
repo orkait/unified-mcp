@@ -251,6 +251,56 @@ export function generateMcpPatch(
   };
 }
 
+/**
+ * Persistently applies the generated patch to the user's config file
+ * without destroying existing settings.
+ */
+export function applyMcpPatch(configPath: string, patch: { format: PlatformFormat; content: any }) {
+  if (!fs.existsSync(configPath)) {
+    // If it doesn't exist, create it with the patch
+    if (typeof patch.content === "string") {
+      fs.writeFileSync(configPath, patch.content);
+    } else {
+      fs.writeFileSync(configPath, JSON.stringify(patch.content, null, 2));
+    }
+    return;
+  }
+
+  if (patch.format === "toml-mcp_servers") {
+    let content = fs.readFileSync(configPath, "utf8");
+    if (!content.includes("[mcp_servers.hyperstack]")) {
+      fs.appendFileSync(configPath, "\n" + patch.content);
+      console.log(`✅ Appended Hyperstack block to ${configPath}`);
+    } else {
+      console.log(`ℹ️  Hyperstack block already exists in ${configPath}`);
+    }
+    return;
+  }
+
+  // JSON deep-merge
+  try {
+    const existing = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    const patchObj = patch.content as any;
+
+    if (patch.format === "json-contextServers") {
+      existing.context_servers = {
+        ...(existing.context_servers || {}),
+        ...patchObj.context_servers,
+      };
+    } else {
+      existing.mcpServers = {
+        ...(existing.mcpServers || {}),
+        ...patchObj.mcpServers,
+      };
+    }
+
+    fs.writeFileSync(configPath, JSON.stringify(existing, null, 2));
+    console.log(`✅ Deep-merged Hyperstack config into ${configPath}`);
+  } catch (err) {
+    console.error(`❌ Failed to merge config: ${err}`);
+  }
+}
+
 export function selfHealDocker() {
   try {
     // Check if Docker is available
