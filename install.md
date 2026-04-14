@@ -39,6 +39,9 @@ Hyperstack features an **Autonomous Research-Driven Installer** that identifies 
 2. The script will automatically detect the IDE, symlink the skills, deep-merge the MCP config, and provision the Docker container.
 3. Inform the user that setup is complete and ask them to restart the session.
 
+> [!CAUTION]
+> **CRITICAL**: RUN ONLY if the installer is not able to do it correctly. If you must install manually for the current IDE/CLI, you must validate that the MCP connection is successful before proceeding.
+
 ### 1. Identify your Environment
 The system automatically probes for signatures:
 - **Antigravity**: `ANTIGRAVITY_AGENT`
