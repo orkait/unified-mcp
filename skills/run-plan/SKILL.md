@@ -27,7 +27,7 @@ A plan with wrong API shapes or missing steps will produce wrong code. Two minut
 
 ### Step 1: Load and Read the Plan
 
-Read the plan file or the content provided. Read it completely — do not skim.
+Read the plan file or the content provided. Read it completely - do not skim.
 
 Identify:
 - What domains does this plan touch? (React Flow, Go, Rust, design tokens, etc.)
@@ -55,10 +55,10 @@ Flag any step where the plan's code or API usage does not match MCP output. Thes
 
 Check the plan against these questions:
 
-1. **Completeness** — Does every requirement in the goal have at least one task?
-2. **Placeholders** — Any "TBD", "add error handling", "implement later", steps without code? Flag them.
-3. **Type consistency** — Do type names, method signatures, and file paths stay consistent across tasks?
-4. **Verification steps** — Does each task have a way to confirm it worked?
+1. **Completeness** - Does every requirement in the goal have at least one task?
+2. **Placeholders** - Any "TBD", "add error handling", "implement later", steps without code? Flag them.
+3. **Type consistency** - Do type names, method signatures, and file paths stay consistent across tasks?
+4. **Verification steps** - Does each task have a way to confirm it worked?
 
 ### Step 4: Raise Concerns or Proceed
 
@@ -67,7 +67,7 @@ If you found issues in Steps 2-3:
 Present them to the user before starting:
 
 > "Before I begin, I found [N] issues in the plan:
-> - [issue 1 — what's wrong and what MCP says instead]
+> - [issue 1 - what's wrong and what MCP says instead]
 > - [issue 2]
 >
 > Should I fix these in the plan first, or proceed with the known gaps?"
@@ -90,7 +90,7 @@ For each task in order:
 6. Commit
 
 If you hit a blocker mid-task:
-- Stop immediately — do not guess or work around it
+- Stop immediately - do not guess or work around it
 - Report to user: what failed, what was expected, what actually happened
 - Wait for instruction before continuing
 
@@ -98,7 +98,7 @@ If you hit a blocker mid-task:
 
 After all tasks are marked complete, invoke `hyperstack:deliver`.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 | Thought | Reality |
 |---|---|

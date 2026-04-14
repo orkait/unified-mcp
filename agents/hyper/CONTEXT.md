@@ -1,4 +1,4 @@
-# Main Agent Context Policy
+# Hyper Agent Context Policy
 
 ## Hot Context
 

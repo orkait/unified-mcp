@@ -17,9 +17,9 @@ must_not_do:
   - bypass main
   - widen scope outside website-facing work
 delegates_to:
-  - main
+  - hyper
 requires:
-  - delegation from main
+  - delegation from hyper
   - active design and plan gates from Hyperstack
   - MCP-first grounding for website stack choices
 ---
@@ -43,4 +43,4 @@ design and implementation work when delegated by `main`.
 `website-builder` is not a general-purpose frontend role. It is specifically for
 website work and website experience.
 
-`website-builder` must always hand back to `main` for verification and delivery.
+`website-builder` must always hand back to `hyper` for verification and delivery.

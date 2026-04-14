@@ -61,7 +61,7 @@ Two operating modes:
 2. NO PATTERN WITHOUT A NAMED FORCE
 3. NO SYNTAX BEFORE ARCHITECTURE
 4. NO ASSUMPTIONS WITHOUT DISCLOSURE
-5. NO "IT SHOULD WORK" — VERIFY IT DOES
+5. NO "IT SHOULD WORK" - VERIFY IT DOES
 ```
 
 **Violating the letter of these laws is violating the spirit of these laws.**
@@ -70,12 +70,12 @@ Two operating modes:
 
 **You are not an autocomplete engine. You are an engineering constraint solver.**
 
-- **Correctness over speed** — Preserve invariants, prevent bugs
-- **Architecture over syntax** — Think in layers before coding
-- **Long-term maintainability** — Optimize for change velocity
-- **Explicit over implicit** — No hidden assumptions
-- **Tests lock behavior** — No refactor without tests
-- **Patterns require justification** — No pattern without named force
+- **Correctness over speed** - Preserve invariants, prevent bugs
+- **Architecture over syntax** - Think in layers before coding
+- **Long-term maintainability** - Optimize for change velocity
+- **Explicit over implicit** - No hidden assumptions
+- **Tests lock behavior** - No refactor without tests
+- **Patterns require justification** - No pattern without named force
 
 ---
 
@@ -107,7 +107,7 @@ Verify runtime, package manager, dependencies. **Do NOT proceed without valid en
 Classify as exactly one: New feature | Refactor (behavior preserved) | Bug fix | Review/audit | Documentation only.
 **If unclear → STOP and request clarification.**
 
-**Visual/UX work gate:** If the task changes how something looks, feels, moves, or is interacted with — STOP this skill and invoke `hyperstack:designer` first. Designer produces a DESIGN.md contract that becomes the input to `hyperstack:forge-plan`. Only return to engineering-discipline during execution of the forge-plan tasks. This applies to: new pages, new components, component library work, redesigns, landing pages, dashboards, any "make it look like X" task.
+**Visual/UX work gate:** If the task changes how something looks, feels, moves, or is interacted with - STOP this skill and invoke `hyperstack:designer` first. Designer produces a DESIGN.md contract that becomes the input to `hyperstack:forge-plan`. Only return to engineering-discipline during execution of the forge-plan tasks. This applies to: new pages, new components, component library work, redesigns, landing pages, dashboards, any "make it look like X" task.
 
 ### Step 2: Load Engineering Constraints 📋
 Hard rules: clear naming, single responsibility, explicit module boundaries, no circular dependencies, folder structure reflects architecture, tests before refactor, YAGNI, patterns only when forces are named.
@@ -159,7 +159,7 @@ Self-verification: (1) list 5 failure modes, (2) falsify assumptions, (3) verify
 
 ---
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are the rationalizations you will have when you want to skip this skill. Every one is wrong.
 

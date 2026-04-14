@@ -8,10 +8,10 @@ import {
 } from "../src/internal/context-compiler.ts";
 
 const REQUIRED_ROLE_FILES = [
-  "agents/main/PROFILE.md",
-  "agents/main/LIFECYCLE.md",
-  "agents/main/CONTEXT.md",
-  "agents/main/CHECKS.md",
+  "agents/hyper/PROFILE.md",
+  "agents/hyper/LIFECYCLE.md",
+  "agents/hyper/CONTEXT.md",
+  "agents/hyper/CHECKS.md",
   "agents/website-builder/PROFILE.md",
   "agents/website-builder/LIFECYCLE.md",
   "agents/website-builder/CONTEXT.md",
@@ -32,7 +32,7 @@ const REQUIRED_PROFILE_KEYS = [
   "requires",
 ];
 
-test("role harness files exist for main and website-builder", () => {
+test("role harness files exist for hyper and website-builder", () => {
   for (const relativePath of REQUIRED_ROLE_FILES) {
     assert.ok(existsSync(resolve(relativePath)), `Missing role harness file: ${relativePath}`);
   }
@@ -40,7 +40,7 @@ test("role harness files exist for main and website-builder", () => {
 
 test("role profile frontmatter includes the required contract keys", () => {
   for (const relativePath of [
-    "agents/main/PROFILE.md",
+    "agents/hyper/PROFILE.md",
     "agents/website-builder/PROFILE.md",
   ]) {
     const content = readFileSync(resolve(relativePath), "utf8");
@@ -54,7 +54,7 @@ test("role profile frontmatter includes the required contract keys", () => {
 });
 
 test("role lifecycle and checks documents expose required headings", () => {
-  const lifecycleContent = readFileSync(resolve("agents/main/LIFECYCLE.md"), "utf8");
+  const lifecycleContent = readFileSync(resolve("agents/hyper/LIFECYCLE.md"), "utf8");
   assert.match(lifecycleContent, /^## Entry Criteria$/m);
   assert.match(lifecycleContent, /^## Steps$/m);
   assert.match(lifecycleContent, /^## Handoffs$/m);
@@ -74,10 +74,10 @@ test("using-hyperstack bootstrap compiler preserves role-routing markers", () =>
   const missing = validateUsingHyperstackBootstrap(content);
 
   assert.equal(missing.length, 0, `Missing bootstrap markers: ${missing.join(", ")}`);
-  assert.match(content, /main/);
+  assert.match(content, /hyper/);
   assert.match(content, /website-builder/);
   assert.match(content, /auto-called/);
-  assert.match(content, /main -> website-builder/);
+  assert.match(content, /hyper -> website-builder/);
 });
 
 test("website-builder lifecycle requires workspace discovery before website decisions", () => {

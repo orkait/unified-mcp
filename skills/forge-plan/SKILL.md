@@ -10,8 +10,8 @@ description: Use after blueprint design approval to produce a task-by-task imple
 
 This skill requires a completed, user-approved design. The design comes from one of:
 
-1. **`hyperstack:blueprint`** — for backend/infra/architecture work. Design is an architecture note.
-2. **`hyperstack:designer`** — for visual/UX work. Design is a structured `DESIGN.md` file with 10 sections.
+1. **`hyperstack:blueprint`** - for backend/infra/architecture work. Design is an architecture note.
+2. **`hyperstack:designer`** - for visual/UX work. Design is a structured `DESIGN.md` file with 10 sections.
 
 If no approved design exists:
 - Visual/UX task → stop and invoke `hyperstack:designer`
@@ -23,7 +23,7 @@ If input is a DESIGN.md file, parse it and map sections to task categories:
 
 | DESIGN.md Section | Task Category | MCP Calls |
 |---|---|---|
-| 1. Visual Theme | (context only — used in all tasks) | `designer_get_personality` |
+| 1. Visual Theme | (context only - used in all tasks) | `designer_get_personality` |
 | 2. Color Palette | Token setup tasks | `design_tokens_generate` with OKLCH values from section |
 | 3. Typography | Font loading + type scale tasks | `design_tokens_get_category("typography")` |
 | 4. Spacing | Tailwind spacing config | `design_tokens_get_category("spacing")` |
@@ -32,13 +32,13 @@ If input is a DESIGN.md file, parse it and map sections to task categories:
 | 7. Elevation | Shadow token tasks | `design_tokens_get_category("shadows")` |
 | 8. Do's and Don'ts | Embedded as self-review assertions in every task |
 | 9. Responsive Breakpoints | Breakpoint-specific override tasks | `ui_ux_get_principle("responsive")` |
-| 10. Anti-Patterns | Embedded as self-review assertions — each task must verify none are present |
+| 10. Anti-Patterns | Embedded as self-review assertions - each task must verify none are present |
 
 Every task's self-review step must cite the relevant DESIGN.md section to guarantee traceability.
 
 ## The Contract
 
-Every implementation step that touches a domain covered by Hyperstack MCP **must** reference actual MCP tool output — not assumed API shapes. A plan built on imagined syntax is not a plan; it is a bug report scheduled for delivery.
+Every implementation step that touches a domain covered by Hyperstack MCP **must** reference actual MCP tool output - not assumed API shapes. A plan built on imagined syntax is not a plan; it is a bug report scheduled for delivery.
 
 ## Process
 
@@ -48,7 +48,7 @@ Before writing a single task, call the relevant MCP tools for every domain the i
 
 | Domain | Call |
 |---|---|
-| **DESIGN.md present** | **`designer_get_personality(cluster)`, `designer_get_page_template(type)`, `designer_get_anti_patterns(industry)` — treat DESIGN.md as ground truth for all visual decisions** |
+| **DESIGN.md present** | **`designer_get_personality(cluster)`, `designer_get_page_template(type)`, `designer_get_anti_patterns(industry)` - treat DESIGN.md as ground truth for all visual decisions** |
 | React Flow | `reactflow_get_api` for each component/hook used |
 | Motion | `motion_get_api` for each animation primitive + `motion_generate_animation` if DESIGN.md specifies motion |
 | Go / Echo | `golang_get_pattern` + `echo_get_recipe` for each pattern |
@@ -68,9 +68,9 @@ Record each tool output. The plan's code blocks must match what the tools return
 Before defining tasks, map every file that will be created or modified:
 
 ```
-Create:  exact/path/to/new-file.ts    — one-line responsibility
-Modify:  exact/path/to/existing.ts    — what changes and why
-Test:    exact/path/to/file.test.ts   — what behaviour is tested
+Create:  exact/path/to/new-file.ts    - one-line responsibility
+Modify:  exact/path/to/existing.ts    - what changes and why
+Test:    exact/path/to/file.test.ts   - what behaviour is tested
 ```
 
 Each file has one clear responsibility. Files that change together live together. Split by responsibility, not by layer.
@@ -92,7 +92,7 @@ Task structure:
 - [ ] **Step 1: Write the failing test**
 
 ```ts
-// actual test code — not pseudocode
+// actual test code - not pseudocode
 describe('ComponentName', () => {
   it('should do X when Y', () => {
     // ...
@@ -101,7 +101,7 @@ describe('ComponentName', () => {
 ```
 
 Run: `npx vitest run path/to/file.test.ts`
-Expected: FAIL — "X is not defined"
+Expected: FAIL - "X is not defined"
 
 - [ ] **Step 2: Implement**
 
@@ -112,7 +112,7 @@ Expected: FAIL — "X is not defined"
 - [ ] **Step 3: Verify**
 
 Run: `npx vitest run path/to/file.test.ts`
-Expected: PASS — 1/1
+Expected: PASS - 1/1
 
 - [ ] **Step 4: Commit**
 
@@ -124,17 +124,17 @@ git commit -m "feat: [specific description]"
 
 ### Step 4: Self-Review
 
-After writing the complete plan, review it against these checks. Fix inline — no re-review needed.
+After writing the complete plan, review it against these checks. Fix inline - no re-review needed.
 
-**1. Spec coverage** — Can you point to a task for every requirement in the approved design? List any gaps.
+**1. Spec coverage** - Can you point to a task for every requirement in the approved design? List any gaps.
 
-**2. Placeholder scan** — Search for: "TBD", "TODO", "add error handling", "similar to Task N", "implement later", steps without code blocks. Fix every instance.
+**2. Placeholder scan** - Search for: "TBD", "TODO", "add error handling", "similar to Task N", "implement later", steps without code blocks. Fix every instance.
 
-**3. MCP verification** — Every domain-specific code block must trace back to a tool call in Step 1. If a code block uses `reactflow_*` APIs that weren't in the survey, fix it now.
+**3. MCP verification** - Every domain-specific code block must trace back to a tool call in Step 1. If a code block uses `reactflow_*` APIs that weren't in the survey, fix it now.
 
-**4. Type consistency** — Do types, method names, and prop names stay consistent across tasks? A type called `NodeData` in Task 2 and `NodeDataType` in Task 5 is a plan bug.
+**4. Type consistency** - Do types, method names, and prop names stay consistent across tasks? A type called `NodeData` in Task 2 and `NodeDataType` in Task 5 is a plan bug.
 
-**5. Step atomicity** — Each step is 2-5 minutes of work. A step that says "implement the entire service layer" is not a step.
+**5. Step atomicity** - Each step is 2-5 minutes of work. A step that says "implement the entire service layer" is not a step.
 
 ### Step 5: Handoff
 
@@ -150,14 +150,14 @@ Then offer:
 >
 > Which approach?"
 
-## No Placeholders — Ever
+## No Placeholders - Ever
 
 These are plan failures. Never write them:
 
 - "TBD" / "TODO" / "fill in later"
 - "Add appropriate error handling"
-- "Write tests for the above" — without actual test code
-- "Similar to Task N" — repeat the code, tasks may be read out of order
+- "Write tests for the above" - without actual test code
+- "Similar to Task N" - repeat the code, tasks may be read out of order
 - Steps describing what to do without showing how
 - References to types or functions not defined in any task
 
@@ -169,7 +169,7 @@ NO PLANS WITHOUT FRESH MCP-VERIFIED DATA
 
 Every API call, prop name, hook signature, or library pattern in the plan must trace to an MCP tool call made in this session. Not last session. Not from memory. THIS session.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are the rationalizations you will have. Every one is wrong.
 
@@ -203,7 +203,7 @@ Mid-plan discoveries that require going back:
 |---|---|---|
 | DESIGN.md section is ambiguous or contradictory | `hyperstack:designer` | Pause plan, resolve ambiguity, append clarification to DESIGN.md, resume |
 | Component needed that isn't in DESIGN.md Section 5 | `hyperstack:designer` | Invoke designer with specific component gap, append to DESIGN.md |
-| MCP tool returns conflicting shapes with DESIGN.md | `hyperstack:designer` | Escalate — DESIGN.md may need to acknowledge framework constraints |
+| MCP tool returns conflicting shapes with DESIGN.md | `hyperstack:designer` | Escalate - DESIGN.md may need to acknowledge framework constraints |
 | Architecture gap (non-visual) | `hyperstack:blueprint` | Re-enter blueprint for architecture decision |
 
 Do NOT silently invent what DESIGN.md doesn't specify. Escalate back to designer.

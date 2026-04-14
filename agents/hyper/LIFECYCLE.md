@@ -1,4 +1,4 @@
-# Main Agent Lifecycle
+# Hyper Agent Lifecycle
 
 ## Entry Criteria
 
@@ -21,20 +21,20 @@
 
 ## Handoffs
 
-- `main -> website-builder` for website pages, landing pages, dashboards,
+- `hyper -> website-builder` for website pages, landing pages, dashboards,
   redesigns, and website-experience-heavy UI work
-- `website-builder -> main` after specialist design or implementation output is
+- `website-builder -> hyper` after specialist design or implementation output is
   ready for review and verification
 
 ## Exit Criteria
 
 - A specialist has been selected and briefed, or
-- `main` has completed the request itself, or
-- `main` has blocked safely and reported the blocker with evidence
+- `hyper` has completed the request itself, or
+- `hyper` has blocked safely and reported the blocker with evidence
 
 ## Failure Escalation
 
-- If classification is ambiguous, default to `main` and require explicit
+- If classification is ambiguous, default to `hyper` and require explicit
   delegation criteria before specialist routing
 - If a specialist widens scope or attempts to self-ship, reclaim control and
   route back through verification

@@ -16,7 +16,7 @@ Systematic interaction audit combining UX heuristics, QA state-machine thinking,
 
 - After implementing a feature with multiple interaction modes
 - When the user reports something "doesn't feel right" or "is inconsistent"
-- Before shipping — final behavioural review
+- Before shipping - final behavioural review
 - When adding a new view mode, action, or state to an existing system
 
 ## Integration with hyperstack:designer
@@ -35,7 +35,7 @@ Mapping DESIGN.md sections to behaviour-analysis inputs:
 
 **Without a DESIGN.md:** Fall back to industry standards via WebSearch or general heuristics (the default behaviour described below).
 
-**Reverse escalation:** If the audit finds a gap that the DESIGN.md doesn't specify (e.g., expected behaviour is ambiguous), escalate back to `hyperstack:designer` — the DESIGN.md may need to be updated.
+**Reverse escalation:** If the audit finds a gap that the DESIGN.md doesn't specify (e.g., expected behaviour is ambiguous), escalate back to `hyperstack:designer` - the DESIGN.md may need to be updated.
 
 ## Process
 
@@ -70,8 +70,8 @@ Output: A **state inventory table** and an **action inventory table**.
 Build a matrix: **every action x every relevant state combination**.
 
 For each cell ask:
-- **What should happen?** (expected behaviour — think like a UX designer)
-- **What does happen?** (actual behaviour — read the code path)
+- **What should happen?** (expected behaviour - think like a UX designer)
+- **What does happen?** (actual behaviour - read the code path)
 - **Match?** OK / BUG / UX-ISSUE / MISSING-FEEDBACK
 
 Structure the matrix by category:
@@ -95,16 +95,16 @@ Categories to cover:
 
 Apply Nielsen's 10 heuristics (adapted for interactive visualizations):
 
-1. **Visibility of system status** — Does the UI show what's active, selected, loading?
-2. **Match between system and real world** — Do labels make sense? Are actions named clearly?
-3. **User control and freedom** — Can the user undo/escape from any state? Is there always a way back?
-4. **Consistency and standards** — Do similar actions behave the same way everywhere?
-5. **Error prevention** — Can the user reach a broken/dead state?
-6. **Recognition rather than recall** — Is the current mode/state visible without memorizing?
-7. **Flexibility and efficiency** — Are there shortcuts for power users?
-8. **Aesthetic and minimalist design** — Is information presented at the right density?
-9. **Help users recover from errors** — What happens on API failure, empty results, bad input?
-10. **Accessibility** — Keyboard navigation, screen reader, reduced motion?
+1. **Visibility of system status** - Does the UI show what's active, selected, loading?
+2. **Match between system and real world** - Do labels make sense? Are actions named clearly?
+3. **User control and freedom** - Can the user undo/escape from any state? Is there always a way back?
+4. **Consistency and standards** - Do similar actions behave the same way everywhere?
+5. **Error prevention** - Can the user reach a broken/dead state?
+6. **Recognition rather than recall** - Is the current mode/state visible without memorizing?
+7. **Flexibility and efficiency** - Are there shortcuts for power users?
+8. **Aesthetic and minimalist design** - Is information presented at the right density?
+9. **Help users recover from errors** - What happens on API failure, empty results, bad input?
+10. **Accessibility** - Keyboard navigation, screen reader, reduced motion?
 
 Refer to [references/heuristics.md](references/heuristics.md) for detailed questions per heuristic.
 
@@ -157,10 +157,10 @@ Output a structured report:
 ```
 
 Severity levels:
-- **CRITICAL** — broken functionality, data loss, unreachable state
-- **HIGH** — major UX inconsistency, confusing behaviour
-- **MEDIUM** — minor inconsistency, missing feedback
-- **LOW** — cosmetic, nice-to-have
+- **CRITICAL** - broken functionality, data loss, unreachable state
+- **HIGH** - major UX inconsistency, confusing behaviour
+- **MEDIUM** - minor inconsistency, missing feedback
+- **LOW** - cosmetic, nice-to-have
 
 ## Research Enhancement
 
@@ -169,16 +169,16 @@ Before starting the analysis, search for:
 - Known UX patterns for the interaction model (drag-and-drop, force-directed graphs, etc.)
 - Accessibility guidelines for the specific component type
 
-Use findings to set expectations in the matrix — "expected behaviour" should be informed by industry standards, not just gut feeling.
+Use findings to set expectations in the matrix - "expected behaviour" should be informed by industry standards, not just gut feeling.
 
 ## Key Principles
 
-- **Think like a user first** — what would someone expect when they click this?
-- **Think like QA second** — what's the worst thing that could happen?
-- **Think like a developer third** — read the code to verify, don't assume
-- **Every action must have visible feedback** — if clicking something does nothing visibly, that's a bug
-- **Every state must be escapable** — the user should never be "stuck"
-- **Composition must be tested** — features that work alone often break in combination
+- **Think like a user first** - what would someone expect when they click this?
+- **Think like QA second** - what's the worst thing that could happen?
+- **Think like a developer third** - read the code to verify, don't assume
+- **Every action must have visible feedback** - if clicking something does nothing visibly, that's a bug
+- **Every state must be escapable** - the user should never be "stuck"
+- **Composition must be tested** - features that work alone often break in combination
 
 ## The Iron Law
 
@@ -186,9 +186,9 @@ Use findings to set expectations in the matrix — "expected behaviour" should b
 NO BEHAVIOUR CLAIM WITHOUT READING THE CODE PATH
 ```
 
-You cannot say "this should work" — you must trace the actual code path and confirm. Reading code is not optional. Assumptions are bugs waiting to ship.
+You cannot say "this should work" - you must trace the actual code path and confirm. Reading code is not optional. Assumptions are bugs waiting to ship.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are the rationalizations you will have when you want to skip parts of the analysis. Every one is wrong.
 

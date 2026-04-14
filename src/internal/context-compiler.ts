@@ -43,10 +43,10 @@ const REQUIRED_BOOTSTRAP_MARKERS = [
   "parallel-dispatch",
   "MCP unavailable",
   "announce it",
-  "main",
+  "hyper",
   "website-builder",
   "auto-called",
-  "main -> website-builder",
+  "hyper -> website-builder",
 ];
 
 function stripFrontmatter(source: string): string {
@@ -133,7 +133,7 @@ function extractFinalCheck(source: string): string[] {
 }
 
 function extractRedFlags(source: string): string[] {
-  const redFlagsSection = extractSection(source, "Red Flags — STOP");
+  const redFlagsSection = extractSection(source, "Red Flags - STOP");
   const rows = parseMarkdownTable(redFlagsSection).filter((row) => row.cells.length >= 2);
   return rows.slice(0, 6).map((row) => `- ${row.cells[0]} -> ${row.cells[1]}`);
 }

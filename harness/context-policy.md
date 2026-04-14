@@ -6,7 +6,7 @@ Each internal role should load only the context slice it needs.
 
 ## Role Slices
 
-- `main`
+- `hyper`
   - classification, routing, gates, verification, delivery
 - `website-builder`
   - workspace inventory

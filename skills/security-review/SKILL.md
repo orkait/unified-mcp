@@ -13,7 +13,7 @@ https://cheatsheetseries.owasp.org/
 
 # Security Review Skill
 
-Identify exploitable security vulnerabilities in code. Report only **HIGH CONFIDENCE** findings—clear vulnerable patterns with attacker-controlled input.
+Identify exploitable security vulnerabilities in code. Report only **HIGH CONFIDENCE** findings-clear vulnerable patterns with attacker-controlled input.
 
 ## Scope: Research vs. Reporting
 

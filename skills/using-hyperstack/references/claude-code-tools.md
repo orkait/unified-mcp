@@ -25,5 +25,5 @@ Skill({ skill: "hyperstack:ship-gate" })
 
 ## Notes
 
-- Never use `Read` on skill files directly — use the `Skill` tool
-- `Agent` tool spawns a subagent with isolated context — provide full task text, do not assume shared context
+- Never use `Read` on skill files directly - use the `Skill` tool
+- `Agent` tool spawns a subagent with isolated context - provide full task text, do not assume shared context

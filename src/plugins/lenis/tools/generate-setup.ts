@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }`;
-        notes = "- autoRaf: false is critical — prevents Lenis and GSAP from each running their own RAF loop\n- gsap.ticker.lagSmoothing(0) prevents stutter after tab switches\n- lenis.raf() expects ms — multiply GSAP seconds by 1000";
+        notes = "- autoRaf: false is critical - prevents Lenis and GSAP from each running their own RAF loop\n- gsap.ticker.lagSmoothing(0) prevents stutter after tab switches\n- lenis.raf() expects ms - multiply GSAP seconds by 1000";
       } else if (isGSAP) {
         code = `// lenis-gsap-setup.tsx
 "use client";
@@ -147,7 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }` : ""}`;
-        notes = "- Import frame from 'motion' (not 'framer-motion') — this is the v11+ low-level scheduler\n- frame.update(fn, true) loops on every frame\n- autoRaf: false prevents duplicate ticking";
+        notes = "- Import frame from 'motion' (not 'framer-motion') - this is the v11+ low-level scheduler\n- frame.update(fn, true) loops on every frame\n- autoRaf: false prevents duplicate ticking";
       } else if (isHorizontal) {
         code = `// components/horizontal-scroll.tsx
 "use client";
@@ -219,7 +219,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }` : ""}`;
-        notes = "- Skipping ReactLenis falls back to native scroll — no extra setup needed\n- WCAG 2.1 SC 2.3.3 (AAA): smooth scrolling must respect prefers-reduced-motion";
+        notes = "- Skipping ReactLenis falls back to native scroll - no extra setup needed\n- WCAG 2.1 SC 2.3.3 (AAA): smooth scrolling must respect prefers-reduced-motion";
       } else if (isNextJs) {
         code = `// components/smooth-scroll-provider.tsx
 "use client";
@@ -249,7 +249,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }`;
-        notes = "- Keep app/layout.tsx as a Server Component — extract 'use client' into SmoothScrollProvider\n- This preserves RSC boundaries and server rendering for child pages\n- The CSS import in the client component is required";
+        notes = "- Keep app/layout.tsx as a Server Component - extract 'use client' into SmoothScrollProvider\n- This preserves RSC boundaries and server rendering for child pages\n- The CSS import in the client component is required";
       } else if (isContainer) {
         code = `// components/scroll-panel.tsx
 "use client";
@@ -269,7 +269,7 @@ export function ScrollPanel({ children }: { children: React.ReactNode }) {
 }`;
         notes = "- ReactLenis without root creates a scoped container scroll\n- The wrapper needs a fixed height for the scroll to work\n- Use wrapper/content refs via LenisOptions for full control";
       } else {
-        code = `// App.tsx — basic React SPA setup
+        code = `// App.tsx - basic React SPA setup
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
@@ -282,7 +282,7 @@ export function App() {
     </ReactLenis>
   );
 }`;
-        notes = "- root={true} attaches Lenis to the window scroll\n- lerp: 0.1 is the recommended starting value — tune between 0.05 (smoother) and 0.15 (snappier)\n- The CSS import is required — it sets up the scroll container styles";
+        notes = "- root={true} attaches Lenis to the window scroll\n- lerp: 0.1 is the recommended starting value - tune between 0.05 (smoother) and 0.15 (snappier)\n- The CSS import is required - it sets up the scroll container styles";
       }
 
       const text = `# Lenis Setup: ${description}\n\n\`\`\`tsx\n${code}\n\`\`\`\n\n## Notes\n\n${notes}`;

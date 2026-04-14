@@ -2,7 +2,7 @@
 
 ## Entry Criteria
 
-- `main` has classified the request as website-facing work
+- `hyper` has classified the request as website-facing work
 - Delegation to `website-builder` is explicit
 - Required design or planning gate is active
 
@@ -19,12 +19,12 @@
    trust, responsive content priority, performance-sensitive choices
 7. Produce or refine website design outputs such as `DESIGN.md`
 8. Implement website-facing code only when delegated and within scope
-9. Return a specialist result package to `main` with evidence
+9. Return a specialist result package to `hyper` with evidence
 
 ## Handoffs
 
-- `main -> website-builder` when the request is website-facing
-- `website-builder -> main` after specialist output is ready for review and
+- `hyper -> website-builder` when the request is website-facing
+- `website-builder -> hyper` after specialist output is ready for review and
   verification
 
 ## Exit Criteria
@@ -33,10 +33,10 @@
   scope
 - The workspace inventory is explicit: packages, stack, and core frontend files
   are known
-- Required evidence is attached for `main` to verify
+- Required evidence is attached for `hyper` to verify
 
 ## Failure Escalation
 
-- If the task drifts outside website-facing work, stop and hand back to `main`
-- If design or plan gates are missing, stop and hand back to `main`
-- If verification or shipping is requested, stop and hand back to `main`
+- If the task drifts outside website-facing work, stop and hand back to `hyper`
+- If design or plan gates are missing, stop and hand back to `hyper`
+- If verification or shipping is requested, stop and hand back to `hyper`

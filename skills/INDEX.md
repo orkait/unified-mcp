@@ -4,9 +4,9 @@ Auto-generated from each skill's frontmatter `category` field.
 Regenerate with: `bash scripts/generate-skills-index.sh`
 
 Categories:
-- **core** — workflow, discipline, and gates used on every task
-- **domain** — specialized skills for specific contexts (visual, components, security, docs)
-- **meta** — skills about skills (bootstrap, testing)
+- **core** - workflow, discipline, and gates used on every task
+- **domain** - specialized skills for specific contexts (visual, components, security, docs)
+- **meta** - skills about skills (bootstrap, testing)
 
 ---
 
@@ -44,4 +44,4 @@ Categories:
 | Skill | Description |
 |---|---|
 | `testing-skills` | Use when creating or editing Hyperstack skills, before shipping them, to verify they actually work under pressure and re |
-| `using-hyperstack` | Bootstrap — establishes Hyperstack MCP tools and skills before any technical work. Auto-loaded at session start via Se |
+| `using-hyperstack` | Bootstrap - establishes Hyperstack MCP tools and skills before any technical work. Auto-loaded at session start via Se |

@@ -44,7 +44,7 @@ references:
   - examples/ecommerce-checkout.md
 ---
 
-# Designer Skill — Intention Gate
+# Designer Skill - Intention Gate
 
 > AI-generated UIs all look the same because AI skips the decision process and jumps to code.
 > This skill forces every design decision through evidence before code generation.
@@ -92,7 +92,7 @@ If there is even a 1% chance that the task involves:
 **Apply when:** the task changes how something **looks, feels, moves, or is interacted with**.
 **Skip when:** pure backend with no frontend impact, single CSS bug fix (with the same colors/spacing), adding to existing design system with established tokens, performance optimization with no visual change, infrastructure.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are the rationalizations you will have when you want to skip this skill. Every one is wrong.
 
@@ -234,7 +234,7 @@ them. Then offer: *"Say 'advanced' for full control, or pick a preset to start f
 
 ## Presets (Fast Start)
 
-If user says "make it feel like Linear" or "start from Stripe" or "use the Notion style" — call `designer_get_preset(name)` and use it as the DESIGN.md foundation. Customize brand color only.
+If user says "make it feel like Linear" or "start from Stripe" or "use the Notion style" - call `designer_get_preset(name)` and use it as the DESIGN.md foundation. Customize brand color only.
 
 | Preset | Best For | Key Trait |
 |---|---|---|
@@ -284,7 +284,7 @@ Determines industry category, anti-pattern set, style priority.
 | Editorial | Serif headings, generous reading (18px body, 1.75 line-height), warm backgrounds |
 
 ### Q4: Light or dark default?
-Not a preference — a product decision. Developer tools → dark. Marketing → light. Editorial → light. Gaming → dark. Dashboards → either, but intentional.
+Not a preference - a product decision. Developer tools → dark. Marketing → light. Editorial → light. Gaming → dark. Dashboards → either, but intentional.
 
 ### Q5: Brand color?
 If given: extract hue, derive OKLCH ramp (11 stops). If "generate": pick from industry color mood.
@@ -336,9 +336,9 @@ Landing: Hero, Features, Testimonials, CTA, Footer, Pricing, FAQ. Dashboard: Sid
 
 ### Q11: Framework + Component Library?
 
-**Two sub-questions — ask both:**
+**Two sub-questions - ask both:**
 
-**Q11a — Framework:**
+**Q11a - Framework:**
 - React + Tailwind v4 (most common)
 - Next.js + Tailwind v4
 - Vue + Tailwind
@@ -346,15 +346,15 @@ Landing: Hero, Features, Testimonials, CTA, Footer, Pricing, FAQ. Dashboard: Sid
 - HTML + Tailwind (no framework)
 - Other (specify)
 
-**Q11b — Component Library:**
-- **shadcn/ui (Base UI edition)** — invokes `hyperstack:shadcn-expert`, uses `shadcn_*` MCP tools
-- **Raw Tailwind** — no component library, hand-built primitives from DESIGN.md
-- **Material UI** — use its component catalog (no hyperstack plugin yet)
-- **Mantine** — use its component catalog (no hyperstack plugin yet)
-- **Chakra UI** — use its component catalog (no hyperstack plugin yet)
-- **Ant Design** — enterprise component library (no hyperstack plugin yet)
-- **Custom / existing design system** — user's own components
-- **Ask me to recommend** — designer picks based on personality + industry
+**Q11b - Component Library:**
+- **shadcn/ui (Base UI edition)** - invokes `hyperstack:shadcn-expert`, uses `shadcn_*` MCP tools
+- **Raw Tailwind** - no component library, hand-built primitives from DESIGN.md
+- **Material UI** - use its component catalog (no hyperstack plugin yet)
+- **Mantine** - use its component catalog (no hyperstack plugin yet)
+- **Chakra UI** - use its component catalog (no hyperstack plugin yet)
+- **Ant Design** - enterprise component library (no hyperstack plugin yet)
+- **Custom / existing design system** - user's own components
+- **Ask me to recommend** - designer picks based on personality + industry
 
 **Do NOT assume shadcn by default.** If the user doesn't answer, ask explicitly. Different component libraries have incompatible architectures (Radix vs Base UI vs MUI primitives vs handcrafted).
 
@@ -376,7 +376,7 @@ WCAG AA (default) or AAA. Performance budget (< 150KB JS, < 2s load). Dark mode 
 
 Every MCP call must fill a specific section of the DESIGN.md. No call without a purpose.
 
-## Core Calls (Every Design Task — 4 calls)
+## Core Calls (Every Design Task - 4 calls)
 
 These 4 calls fill 80% of the DESIGN.md. Run them in parallel.
 
@@ -387,7 +387,7 @@ These 4 calls fill 80% of the DESIGN.md. Run them in parallel.
 
 ### Call 2: `designer_get_personality(resolved_cluster)`
 **FILLS:** Section 1 (theme), Section 2 (color direction), Section 3 (typography), Section 4 (spacing), Section 6 (motion), Section 7 (elevation)
-**PURPOSE:** Returns the concrete visual vocabulary — specific tracking values, radius range, shadow style, motion timing, density, CSS example. This is the single most important data source for the DESIGN.md.
+**PURPOSE:** Returns the concrete visual vocabulary - specific tracking values, radius range, shadow style, motion timing, density, CSS example. This is the single most important data source for the DESIGN.md.
 **USE RESULT TO:** Set every visual property. The personality vocabulary IS the design system skeleton.
 
 ### Call 3: `designer_get_page_template(page_type)`
@@ -420,7 +420,7 @@ These are NOT routine. Call ONLY when the product has these specific features.
 | **Premium feel** | `designer_get_design_system("stripe")` or `("vercel-geist")` | Section 1 | Specific values to reference: Stripe weight 300/500, Vercel -0.04em tracking |
 | **Enterprise** | `designer_get_design_system("ibm-carbon")` | Section 1 | Carbon's 12px spacing-04, IBM Plex, a11y-first component architecture |
 
-## Token Calls (Phase 5 only — when generating code)
+## Token Calls (Phase 5 only - when generating code)
 
 Do NOT call these during design resolution. Call them when writing actual CSS.
 
@@ -460,7 +460,7 @@ Cross-reference every decision against the rules below.
 | `aria-labels` | `aria-label` on icon-only buttons (on the button, not the icon) | Unlabeled icon buttons |
 | `heading-hierarchy` | Sequential h1→h2→h3, no skipping levels | h1 → h3 (skipped h2) |
 | `zoom-support` | Layout works at 400% zoom; never `user-scalable=no` | Disabling pinch-to-zoom |
-| `semantic-html` | `<nav>`, `<main>`, `<button>`, `<a href>` — not divs with onclick | `<div onclick>` instead of `<button>` |
+| `semantic-html` | `<nav>`, `<main>`, `<button>`, `<a href>` - not divs with onclick | `<div onclick>` instead of `<button>` |
 
 ## P2: Touch & Interaction (CRITICAL)
 
@@ -503,7 +503,7 @@ Cross-reference every decision against the rules below.
 | `heading-fluid` | Headings use `clamp()` for fluid scaling | Fixed heading sizes |
 | `line-height-invert` | Display 1.05-1.15; Heading 1.2-1.3; Body 1.5 (app) or 1.6-1.75 (prose) | Same line-height everywhere |
 | `tracking` | Headings: -0.01 to -0.03em; Body: 0; Overlines: +0.06 to +0.10em | Negative tracking on body text |
-| `weight-contrast` | Heading 600-800, body 400 — hierarchy readable from weight alone | `font-weight: 500` everywhere |
+| `weight-contrast` | Heading 600-800, body 400 - hierarchy readable from weight alone | `font-weight: 500` everywhere |
 | `max-2-families` | Sans + mono for apps; serif + sans for editorial | 3+ font families |
 | `prose-width` | `max-width: 65ch` on all body text containers | Full-width text (90+ chars) |
 | `fallback-stack` | `ui-sans-serif, system-ui, sans-serif` always included | Missing fallback fonts |
@@ -513,7 +513,7 @@ Cross-reference every decision against the rules below.
 
 | Rule | Standard | Avoid |
 |---|---|---|
-| `oklch` | OKLCH for all design tokens — perceptually uniform, P3 gamut | Hex/HSL for design systems |
+| `oklch` | OKLCH for all design tokens - perceptually uniform, P3 gamut | Hex/HSL for design systems |
 | `no-pure-bw` | Near-black `oklch(0.12-0.15 0.005 H)` + near-white `oklch(0.97-0.99 0.005 H)` | Pure #000 on #FFF |
 | `warm-cool-commit` | Commit to warm OR cool neutrals throughout; never mix | Warm bg + cool borders |
 | `semantic-tokens` | 3-layer: primitive ramps → semantic tokens → Tailwind bridge | Raw hex in components |
@@ -618,10 +618,10 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "Engineered by people who care about every pixel."
 
 **Exemplars:**
-- **Linear** — tight type (-0.03em), 3-variable color system (base, accent, contrast), opacity-based hierarchy
-- **Vercel** — black+white, Geist font (angular terminals, -0.04em display tracking), 96-128px section padding
-- **Apple** — SF Pro Display/Text split at 20pt, 44pt touch targets non-negotiable, Clarity/Deference/Depth
-- **Stripe** — weight 300 body / 500 headers (zero 400 or 700), CIELAB 5-step = 4.5:1 guaranteed, multi-point gradient meshes
+- **Linear** - tight type (-0.03em), 3-variable color system (base, accent, contrast), opacity-based hierarchy
+- **Vercel** - black+white, Geist font (angular terminals, -0.04em display tracking), 96-128px section padding
+- **Apple** - SF Pro Display/Text split at 20pt, 44pt touch targets non-negotiable, Clarity/Deference/Depth
+- **Stripe** - weight 300 body / 500 headers (zero 400 or 700), CIELAB 5-step = 4.5:1 guaranteed, multi-point gradient meshes
 
 | Property | Value | Why |
 |---|---|---|
@@ -640,10 +640,10 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "Built by developers, for developers."
 
 **Exemplars:**
-- **Supabase** — dark emerald, code-first, SQL editor as hero
-- **Warp** — IDE-like, block-based, terminal IS the product
-- **Cursor** — sleek dark, keyboard-first, every action has shortcut
-- **Raycast** — command palette is entire UX, bento grid, every interaction < 100ms
+- **Supabase** - dark emerald, code-first, SQL editor as hero
+- **Warp** - IDE-like, block-based, terminal IS the product
+- **Cursor** - sleek dark, keyboard-first, every action has shortcut
+- **Raycast** - command palette is entire UX, bento grid, every interaction < 100ms
 
 | Property | Value | Why |
 |---|---|---|
@@ -664,15 +664,15 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "Reading this should feel like opening a well-made book."
 
 **Exemplars:**
-- **Notion** — serif headings, cream backgrounds, editor disappears
-- **Airbnb** — warm coral (#FF5A5F), photography-driven, rounded-xl
-- **Medium** — serif body, 1.75 line-height, platform IS the reading experience
+- **Notion** - serif headings, cream backgrounds, editor disappears
+- **Airbnb** - warm coral (#FF5A5F), photography-driven, rounded-xl
+- **Medium** - serif body, 1.75 line-height, platform IS the reading experience
 
 | Property | Value | Why |
 |---|---|---|
 | Colors | Warm-tinted: oklch(0.98 0.012 78) not oklch(0.98 0 0) | 0.012 chroma at hue 78 transforms "cold SaaS" into "premium notebook." Highest-leverage single decision. |
 | Typography | Serif or humanist sans, 18px body, 1.6-1.75 lh | Serif = trust. Larger body + generous leading = comfort. |
-| Radius | 12-20px | Rounded = friendly (Gestalt). Cap 20px — beyond = childish. |
+| Radius | 12-20px | Rounded = friendly (Gestalt). Cap 20px - beyond = childish. |
 | Shadows | Warm-tinted (oklch(0.22 0.006 56 / 0.06)) | Cold rgba shadows feel disconnected on warm surfaces. |
 | Motion | 200-300ms, ease-in-out, gentle | "Considered." Spring/bounce = tonally wrong. |
 | Density | Comfortable (96px sections, 40px cards, 18px body) | Reading requires breathing room. |
@@ -685,9 +685,9 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "We're confident and not afraid to stand out."
 
 **Exemplars:**
-- **Figma** — multi-color (each feature = own color), vibrant
-- **Framer** — bold black + blue, motion-first
-- **PostHog** — playful dark, hedgehog branding, dev-friendly tone
+- **Figma** - multi-color (each feature = own color), vibrant
+- **Framer** - bold black + blue, motion-first
+- **PostHog** - playful dark, hedgehog branding, dev-friendly tone
 
 | Property | Value | Why |
 |---|---|---|
@@ -705,9 +705,9 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "This is an experience, not a tool."
 
 **Exemplars:**
-- **ElevenLabs** — audio waveform aesthetics define the visual language
-- **RunwayML** — AI content IS the hero, UI is invisible framing
-- **SpaceX** — full-bleed mission photography, futuristic through restraint
+- **ElevenLabs** - audio waveform aesthetics define the visual language
+- **RunwayML** - AI content IS the hero, UI is invisible framing
+- **SpaceX** - full-bleed mission photography, futuristic through restraint
 
 | Property | Value | Why |
 |---|---|---|
@@ -726,9 +726,9 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 **Communicates:** "Your data is safe with us."
 
 **Exemplars:**
-- **IBM** — Carbon, IBM Plex, every component ships WCAG 2.1 AA, 3:1 focus ring contrast
-- **Coinbase** — institutional blue, says "bank" not "startup"
-- **Salesforce** — Lightning system, handles complexity through structure
+- **IBM** - Carbon, IBM Plex, every component ships WCAG 2.1 AA, 3:1 focus ring contrast
+- **Coinbase** - institutional blue, says "bank" not "startup"
+- **Salesforce** - Lightning system, handles complexity through structure
 
 | Property | Value | Why |
 |---|---|---|
@@ -744,7 +744,7 @@ Without Layer 1, Layers 2 and 3 produce polished randomness.
 
 ## Choosing a Personality
 
-Industry × user type × emotional target. When signals conflict, **industry wins** — it's the harder constraint. A playful bank loses trust. A conservative game loses engagement.
+Industry × user type × emotional target. When signals conflict, **industry wins** - it's the harder constraint. A playful bank loses trust. A conservative game loses engagement.
 
 | Emotional Target | Maps To |
 |---|---|
@@ -805,17 +805,17 @@ For full detail on any industry: `designer_get_industry_rules(industry)`
 
 # COGNITIVE LAWS (11)
 
-> Source: Laws of UX, NNG, Smashing Magazine. Not opinions — empirically documented facts.
+> Source: Laws of UX, NNG, Smashing Magazine. Not opinions - empirically documented facts.
 
 ## Fitts' Law
-**`T = a + b * log2(2D/W)`** — Halving distance > doubling size.
+**`T = a + b * log2(2D/W)`** - Halving distance > doubling size.
 - Touch targets >= 44px (WCAG) / 48px (Material). Screen edges = infinite targets for mouse, hardest for touch.
 - Submit CTA at bottom of form (pointer already near last field). Destructive actions >= 8px from safe actions.
 - Increase padding without visible border for invisible hit-area expansion.
 **Violations:** Icon-only buttons (16px visual != 44px target), Delete beside Save with < 8px gap.
 
 ## Hick's Law
-**`RT = a + b * log2(n + 1)`** — 2→4 choices costs more than 20→22. First added choices are most expensive.
+**`RT = a + b * log2(n + 1)`** - 2→4 choices costs more than 20→22. First added choices are most expensive.
 - Minimize choices at irreversible points. Wizard pattern for multi-step. Surface recommended option.
 - **Critical:** Applies to decisions, not recognition. 15-item nav with clear categories = fine. 15-option modal = not.
 **Violations:** All features on first login, pricing with no highlighted plan, 50+ unsorted dropdowns.
@@ -874,14 +874,14 @@ Remembered = avg(peak intensity + final moment). Duration neglect.
 
 > Source: NNG (1.5M fixations, 57,453 fold fixations), A List Apart, Smashing Magazine
 
-## Visual Hierarchy — 6 Levers (in priority order)
+## Visual Hierarchy - 6 Levers (in priority order)
 
-1. **Size** — Bigger = more important. Max 3 size variations. Never equal size for different priorities.
-2. **Contrast** — Squint test: blur 5-10px, primary action must be first visible. Timid contrast = mistake, not decision.
-3. **Color** — Warm/saturated advances, cool/muted recedes. Red = destructive only. 8% male colorblindness.
-4. **Typography** — Weight is primary signal. If everything emphasized, nothing is.
-5. **Spacing** — More surrounding space = more attention (spotlight). Use before borders/fills.
-6. **Position** — Top-left = most attention. Optical center sits above mathematical center.
+1. **Size** - Bigger = more important. Max 3 size variations. Never equal size for different priorities.
+2. **Contrast** - Squint test: blur 5-10px, primary action must be first visible. Timid contrast = mistake, not decision.
+3. **Color** - Warm/saturated advances, cool/muted recedes. Red = destructive only. 8% male colorblindness.
+4. **Typography** - Weight is primary signal. If everything emphasized, nothing is.
+5. **Spacing** - More surrounding space = more attention (spotlight). Use before borders/fills.
+6. **Position** - Top-left = most attention. Optical center sits above mathematical center.
 
 ## CRAP Principles
 - **Contrast:** If different, make VERY different. "Same-same" = no hierarchy.
@@ -894,7 +894,7 @@ Remembered = avg(peak intensity + final moment). Duration neglect.
 
 ## The Fold (NNG: 57,453 fixations)
 - Above fold: **102% more views** than below. 57% of viewing time above fold.
-- **Never fill exact viewport height** — bleed 40-80px of next section. False floor = users think page is done.
+- **Never fill exact viewport height** - bleed 40-80px of next section. False floor = users think page is done.
 - First 100px must be relevant or users leave.
 
 ## Reading Patterns
@@ -955,7 +955,7 @@ Front-load keywords (scan first 2-3 words). Sentence case. Under 8 words. Specif
 
 ---
 
-# DESIGN MASTERS — 5 CONVERGENCE POINTS
+# DESIGN MASTERS - 5 CONVERGENCE POINTS
 
 > 7 masters (Rams, Norman, Vignelli, Spiekermann, Ive, Tufte, Kare) converged independently.
 
@@ -963,7 +963,7 @@ Front-load keywords (scan first 2-3 words). Sentence case. Under 8 words. Specif
 Innovative (remove friction, not add spectacle), Useful (function + psychology + aesthetics), Aesthetic (integral to usefulness), Understandable (zero-onboarding), Unobtrusive (canvas disappears), Honest (no dark patterns), Long-lasting (avoids fashion), Thorough (404 pages, empty states = design surfaces), Environmentally friendly (performance = design value), **As little design as possible** (remove features, not just decorations).
 
 ## Norman: 6 Principles
-**Signifiers** (what designers actually control — blue underline = link), **Mapping** (controls match results), **Feedback** (immediate < 100ms, calibrated), **Constraints** (define what's impossible), **Conceptual Models** (user mental model must match design model). **Two Gulfs:** Execution (can I do it?) and Evaluation (did it work?). Good design narrows both.
+**Signifiers** (what designers actually control - blue underline = link), **Mapping** (controls match results), **Feedback** (immediate < 100ms, calibrated), **Constraints** (define what's impossible), **Conceptual Models** (user mental model must match design model). **Two Gulfs:** Execution (can I do it?) and Evaluation (did it work?). Good design narrows both.
 
 ## Vignelli: Grid + Type Discipline
 Max 2 type sizes per screen. 2x ratio minimum for hierarchy. "White space > black of type." Grid removes arbitrary placement. "Design without discipline is anarchy."
@@ -975,7 +975,7 @@ Custom typeface = purchased differentiation. Open apertures for screen legibilit
 Maximize toward 1.0. "Can this be erased without info loss?" Kill chartjunk. Lie Factor = effect shown / effect in data (1.0 = honest). Small multiples. Sparklines.
 
 ## Ive/Apple: Simplicity = Purpose
-"Simplicity is not the absence of clutter — that's a consequence." 9:1 rejection ratio. Clarity (transparent carrier), Deference (UI steps back), Depth (spring physics = signifiers).
+"Simplicity is not the absence of clutter - that's a consequence." 9:1 rejection ratio. Clarity (transparent carrier), Deference (UI steps back), Depth (spring physics = signifiers).
 
 ## Kare: Icons as Universal Language
 Meaningful (real metaphors), Memorable (one-trial learning), Clear (traffic sign test). "Nobody needs to redesign the stop sign every two years."
@@ -1021,16 +1021,16 @@ If ANY present, go back to Phase 3:
 Assemble all decisions into 10-section DESIGN.md. See [template](references/design-md-template.md) for full format. See [examples](examples/) for worked outputs.
 
 ```
-1. Visual Theme & Atmosphere — emotional target, personality, system inspiration, identity
-2. Color Palette — brand ramp (OKLCH 11 stops), semantic tokens, dark mode strategy
-3. Typography — scale table, font pairing + rationale, fluid vs fixed
-4. Spacing — semantic tokens, density, grid (12-col), content max-width
-5. Component Specs — button/input/card/nav with ALL variants + ALL states
-6. Motion — duration scale, easing rules, prefers-reduced-motion strategy
-7. Elevation — shadow system (light), bg-color elevation (dark), z-index scale
-8. Do's and Don'ts — 10 rules for THIS product, each traced to evidence
-9. Responsive — behavior at 375/768/1024/1280/1440px
-10. Anti-Patterns — industry violations, AI slop checks this design passes
+1. Visual Theme & Atmosphere - emotional target, personality, system inspiration, identity
+2. Color Palette - brand ramp (OKLCH 11 stops), semantic tokens, dark mode strategy
+3. Typography - scale table, font pairing + rationale, fluid vs fixed
+4. Spacing - semantic tokens, density, grid (12-col), content max-width
+5. Component Specs - button/input/card/nav with ALL variants + ALL states
+6. Motion - duration scale, easing rules, prefers-reduced-motion strategy
+7. Elevation - shadow system (light), bg-color elevation (dark), z-index scale
+8. Do's and Don'ts - 10 rules for THIS product, each traced to evidence
+9. Responsive - behavior at 375/768/1024/1280/1440px
+10. Anti-Patterns - industry violations, AI slop checks this design passes
 ```
 
 **Present to user. Wait for approval. No code until approved.**
@@ -1041,14 +1041,14 @@ Assemble all decisions into 10-section DESIGN.md. See [template](references/desi
 
 After DESIGN.md approved:
 
-1. CSS custom properties (`:root` tokens) — call `design_tokens_generate`
-2. Base layout — grid + spacing
-3. Typography — apply scale
-4. Components — with ALL states (default, hover, active, focus, disabled, loading)
-5. Motion — after layout correct
-6. Responsive — mobile-first
-7. Accessibility — focus, ARIA, touch targets
-8. Final audit — run against anti-pattern checklist + pre-delivery checks
+1. CSS custom properties (`:root` tokens) - call `design_tokens_generate`
+2. Base layout - grid + spacing
+3. Typography - apply scale
+4. Components - with ALL states (default, hover, active, focus, disabled, loading)
+5. Motion - after layout correct
+6. Responsive - mobile-first
+7. Accessibility - focus, ARIA, touch targets
+8. Final audit - run against anti-pattern checklist + pre-delivery checks
 
 ---
 
@@ -1155,7 +1155,7 @@ Explicit handoffs between designer and other hyperstack skills/plugins. Each con
 
 **Invocation:** After user approves DESIGN.md, say: *"DESIGN.md approved and saved at `<path>`. Invoking `hyperstack:forge-plan` with this as input spec."*
 
-### To `shadcn` MCP plugin (for component code) — ONLY IF Q11b chose shadcn
+### To `shadcn` MCP plugin (for component code) - ONLY IF Q11b chose shadcn
 **Gate:** Skip this entirely if the user chose raw Tailwind or a different component library in Q11b.
 
 **Trigger:** When forge-plan processes a component section of DESIGN.md AND the chosen library is shadcn/ui.
@@ -1169,9 +1169,9 @@ For each component in DESIGN.md Section 5:
   shadcn_get_snippet(name)              → canonical usage example
 ```
 **Contract:** shadcn returns Base UI + Tailwind v4 component specs that match DESIGN.md variants, states, sizes.
-**Reverse escalation:** If shadcn has no component matching a DESIGN.md spec, escalate to `hyperstack:designer` to reconcile — do not invent a hybrid.
+**Reverse escalation:** If shadcn has no component matching a DESIGN.md spec, escalate to `hyperstack:designer` to reconcile - do not invent a hybrid.
 
-### To raw Tailwind (no component library) — ONLY IF Q11b chose raw Tailwind
+### To raw Tailwind (no component library) - ONLY IF Q11b chose raw Tailwind
 **Gate:** Skip this if the user chose shadcn or another library.
 
 **Trigger:** When the chosen library is raw Tailwind.
@@ -1247,6 +1247,6 @@ design_tokens_generate({
 
 Per `using-hyperstack` iron law: Every skill invocation must be announced.
 
-When invoked: *"Using hyperstack:designer — producing DESIGN.md contract for [task type]."*
+When invoked: *"Using hyperstack:designer - producing DESIGN.md contract for [task type]."*
 When handing off: *"DESIGN.md complete at [path]. Invoking hyperstack:forge-plan with this as input spec."*
-When escalating back: *"[from-skill] escalating to designer — [reason]."*
+When escalating back: *"[from-skill] escalating to designer - [reason]."*

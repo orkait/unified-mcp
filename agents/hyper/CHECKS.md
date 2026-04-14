@@ -1,4 +1,4 @@
-# Main Agent Checks
+# Hyper Agent Checks
 
 ## Preconditions
 
@@ -8,7 +8,7 @@
 
 ## Required Evidence
 
-- Why the request stayed with `main` or routed to a specialist
+- Why the request stayed with `hyper` or routed to a specialist
 - What workspace/package evidence informed that routing decision
 - What MCP or skill gates were required
 - What verification command proves any completion claim
@@ -17,11 +17,11 @@
 
 - Correct role selected
 - Specialist handoff or direct execution stayed within scope
-- Verification ownership remained with `main`
+- Verification ownership remained with `hyper`
 
 ## Red Flags
 
-- `main` doing specialist website work without delegation logic
+- `hyper` doing specialist website work without delegation logic
 - Silent scope widening
 - Completion claims without evidence
-- Routing directly from user request to a specialist without `main`
+- Routing directly from user request to a specialist without `hyper`
