@@ -12,7 +12,7 @@ description: Use when encountering any bug, test failure, or unexpected behaviou
 NO FIXES WITHOUT ROOT CAUSE FIRST.
 ```
 
-A symptom fix is a failure. Random changes are not debugging — they are thrashing. Every fix attempt without a confirmed root cause increases the probability of a second bug.
+A symptom fix is a failure. Random changes are not debugging - they are thrashing. Every fix attempt without a confirmed root cause increases the probability of a second bug.
 
 **If you have not completed Phase 1, you cannot propose a fix.**
 
@@ -27,8 +27,8 @@ Use this for any technical failure:
 - Integration issues
 
 Use it **especially** when:
-- Under time pressure — urgency makes guessing tempting
-- "The fix is obvious" — obvious fixes often address the wrong layer
+- Under time pressure - urgency makes guessing tempting
+- "The fix is obvious" - obvious fixes often address the wrong layer
 - You have already tried something and it did not work
 - The error message points to a dependency or library function
 
@@ -39,10 +39,10 @@ Use it **especially** when:
 **BEFORE attempting any fix:**
 
 **1. Read the error in full**
-Stack trace, error message, line numbers, exit codes — read every line. Do not skim. The exact wording often contains the fix.
+Stack trace, error message, line numbers, exit codes - read every line. Do not skim. The exact wording often contains the fix.
 
 **2. Reproduce consistently**
-Can you trigger it reliably? What are the exact steps? If you cannot reproduce it, do not guess — gather more data first.
+Can you trigger it reliably? What are the exact steps? If you cannot reproduce it, do not guess - gather more data first.
 
 **3. Check recent changes**
 `git diff`, recent commits. What changed that could have caused this? Assume the most recent change is guilty until proven otherwise.
@@ -73,22 +73,22 @@ Fix at the source. Never at the symptom.
 Before writing a fix, find the correct pattern:
 
 1. Locate similar working code in the same codebase
-2. Compare the failing code against the working example — list every difference, however small
+2. Compare the failing code against the working example - list every difference, however small
 3. Check the MCP reference for the correct pattern (`[domain]_get_pattern`)
 4. Understand what the failing code assumed that the working code does not
 
 ### Phase 3: Hypothesis and Test
 
-Scientific method — one variable at a time:
+Scientific method - one variable at a time:
 
 1. **State the hypothesis explicitly:** "I believe X is the root cause because Y"
 2. **Design the minimal test:** the smallest change that would confirm or refute the hypothesis
-3. **Make one change** — do not bundle multiple fixes
+3. **Make one change** - do not bundle multiple fixes
 4. **Verify the result:**
    - Confirms hypothesis → Phase 4
    - Refutes hypothesis → form a new hypothesis, return to top of Phase 3 (count this as a failed attempt)
    - After 2 refuted hypotheses: return to Phase 1 with all new information before forming another hypothesis
-   - After 3 failed hypotheses total: stop — go directly to the Escalation Rule below
+   - After 3 failed hypotheses total: stop - go directly to the Escalation Rule below
    - Do NOT stack a second change on top of a failed one
 
 If you genuinely do not know what the root cause is after Phase 1 and 2, say so explicitly. "I don't understand why X behaves this way" is correct. Proposing a fix you don't understand is not.
@@ -97,13 +97,13 @@ If you genuinely do not know what the root cause is after Phase 1 and 2, say so 
 
 Fix the root cause. Not the symptom.
 
-1. **Write a failing test first** — the simplest possible reproduction. Run it. Confirm it fails.
-2. **Implement one fix** — address the confirmed root cause. One change.
-3. **Run the test** — confirm it now passes.
-4. **Check for regressions** — run the full test suite.
+1. **Write a failing test first** - the simplest possible reproduction. Run it. Confirm it fails.
+2. **Implement one fix** - address the confirmed root cause. One change.
+3. **Run the test** - confirm it now passes.
+4. **Check for regressions** - run the full test suite.
 5. **Invoke `hyperstack:ship-gate`** before claiming the bug is fixed.
 
-**Attempt counter — mandatory:**
+**Attempt counter - mandatory:**
 - Attempts 1-2: if the fix does not work, return to Phase 1 with the new information
 - **Attempt 3: STOP. Do not attempt a fourth fix.**
 
@@ -113,12 +113,12 @@ Three failed attempts signals an architectural problem, not a surface bug.
 
 Diagnostic pattern:
 - Each fix reveals new coupling or unexpected shared state in a different location
-- The correct fix would require "significant refactoring" — which means the current structure cannot accommodate the correct behaviour
+- The correct fix would require "significant refactoring" - which means the current structure cannot accommodate the correct behaviour
 - Each fix creates a new symptom elsewhere
 
 At this point, stop fixing. Present the findings to the user: what you tried, what each attempt revealed, and what architectural change appears to be required. Do not continue patching.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 | Thought | Reality |
 |---|---|
@@ -128,7 +128,7 @@ At this point, stop fixing. Present the findings to the user: what you tried, wh
 | "Multiple small changes at once" | You cannot isolate what worked |
 | "The library is broken" | Check the MCP docs first |
 | "One more attempt" (after 2 failures) | Stop. Escalate. |
-| "I fixed it — the error is gone" | Run `hyperstack:ship-gate` |
+| "I fixed it - the error is gone" | Run `hyperstack:ship-gate` |
 
 ## Integration
 

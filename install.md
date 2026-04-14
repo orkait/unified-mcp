@@ -72,17 +72,17 @@ Check if Docker is installed and running on the user's system.
 
 ### Option A: Docker (Preferred)
 
-Hyperstack uses a **persistent container + `docker exec`** pattern. One long-lived container serves every CLI invocation and every session, so container startup cost is paid once — not on every `claude` run.
+Hyperstack uses a **persistent container + `docker exec`** pattern. One long-lived container serves every CLI invocation and every session, so container startup cost is paid once - not on every `claude` run.
 
-**Step 1 — Pull the image:**
+**Step 1 - Pull the image:**
 
 ```bash
 docker pull ghcr.io/orkait/hyperstack:main
 ```
 
-Pre-pulling is required. MCP servers have a short initialization timeout — if Docker pulls the image on first use it will time out and report as failed.
+Pre-pulling is required. MCP servers have a short initialization timeout - if Docker pulls the image on first use it will time out and report as failed.
 
-**Step 2 — Start the persistent container (one-time setup):**
+**Step 2 - Start the persistent container (one-time setup):**
 
 If a `hyperstack-mcp` container already exists from a previous install, delete it first to ensure a clean state with the latest image:
 
@@ -109,7 +109,7 @@ Verify it's running:
 docker ps --filter name=hyperstack-mcp
 ```
 
-**Step 3 — Configure the MCP client:**
+**Step 3 - Configure the MCP client:**
 
 Add the following configuration to the appropriate MCP config file for the current environment:
 
@@ -131,7 +131,7 @@ Add the following configuration to the appropriate MCP config file for the curre
 }
 ```
 
-Each CLI invocation spawns a new `bun` process inside the existing `hyperstack-mcp` container — no new container, no startup cost.
+Each CLI invocation spawns a new `bun` process inside the existing `hyperstack-mcp` container - no new container, no startup cost.
 
 **Important:** Some environments (like Qwen Code) use `settings.json` at the root level rather than a dedicated `.mcp.json` file. The `mcpServers` object goes at the top level of the settings file. Do not nest it inside another key.
 
@@ -161,7 +161,7 @@ docker run -d --name hyperstack-mcp --restart unless-stopped \
   ghcr.io/orkait/hyperstack:main infinity
 ```
 
-Always delete the old container before creating a new one — the `sleep infinity` pattern means the container never exits, so `docker run` with the same name will fail if the old one still exists.
+Always delete the old container before creating a new one - the `sleep infinity` pattern means the container never exits, so `docker run` with the same name will fail if the old one still exists.
 
 Then restart the CLI/IDE so open sessions reconnect to the new container.
 
@@ -194,14 +194,14 @@ There is no build step. Bun runs TypeScript directly from source.
 For Docker (Option A), first confirm the persistent container is running AND the name matches the config:
 
 ```bash
-# Step 1 — Check container is running
+# Step 1 - Check container is running
 docker ps --filter name=hyperstack-mcp
 
-# Step 2 — If empty, check if a differently-named hyperstack container exists
+# Step 2 - If empty, check if a differently-named hyperstack container exists
 ACTUAL_NAME=$(docker ps --filter "ancestor=ghcr.io/orkait/hyperstack:main" --format "{{.Names}}" | head -1)
 if [ -n "$ACTUAL_NAME" ] && [ "$ACTUAL_NAME" != "hyperstack-mcp" ]; then
   docker rename "$ACTUAL_NAME" hyperstack-mcp
-  echo "Renamed '$ACTUAL_NAME' → 'hyperstack-mcp' — config will now work"
+  echo "Renamed '$ACTUAL_NAME' → 'hyperstack-mcp' - config will now work"
 fi
 ```
 
@@ -238,7 +238,7 @@ Once the pre-check passes, start a fresh session in the target environment (or r
    ```
    Should show 21 directories plus `INDEX.md`. If missing or empty, the clone failed.
 
-3. **Skills are auto-loaded (platforms with hooks only):** Ask: *"What Hyperstack skills are available?"* The agent should list skills from `skills/INDEX.md` (21 total, grouped into core / domain / meta). On platforms without hook support (e.g., Qwen Code), skip this — skills are on disk but not auto-injected.
+3. **Skills are auto-loaded (platforms with hooks only):** Ask: *"What Hyperstack skills are available?"* The agent should list skills from `skills/INDEX.md` (21 total, grouped into core / domain / meta). On platforms without hook support (e.g., Qwen Code), skip this - skills are on disk but not auto-injected.
 
 If any of these three checks fail, do not proceed. Fix the issue first:
 - MCP tool unknown → verify config file location and JSON syntax, then restart the session
@@ -249,7 +249,7 @@ If any of these three checks fail, do not proceed. Fix the issue first:
 
 **Verification A: SessionStart hook fires (platforms with hooks only).** On Claude Code and platforms with hook support, the agent should receive the Hyperstack bootstrap at session start. Ask: *"What Hyperstack skills are available?"* The agent should list skills from `skills/INDEX.md` (21 total, grouped into core / domain / meta). On platforms without hook support (e.g., Qwen Code), this step does not apply - skills are on disk but not auto-injected.
 
-**Verification B: Designer workflow triggers.** Ask: *"Help me design a SaaS dashboard for DevOps engineers."* On platforms with the SessionStart hook, the agent should invoke `hyperstack:designer` BEFORE writing any code. If it jumps straight to JSX, the hook did not fire — restart the client and try again. On platforms without hook support, this step is manual (the agent won't auto-invoke designer).
+**Verification B: Designer workflow triggers.** Ask: *"Help me design a SaaS dashboard for DevOps engineers."* On platforms with the SessionStart hook, the agent should invoke `hyperstack:designer` BEFORE writing any code. If it jumps straight to JSX, the hook did not fire - restart the client and try again. On platforms without hook support, this step is manual (the agent won't auto-invoke designer).
 
 If any verification step fails:
 - For skill issues: confirm the repo was cloned to the correct skills directory for the environment
@@ -282,7 +282,7 @@ Most common causes:
 
 2. **Persistent container not running.** Check: `docker ps --filter name=hyperstack-mcp`. If empty, run Step 2 from Option A to start it.
 3. **Image not pulled.** Run `docker pull ghcr.io/orkait/hyperstack:main` and retry.
-4. **Wrong container name in config.** The config must use `hyperstack-mcp` as the exec target — must match the `--name` used in Step 2.
+4. **Wrong container name in config.** The config must use `hyperstack-mcp` as the exec target - must match the `--name` used in Step 2.
 
 ### MCP server shows as failed / cannot pull the Docker image
 
@@ -293,7 +293,7 @@ If the pull fails, confirm Docker is running and you have an internet connection
 ### MCP server starts but tools return no results
 
 The MCP config file may point to the wrong binary or the server is not running. Verify:
-- Docker: run `docker exec -i hyperstack-mcp bun /app/src/index.ts` manually — it should accept JSON-RPC on stdin and respond. If the container isn't running, start it per Step 2 of Option A.
+- Docker: run `docker exec -i hyperstack-mcp bun /app/src/index.ts` manually - it should accept JSON-RPC on stdin and respond. If the container isn't running, start it per Step 2 of Option A.
 - Local Bun: confirm the absolute path in `args` exists (`ls /path/to/hyperstack/bin/hyperstack.mjs`)
 - Restart the CLI/IDE after any config change - MCP servers are loaded at startup
 - **Qwen Code:** Uses `~/.qwen/settings.json` (global) or `.qwen/settings.json` (project-level), NOT `.mcp.json`. The `mcpServers` key goes at the root of the settings file.
@@ -318,7 +318,7 @@ Then follow Step 2 of Option A to start the single persistent `hyperstack-mcp` c
 
 On Claude Code, hooks live in `.claude/hooks.json`. Confirm the file exists in the repository root and references `session-start.mjs`. If the hook is missing or malformed, the `using-hyperstack` skill will not be injected automatically. You can still invoke skills manually with `/using-hyperstack`.
 
-On Qwen Code, there is no plugin system or hook mechanism. Skills are available on disk at `~/.qwen/skills/hyperstack/skills/INDEX.md` but must be referenced manually by the agent — no auto-injection occurs.
+On Qwen Code, there is no plugin system or hook mechanism. Skills are available on disk at `~/.qwen/skills/hyperstack/skills/INDEX.md` but must be referenced manually by the agent - no auto-injection occurs.
 
 ### `bun: command not found` when using Option B
 

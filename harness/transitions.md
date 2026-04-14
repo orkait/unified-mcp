@@ -2,11 +2,11 @@
 
 ## Allowed
 
-- `user request -> main`
-- `main -> website-builder`
-- `website-builder -> main`
-- `main -> existing Hyperstack skills/plugins`
-- `main -> verification and delivery gates`
+- `user request -> hyper`
+- `hyper -> website-builder`
+- `website-builder -> hyper`
+- `hyper -> existing Hyperstack skills/plugins`
+- `hyper -> verification and delivery gates`
 
 ## Disallowed
 

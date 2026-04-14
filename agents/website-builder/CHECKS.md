@@ -2,7 +2,7 @@
 
 ## Preconditions
 
-- Delegation from `main` exists
+- Delegation from `hyper` exists
 - Website-facing scope is explicit
 - Required design/plan gate is active
 
@@ -21,7 +21,7 @@
 
 - Workspace and frontend inventory are explicit and tied to the delegated task
 - Website-facing scope completed without widening
-- Specialist output is ready for `main` to review
+- Specialist output is ready for `hyper` to review
 - No shipping or completion claim made directly by `website-builder`
 
 ## Red Flags
@@ -29,4 +29,4 @@
 - Acting like a generic frontend builder instead of a website specialist
 - Implementing outside delegated scope
 - Missing state coverage or CTA hierarchy
-- Claiming completion without handing back to `main`
+- Claiming completion without handing back to `hyper`

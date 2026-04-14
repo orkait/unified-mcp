@@ -23,13 +23,13 @@ Claiming completion without evidence is not efficiency. It is dishonesty.
 Before claiming any status or expressing satisfaction:
 
 ```
-1. IDENTIFY  — What command proves this claim?
-2. RUN       — Execute it fresh. Not from memory. Not from a prior run in this session.
-3. READ      — Full output. Exit code. Error count. Every line.
-4. VERIFY    — Does output confirm the claim?
+1. IDENTIFY  - What command proves this claim?
+2. RUN       - Execute it fresh. Not from memory. Not from a prior run in this session.
+3. READ      - Full output. Exit code. Error count. Every line.
+4. VERIFY    - Does output confirm the claim?
                NO  → State actual status with evidence
                YES → State claim WITH evidence attached
-5. CLAIM     — Only now.
+5. CLAIM     - Only now.
 ```
 
 Skipping any step = lying, not verifying.
@@ -54,21 +54,21 @@ If the task involved `hyperstack:designer` (a DESIGN.md exists), the completion 
 
 | DESIGN.md Section | Verification Command/Check |
 |---|---|
-| 2. Color Palette | `grep -r "oklch" <css-files>` — all OKLCH tokens present. Run contrast checker. |
+| 2. Color Palette | `grep -r "oklch" <css-files>` - all OKLCH tokens present. Run contrast checker. |
 | 3. Typography | Font family loaded. Type scale tokens defined. Tracking values match. |
 | 4. Spacing | Spacing tokens defined on 4px grid. No arbitrary pixel values. |
 | 5. Components | For EACH component: `grep` for ALL required states (default/hover/focus/active/disabled/loading). `grep` for semantic HTML (`<button>`, not `<div onclick>`). |
-| 6. Motion | `grep "prefers-reduced-motion"` — present. No `linear` easing. No `> 500ms` UI transitions. |
+| 6. Motion | `grep "prefers-reduced-motion"` - present. No `linear` easing. No `> 500ms` UI transitions. |
 | 7. Elevation | Shadow tokens defined. Z-index uses named scale (no `9999`). |
 | 8. Do's and Don'ts | Each Do/Don't checked against code. None violated. |
-| 9. Responsive | Test at 375/768/1024/1440px — no horizontal scroll. Prose max-width 65ch present. |
+| 9. Responsive | Test at 375/768/1024/1440px - no horizontal scroll. Prose max-width 65ch present. |
 | 10. Anti-Patterns | ALL AI slop fingerprint patterns absent: no `#6366F1`, no `font-weight: 500` everywhere, no missing states, no `animate-bounce` on static, no 3+ font families, no `rgba(0,0,0)` shadows on warm surfaces. |
 
 **If any row fails:** Do NOT claim completion. Either fix the code, or escalate back to `hyperstack:designer` to revise DESIGN.md.
 
 **If DESIGN.md doesn't exist for a visual task:** That's a process failure upstream. Stop and invoke `hyperstack:designer` before shipping anything.
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are rationalizations. Every one has been used to ship bugs. Every one has a counter.
 
@@ -79,7 +79,7 @@ These are rationalizations. Every one has been used to ship bugs. Every one has 
 | "Subagent said it's done" | Subagents lie. Check the VCS diff. Run the tests. |
 | "Minor change, no need to recheck" | Minor changes cause regressions. Run the command. |
 | "Tests were passing before my change" | Irrelevant. Run them again now. |
-| "MCP tool confirmed the pattern" | That confirms the pattern — not that your code is correct. Run the command. |
+| "MCP tool confirmed the pattern" | That confirms the pattern - not that your code is correct. Run the command. |
 | "I'll verify after I push" | After you push it is in CI. Verify BEFORE. |
 | "I followed the pattern correctly" | Following the pattern is not the same as the pattern working. Run the command. |
 | "I already ran it earlier this conversation" | That was earlier. State drifts. Run it again. |

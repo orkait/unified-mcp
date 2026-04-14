@@ -52,11 +52,11 @@ Structured guidance on programming principles and design patterns from foundatio
 
 ## Core Philosophy
 
-1. **Readability over cleverness** — Code is read more than written
-2. **Simplicity over complexity** — Use the simplest solution that works
-3. **Testability by design** — Write code that's easy to test
-4. **Incremental improvement** — Leave code better than you found it
-5. **Patterns as tools** — Apply patterns when they clarify, not by default
+1. **Readability over cleverness** - Code is read more than written
+2. **Simplicity over complexity** - Use the simplest solution that works
+3. **Testability by design** - Write code that's easy to test
+4. **Incremental improvement** - Leave code better than you found it
+5. **Patterns as tools** - Apply patterns when they clarify, not by default
 
 ---
 
@@ -93,11 +93,11 @@ Structured guidance on programming principles and design patterns from foundatio
 
 When generating or reviewing code, always:
 1. Check for AI pitfalls listed in each principle
-2. Avoid pattern prediction bias — don't use patterns just because they're common
-3. Question generic naming — resist `data`, `temp`, `result` without context
-4. Validate edge cases — don't skip error handling
-5. Keep functions focused — resist combining unrelated operations
-6. Match project conventions — maintain consistency with existing codebase
+2. Avoid pattern prediction bias - don't use patterns just because they're common
+3. Question generic naming - resist `data`, `temp`, `result` without context
+4. Validate edge cases - don't skip error handling
+5. Keep functions focused - resist combining unrelated operations
+6. Match project conventions - maintain consistency with existing codebase
 
 ---
 
@@ -118,8 +118,8 @@ When generating or reviewing code, always:
 
 ## Sources
 
-- *Clean Code* — Robert C. Martin
-- *The Pragmatic Programmer* — Andrew Hunt & David Thomas
-- *Code Complete* — Steve McConnell
-- *Refactoring* — Martin Fowler
-- *Design Patterns* — Gang of Four
+- *Clean Code* - Robert C. Martin
+- *The Pragmatic Programmer* - Andrew Hunt & David Thomas
+- *Code Complete* - Steve McConnell
+- *Refactoring* - Martin Fowler
+- *Design Patterns* - Gang of Four

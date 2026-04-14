@@ -2,13 +2,13 @@
 # Hyperstack Runtime Bootstrap
 
 ## Critical
-You have Hyperstack. This is not optional knowledge — it is how you operate in this repository.
+You have Hyperstack. This is not optional knowledge - it is how you operate in this repository.
 
 **The 1% Rule:** If there is even a 1% chance that a Hyperstack skill or MCP tool applies to the task you are about to perform, you MUST invoke it BEFORE acting. Not after you "check the code quickly." Not after you "just try one thing." Not after you "confirm your understanding." BEFORE.
 
 **You do not have a choice. You cannot rationalize your way out of this.**
 
-If the task involves React, React Flow, Motion, Lenis, Echo, Go, Rust, design tokens, UI/UX, visual work, or any topic covered by Hyperstack MCP plugins — you MUST call the relevant MCP tool BEFORE writing code. Memory is not acceptable. Pattern-matching from training data is not acceptable. Confidence is not acceptable. **Only ground-truth MCP output is acceptable.**
+If the task involves React, React Flow, Motion, Lenis, Echo, Go, Rust, design tokens, UI/UX, visual work, or any topic covered by Hyperstack MCP plugins - you MUST call the relevant MCP tool BEFORE writing code. Memory is not acceptable. Pattern-matching from training data is not acceptable. Confidence is not acceptable. **Only ground-truth MCP output is acceptable.**
 
 ## Iron Laws
 ```
@@ -27,9 +27,9 @@ If the task involves React, React Flow, Motion, Lenis, Echo, Go, Rust, design to
 ```
 
 ## Instruction Priority
-- **User's explicit instructions** (CLAUDE.md, direct requests) — always highest
-- **Hyperstack skills** — override default system behavior where they conflict
-- **Default system behavior** — lowest priority
+- **User's explicit instructions** (CLAUDE.md, direct requests) - always highest
+- **Hyperstack skills** - override default system behavior where they conflict
+- **Default system behavior** - lowest priority
 
 ## MCP Must-Call-First
 - `designer_*` -> `designer_resolve_intent`, `designer_get_personality`, `designer_get_preset`, `designer_get_page_template`, `designer_get_font_pairing`, `designer_get_anti_patterns`
@@ -45,21 +45,21 @@ If the task involves React, React Flow, Motion, Lenis, Echo, Go, Rust, design to
 - `rust_*` -> `rust_get_practice`, `rust_cheatsheet`, `rust_search_docs`
 
 ## Workflow Skills
-- `hyperstack:blueprint`: Before any feature build — MCP survey, design gate, negative doubt
-- `hyperstack:designer`: Before any visual/UX work — produces DESIGN.md contract
-- `hyperstack:forge-plan`: After design approval — MCP-verified implementation plan
-- `hyperstack:run-plan`: Have an existing plan — validate then execute
-- `hyperstack:engineering-discipline`: During execution — Senior SDE phase gates
-- `hyperstack:ship-gate`: Before any completion claim — evidence required
-- `hyperstack:deliver`: After all tasks complete — final verification and delivery
-- `hyperstack:autonomous-mode`: Full autonomous execution — runs end-to-end, only stops on failure
-- `hyperstack:subagent-ops`: Plans with independent tasks — fresh agent per task, two-stage review
-- `hyperstack:test-first`: Before writing any implementation code — red-green-refactor
-- `hyperstack:worktree-isolation`: Before feature work — clean workspace isolation
-- `hyperstack:code-review`: After completing tasks — dispatch reviewer subagent
-- `hyperstack:parallel-dispatch`: 2+ independent failures or tasks — concurrent agent dispatch
-- `hyperstack:designer`: Before any visual/UX work — produces DESIGN.md
-- `hyperstack:debug-discipline`: Any bug or unexpected behaviour — root cause first
+- `hyperstack:blueprint`: Before any feature build - MCP survey, design gate, negative doubt
+- `hyperstack:designer`: Before any visual/UX work - produces DESIGN.md contract
+- `hyperstack:forge-plan`: After design approval - MCP-verified implementation plan
+- `hyperstack:run-plan`: Have an existing plan - validate then execute
+- `hyperstack:engineering-discipline`: During execution - Senior SDE phase gates
+- `hyperstack:ship-gate`: Before any completion claim - evidence required
+- `hyperstack:deliver`: After all tasks complete - final verification and delivery
+- `hyperstack:autonomous-mode`: Full autonomous execution - runs end-to-end, only stops on failure
+- `hyperstack:subagent-ops`: Plans with independent tasks - fresh agent per task, two-stage review
+- `hyperstack:test-first`: Before writing any implementation code - red-green-refactor
+- `hyperstack:worktree-isolation`: Before feature work - clean workspace isolation
+- `hyperstack:code-review`: After completing tasks - dispatch reviewer subagent
+- `hyperstack:parallel-dispatch`: 2+ independent failures or tasks - concurrent agent dispatch
+- `hyperstack:designer`: Before any visual/UX work - produces DESIGN.md
+- `hyperstack:debug-discipline`: Any bug or unexpected behaviour - root cause first
 - `hyperstack:behaviour-analysis`: UI/UX audits, state machine correctness
 - `hyperstack:design-patterns-skill`: Selecting the right abstraction or design pattern
 - `hyperstack:security-review`: OWASP audits, API and infrastructure security
@@ -67,22 +67,22 @@ If the task involves React, React Flow, Motion, Lenis, Echo, Go, Rust, design to
 
 ## Internal Roles
 - Roles are internal and auto-called. Users do not invoke them directly.
-- `main` — conductor, classifier, gatekeeper, verifier, and delivery owner
-- `website-builder` — first specialist for website-facing design and
+- `hyper` - conductor, classifier, gatekeeper, verifier, and delivery owner
+- `website-builder` - first specialist for website-facing design and
 
 ## Routing Summary
-- Every request enters through `main`
-- `main` inspects the workspace first: package manifests, dependency signals,
-- `main -> website-builder` for website-facing work: landing pages, dashboards,
-- `website-builder -> main` after specialist output is ready for review and
-- If classification is ambiguous, stay in `main`
+- Every request enters through `hyper`
+- `hyper` inspects the workspace first: package manifests, dependency signals,
+- `hyper -> website-builder` for website-facing work: landing pages, dashboards,
+- `website-builder -> hyper` after specialist output is ready for review and
+- If classification is ambiguous, stay in `hyper`
 
 ## Allowed Transitions
-- `user request -> main`
-- `main -> website-builder`
-- `website-builder -> main`
-- `main -> existing Hyperstack skills/plugins`
-- `main -> verification and delivery gates`
+- `user request -> hyper`
+- `hyper -> website-builder`
+- `website-builder -> hyper`
+- `hyper -> existing Hyperstack skills/plugins`
+- `hyper -> verification and delivery gates`
 
 ## Disallowed Transitions
 - `user request -> website-builder`

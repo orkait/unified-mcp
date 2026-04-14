@@ -2,13 +2,13 @@
 
 ## Default Rule
 
-Every user request enters through `main`.
+Every user request enters through `hyper`.
 
 Users do not invoke internal roles directly. Roles are internal and auto-called.
 
 ## Routing Matrix
 
-Route `main -> website-builder` when the request is primarily about:
+Route `hyper -> website-builder` when the request is primarily about:
 
 - landing pages
 - dashboards
@@ -21,14 +21,14 @@ Route `main -> website-builder` when the request is primarily about:
 - responsive content priority
 - "make the website/page feel better" style requests
 
-Before routing, `main` must inspect the workspace enough to know:
+Before routing, `hyper` must inspect the workspace enough to know:
 
 - which package manifests and dependency signals define the active frontend stack
 - which core frontend files likely own the affected surface
 - whether the request is actually website-facing rather than generic frontend or
   backend work
 
-Keep work in `main` when the request is primarily about:
+Keep work in `hyper` when the request is primarily about:
 
 - backend or infra
 - pure MCP/plugin behavior
@@ -37,5 +37,5 @@ Keep work in `main` when the request is primarily about:
 
 ## Safety Rule
 
-If the request is ambiguous, keep ownership in `main` until delegation criteria
+If the request is ambiguous, keep ownership in `hyper` until delegation criteria
 are explicit.

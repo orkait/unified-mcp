@@ -36,7 +36,7 @@
 
 Hyperstack is a coding-agent harness made of three tightly-coupled layers:
 
-1. **An internal harness** that bootstraps the agent, enforces global invariants, and routes internal roles like `main` and `website-builder`.
+1. **An internal harness** that bootstraps the agent, enforces global invariants, and routes internal roles like `hyper` and `website-builder`.
 2. **A TypeScript MCP server** with 11 plugins and 79 tools. Your AI calls these for ground-truth API signatures, component specs, design decisions, and architectural patterns. No hallucinated imports.
 3. **A skill system with enforcement teeth.** 21 skills with Iron Laws, rationalization tables, and a SessionStart hook that force-injects discipline on every session. Your AI cannot "just try one thing" without the gate firing.
 
@@ -61,7 +61,7 @@ If you are an agent reading this README, the shortest correct mental model is:
 
 Current internal role model:
 
-- `main` - conductor, gatekeeper, verifier, delivery owner
+- `hyper` - conductor, gatekeeper, verifier, delivery owner
 - `website-builder` - specialist for website-facing design and implementation work
 
 Public surface:
@@ -187,7 +187,7 @@ The `using-hyperstack` skill is injected into every session by `hooks/session-st
 The internal harness is what ties the public layers together:
 
 - bootstrap is injected at session start from generated runtime context
-- `main` owns classification, routing, gates, and verification
+- `hyper` owns classification, routing, gates, and verification
 - `website-builder` specializes in website-facing design and implementation work
 - roles are internal and auto-called, not user-invoked commands
 

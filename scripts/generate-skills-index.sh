@@ -43,9 +43,9 @@ Auto-generated from each skill's frontmatter \`category\` field.
 Regenerate with: \`bash scripts/generate-skills-index.sh\`
 
 Categories:
-- **core** — workflow, discipline, and gates used on every task
-- **domain** — specialized skills for specific contexts (visual, components, security, docs)
-- **meta** — skills about skills (bootstrap, testing)
+- **core** - workflow, discipline, and gates used on every task
+- **domain** - specialized skills for specific contexts (visual, components, security, docs)
+- **meta** - skills about skills (bootstrap, testing)
 
 ---
 

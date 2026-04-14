@@ -68,16 +68,16 @@ For each relevant domain, call the discovery tools before proposing anything:
 | Design tokens | `design_tokens_list_categories` + `design_tokens_get_gotchas` |
 | UI/UX | `ui_ux_list_principles` + `ui_ux_get_gotchas` |
 
-This step ensures the design you propose uses real API shapes — not imagined ones. A design built on wrong API assumptions is not a design; it is technical debt scheduled for delivery.
+This step ensures the design you propose uses real API shapes - not imagined ones. A design built on wrong API assumptions is not a design; it is technical debt scheduled for delivery.
 
-**Visual work routing:** If the user's request involves designing a new page, component library, landing page, dashboard, redesign, or any "make it look like X" task — the `designer` skill owns the design gate. Invoke it instead of running Step 4-6 here. Return with a DESIGN.md contract and proceed to handoff (Step 7).
+**Visual work routing:** If the user's request involves designing a new page, component library, landing page, dashboard, redesign, or any "make it look like X" task - the `designer` skill owns the design gate. Invoke it instead of running Step 4-6 here. Return with a DESIGN.md contract and proceed to handoff (Step 7).
 
 ### Step 3: Clarify Requirements
 
 Ask clarifying questions one at a time:
-- Purpose and success criteria — what does done look like?
-- Constraints — performance targets, accessibility requirements, existing patterns to follow
-- Scope boundary — what is explicitly NOT included in this task?
+- Purpose and success criteria - what does done look like?
+- Constraints - performance targets, accessibility requirements, existing patterns to follow
+- Scope boundary - what is explicitly NOT included in this task?
 
 One question per message. Wait for the answer before asking the next one.
 
@@ -96,10 +96,10 @@ Lead with your recommended option. Do not present options without a recommendati
 
 Scale each section to its complexity:
 
-- **Architecture** — module boundaries, data flow, key abstractions
-- **Invariants** — what must always be true at runtime
-- **Interfaces** — public APIs between modules, including types
-- **Error paths** — what happens when dependencies fail, inputs are invalid, or async operations time out
+- **Architecture** - module boundaries, data flow, key abstractions
+- **Invariants** - what must always be true at runtime
+- **Interfaces** - public APIs between modules, including types
+- **Error paths** - what happens when dependencies fail, inputs are invalid, or async operations time out
 
 Get user confirmation after presenting. Revise if needed. Do not proceed until the user approves.
 
@@ -113,7 +113,7 @@ Before finalising, list at least 5 failure modes:
 - What does the MCP `get_gotchas` data say about this domain?
 - What external dependency (API, library version, browser API) could change and break this?
 
-Address each failure mode explicitly — either design around it or record the accepted risk.
+Address each failure mode explicitly - either design around it or record the accepted risk.
 
 ### Step 7: Handoff to Implementation
 
@@ -122,9 +122,9 @@ Once the design is approved:
 - For visual/UX work: DESIGN.md already exists (produced by `designer` skill). Save it at `docs/DESIGN.md` or `<project>/DESIGN.md`.
 - Invoke `hyperstack:forge-plan` to build a fully MCP-verified implementation plan from the approved design
 - **If DESIGN.md exists:** forge-plan reads it as its input spec. Each of the 10 sections becomes one or more tasks.
-- The approved design is the spec — `forge-plan` translates it into traceable tasks, `engineering-discipline` executes them
+- The approved design is the spec - `forge-plan` translates it into traceable tasks, `engineering-discipline` executes them
 
-## Red Flags — STOP
+## Red Flags - STOP
 
 These are the exact thoughts you will have when you want to skip this skill. Every one is a rationalization. Every one has been used before to build wrong architectures. Every one has a counter.
 
@@ -134,7 +134,7 @@ These are the exact thoughts you will have when you want to skip this skill. Eve
 | "This is too simple for a design" | Simple tasks are where unexamined assumptions do the most damage. Return to the Hard Gate. |
 | "Let me just start with a file and we'll design as we go" | This is how wrong architectures get built. Do the design FIRST. |
 | "The user seems impatient, I'll skip Step 6" | User impatience is not permission to ship slop. Negative Doubt is not optional. |
-| "I'll propose one approach — the obvious one" | Two approaches exist for every non-trivial design. Find both. |
+| "I'll propose one approach - the obvious one" | Two approaches exist for every non-trivial design. Find both. |
 | "The task is a single-line change" | A single line at the wrong place destroys invariants. Design first. |
 | "This is a bug fix, not a feature" | Bug fixes change behavior. Behavior changes need designs. |
 | "I'm just refactoring" | Refactors move responsibility. Moving responsibility is architectural. Design first. |
