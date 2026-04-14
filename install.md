@@ -42,7 +42,8 @@ If the directory already exists (upgrade scenario), pull the latest instead of c
 |---|---|---|
 | **Claude Code** | `git clone https://github.com/orkait/hyperstack.git ~/.claude/skills/hyperstack` | `git -C ~/.claude/skills/hyperstack pull` |
 | **Cursor** | `git clone https://github.com/orkait/hyperstack.git ~/.cursor/skills/hyperstack` | `git -C ~/.cursor/skills/hyperstack pull` |
-| **Gemini CLI** | `git clone https://github.com/orkait/hyperstack.git ~/.gemini/skills/hyperstack` | `git -C ~/.gemini/skills/hyperstack pull` |
+| **Antigravity** | `git clone https://github.com/orkait/hyperstack.git ~/.gemini/extensions/hyperstack` | `git -C ~/.gemini/extensions/hyperstack pull` |
+| **Gemini CLI** | `git clone https://github.com/orkait/hyperstack.git ~/.gemini/extensions/hyperstack` | `git -C ~/.gemini/extensions/hyperstack pull` |
 | **Qwen Code** | `git clone https://github.com/orkait/hyperstack.git ~/.qwen/skills/hyperstack` | `git -C ~/.qwen/skills/hyperstack pull` |
 | **Copilot CLI** | Use plugin marketplace if available, otherwise clone into the user's configured skills path | Pull in the cloned directory |
 | **OpenCode / Codex** | Follow the platform's file-based skill installation path | Pull in the cloned directory |
@@ -53,8 +54,8 @@ If the directory already exists (upgrade scenario), pull the latest instead of c
 To handle both cases automatically, use this one-liner (clone if missing, pull if present):
 
 ```bash
-SKILLS_DIR="$HOME/.claude/skills/hyperstack" && \
-  ([ -d "$SKILLS_DIR" ] && git -C "$SKILLS_DIR" pull || git clone https://github.com/orkait/hyperstack.git "$SKILLS_DIR")
+EXT_DIR="$HOME/.gemini/extensions/hyperstack" && \
+  ([ -d "$EXT_DIR" ] && git -C "$EXT_DIR" pull || git clone https://github.com/orkait/hyperstack.git "$EXT_DIR")
 ```
 
 Replace `~/.claude/skills` with the correct path for the current environment (see table above). For example, on Qwen Code use `~/.qwen/skills/hyperstack`.
@@ -116,6 +117,7 @@ Add the following configuration to the appropriate MCP config file for the curre
 | Environment | Config File |
 |---|---|
 | **Claude Code** | `~/.claude.json` |
+| **Antigravity** | `~/.config/Antigravity/User/mcp.json` |
 | **Gemini CLI** | `~/.gemini/config.json` |
 | **Qwen Code** | `~/.qwen/settings.json` (global) or `.qwen/settings.json` (project-level) |
 | **Cursor / Windsurf / Others** | IDE-specific MCP settings panel or `.mcp.json` in project root |
