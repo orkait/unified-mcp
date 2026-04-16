@@ -2,7 +2,6 @@ import { test, expect } from "bun:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { once } from "node:events";
-import { setTimeout as delay } from "node:timers/promises";
 import { spawn } from "node:child_process";
 
 function normalize(str: string): string {
@@ -116,7 +115,7 @@ test("SessionStart hook prefers Cursor output when both CURSOR_PLUGIN_ROOT and C
   expect(payload.hookSpecificOutput).toBeUndefined();
 });
 
-test("package bin entry starts without an immediate runtime crash", async () => {
+test("package bin entry prints usage when invoked without command arguments", async () => {
   const raw = await readFile(resolve("package.json"), "utf8");
   const pkg = JSON.parse(raw) as {
     bin?: { hyperstack?: string };
@@ -130,14 +129,16 @@ test("package bin entry starts without an immediate runtime crash", async () => 
     stdio: ["pipe", "pipe", "pipe"],
   });
 
+  let stdout = "";
   let stderr = "";
+  child.stdout.on("data", (chunk: Buffer | string) => {
+    stdout += chunk.toString();
+  });
   child.stderr.on("data", (chunk: Buffer | string) => {
     stderr += chunk.toString();
   });
 
-  await delay(200);
-  expect(child.exitCode).toBeNull();
-
-  child.kill("SIGTERM");
-  await once(child, "close");
+  const [exitCode] = (await once(child, "close")) as [number | null];
+  expect(exitCode).toBe(1);
+  expect(`${stdout}${stderr}`).toMatch(/Usage: hyperstack tool/);
 });
