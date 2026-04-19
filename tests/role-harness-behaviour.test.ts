@@ -107,6 +107,8 @@ test("workspace-first planning makes design contracts conditional rather than un
   const blueprintContent = normalize(readFileSync(resolve("skills/blueprint/SKILL.md"), "utf8"));
   const designerContent = normalize(readFileSync(resolve("skills/designer/SKILL.md"), "utf8"));
   const hyperstackContent = normalize(readFileSync(resolve("skills/hyperstack/SKILL.md"), "utf8"));
+  const shipGateContent = normalize(readFileSync(resolve("skills/ship-gate/SKILL.md"), "utf8"));
+  const shadcnExpertContent = normalize(readFileSync(resolve("skills/shadcn-expert/SKILL.md"), "utf8"));
 
   expect(blueprintContent).toMatch(/workspace_inventory/i);
   expect(blueprintContent).toMatch(/design_contract/i);
@@ -118,4 +120,10 @@ test("workspace-first planning makes design contracts conditional rather than un
   expect(hyperstackContent).toMatch(/workspace_inventory/i);
   expect(hyperstackContent).toMatch(/design_contract/i);
   expect(hyperstackContent).toMatch(/conditional|required only/i);
+
+  expect(shipGateContent).toMatch(/design contract/i);
+  expect(shipGateContent).toMatch(/when.*required|required.*design contract/i);
+
+  expect(shadcnExpertContent).toMatch(/workspace inventory|workspace-first/i);
+  expect(shadcnExpertContent).toMatch(/designer only if required|conditional/i);
 });

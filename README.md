@@ -294,16 +294,16 @@ Ordinary skill markdown is a polite suggestion. Polite suggestion fails when an 
 When you say, **“build me a SaaS dashboard”**:
 
 1. **SessionStart** already puts in `hyperstack`, so AI know system is there.
-2. **Blueprint skill** sees visual job and sends it to `hyperstack:designer`.
-3. **Designer skill** runs `designer_resolve_intent(product)` to guess industry, personality, style, density, and mode.
+2. **Blueprint skill** builds workspace understanding first and classifies the change.
+3. If the route says a design contract is required, **Designer skill** runs `designer_resolve_intent(product)` to guess industry, personality, style, density, and mode.
 4. Designer asks **3 questions** in base mode, or **12 questions** in advanced mode.
-5. Like **Q11b** will ask what component library to use: shadcn, raw Tailwind, MUI, Mantine, Chakra, Ant Design, or custom.
-6. Designer makes a **DESIGN.md** contract with 10 parts: theme, colors, type, spacing, components, motion, elevation, do/don’ts, responsive rules, and anti-patterns.
-7. User approves the **DESIGN.md**.
-8. **Forge-plan** reads it and makes one task for each section. If user picked shadcn, it calls `shadcn_get_component`. If not, it builds from the DESIGN.md spec.
+5. Q11b asks what component library to use: shadcn, raw Tailwind, MUI, Mantine, Chakra, Ant Design, or custom.
+6. Only when needed, Designer makes a conditional **DESIGN.md / design contract** with theme, colors, type, spacing, components, motion, elevation, do/don’ts, responsive rules, and anti-patterns.
+7. User approves the design contract when the route requires it.
+8. **Forge-plan** reads the routed artifacts and makes one task for each required area. Existing-project frontend logic work can stay workspace-first without forcing a design contract.
 9. Build tasks run with MCP tools as ground truth.
-10. **designer_verify_implementation** checks build against **DESIGN.md**.
-11. **Ship-gate** blocks final completion unless build passes the **DESIGN.md** rules.
+10. **designer_verify_implementation** checks build against the design contract when present.
+11. **Ship-gate** blocks final completion unless build passes the required proof rules.
 
 AI cannot jump ahead. Every step has hard gate. Excuses already blocked by rationalization tables.
 

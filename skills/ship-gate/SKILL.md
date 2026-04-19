@@ -45,11 +45,11 @@ Cannot show evidence → cannot make claim.
 | Requirements | Line-by-line checklist against spec | Tests passing |
 | Subagent done | VCS diff confirms actual changes | Subagent reports "done" |
 | Regression | Red-green cycle verified | "I wrote a test" |
-| **DESIGN compliance** | **Implementation matches all 10 sections.** | **"Looks right"** |
+| **Design-contract compliance** | **Implementation matches all required sections when a design contract exists.** | **"Looks right"** |
 
-## DESIGN.md Compliance Gate (Visual/UX)
+## DESIGN.md / Design Contract Compliance Gate (Visual/UX)
 
-If DESIGN.md exists, completion requires this gate:
+If a task requires a design contract and DESIGN.md exists, completion requires this gate:
 
 ### Step 1: Automated Checker
 
@@ -78,11 +78,11 @@ Paste the `designer_verify_implementation` output block representing PASS on all
 
 ### Step 3: Handle Failures
 
-Any section fails → DO NOT claim completion.
+Any required section fails → DO NOT claim completion.
 - Option A: Fix code.
-- Option B: Escalate to `designer` to revise DESIGN.md.
+- Option B: Escalate to `designer` to revise the design contract.
 
-No DESIGN.md on visual task? Stop. Invoke `designer`.
+No design contract on a task that requires one? Stop. Invoke `designer`.
 
 
 ## Lifecycle
@@ -90,10 +90,10 @@ No DESIGN.md on visual task? Stop. Invoke `designer`.
 **All execution paths converge here:**
 `[autonomous-mode | subagent-ops | engineering-discipline] → ship-gate (THIS) → deliver`
 
-**DESIGN.md flow:**
-`ship-gate → designer_verify_implementation → [PASS → deliver | FAIL → fix/escalate]`
+**Design-contract flow:**
+`ship-gate → designer_verify_implementation (when design contract required) → [PASS → deliver | FAIL → fix/escalate]`
 
 **Escalations:**
-- DESIGN.md check fails → `designer`
+- Design-contract check fails → `designer`
 - Tests fail → `debug-discipline` 
 - Type/lint errors → Fix → re-run ship-gate
