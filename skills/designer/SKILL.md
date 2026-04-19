@@ -78,6 +78,8 @@ Inside `<designer_critique>`, you must answer:
 **Step 1:** Use `designer_resolve_intent` (or read `references/questions.md`).
 **Step 2:** Ensure you know the Product, Brand Color, Target Audience, Emotional Target, and Component Library (e.g., shadcn vs raw Tailwind).
 
+User preferences override auto-resolved defaults. Auto-resolved defaults are suggestions, not authority.
+
 ---
 
 # PHASE 2: DESIGN SYSTEM RESOLUTION
