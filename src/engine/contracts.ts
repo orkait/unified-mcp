@@ -5,6 +5,7 @@ export interface TopologyRoot {
   domains: string[];
   agents: string[];
   bundles: string[];
+  artifacts: string[];
 }
 
 export interface DomainPolicy {
@@ -38,6 +39,21 @@ export interface BundlePolicy {
   outputContracts: string[];
 }
 
+export interface ArtifactContract {
+  id: string;
+  requiredFields: string[];
+  proofMode: string;
+}
+
+export interface RouteDefaults {
+  defaultAgent: string;
+  requiresWorkspaceInventory: boolean;
+  domainPreference: Record<string, string>;
+  crossDomainAgent: string;
+  designContractRequiredWhen: string[];
+  strictestProofOrder: string[];
+}
+
 export interface LoadedTopology {
   version: 1;
   defaultTransport: "local-tools";
@@ -45,4 +61,6 @@ export interface LoadedTopology {
   domains: DomainPolicy[];
   agents: AgentPolicy[];
   bundles: BundlePolicy[];
+  artifacts: ArtifactContract[];
+  routeDefaults: RouteDefaults;
 }

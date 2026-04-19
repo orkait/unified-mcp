@@ -1,7 +1,15 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import YAML from "yaml";
-import type { AgentPolicy, BundlePolicy, DomainPolicy, LoadedTopology, TopologyRoot } from "./contracts.js";
+import type {
+  AgentPolicy,
+  ArtifactContract,
+  BundlePolicy,
+  DomainPolicy,
+  LoadedTopology,
+  RouteDefaults,
+  TopologyRoot,
+} from "./contracts.js";
 
 interface RootDocument {
   version: 1;
@@ -10,6 +18,7 @@ interface RootDocument {
   domains: string[];
   agents: string[];
   bundles: string[];
+  artifacts: string[];
 }
 
 interface DomainDocument {
@@ -43,6 +52,21 @@ interface BundleDocument {
   output_contracts: string[];
 }
 
+interface ArtifactDocument {
+  id: string;
+  required_fields: string[];
+  proof_mode: string;
+}
+
+interface RouteDefaultsDocument {
+  default_agent: string;
+  requires_workspace_inventory: boolean;
+  domain_preference: Record<string, string>;
+  cross_domain_agent: string;
+  design_contract_required_when: string[];
+  strictest_proof_order: string[];
+}
+
 function readYaml<T>(filePath: string): T {
   return YAML.parse(readFileSync(filePath, "utf8")) as T;
 }
@@ -55,6 +79,7 @@ function mapRootDocument(root: RootDocument): TopologyRoot {
     domains: root.domains,
     agents: root.agents,
     bundles: root.bundles,
+    artifacts: root.artifacts,
   };
 }
 
@@ -95,6 +120,25 @@ function mapBundleDocument(bundle: BundleDocument): BundlePolicy {
   };
 }
 
+function mapArtifactDocument(doc: ArtifactDocument): ArtifactContract {
+  return {
+    id: doc.id,
+    requiredFields: doc.required_fields,
+    proofMode: doc.proof_mode,
+  };
+}
+
+function mapRouteDefaultsDocument(doc: RouteDefaultsDocument): RouteDefaults {
+  return {
+    defaultAgent: doc.default_agent,
+    requiresWorkspaceInventory: doc.requires_workspace_inventory,
+    domainPreference: doc.domain_preference,
+    crossDomainAgent: doc.cross_domain_agent,
+    designContractRequiredWhen: doc.design_contract_required_when,
+    strictestProofOrder: doc.strictest_proof_order,
+  };
+}
+
 export function loadTopology(repoRoot: string): LoadedTopology {
   const root = mapRootDocument(readYaml<RootDocument>(join(repoRoot, "topology", "manifest.yaml")));
   const domains = root.domains.map((id) =>
@@ -106,6 +150,12 @@ export function loadTopology(repoRoot: string): LoadedTopology {
   const bundles = root.bundles.map((id) =>
     mapBundleDocument(readYaml<BundleDocument>(join(repoRoot, "topology", "bundles", `${id}.yaml`))),
   );
+  const artifacts = root.artifacts.map((id) =>
+    mapArtifactDocument(readYaml<ArtifactDocument>(join(repoRoot, "topology", "artifacts", `${id}.yaml`))),
+  );
+  const routeDefaults = mapRouteDefaultsDocument(
+    readYaml<RouteDefaultsDocument>(join(repoRoot, "topology", "routes", "defaults.yaml")),
+  );
 
   return {
     version: root.version,
@@ -114,5 +164,7 @@ export function loadTopology(repoRoot: string): LoadedTopology {
     domains,
     agents,
     bundles,
+    artifacts,
+    routeDefaults,
   };
 }

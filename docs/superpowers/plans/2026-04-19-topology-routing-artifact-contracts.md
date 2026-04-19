@@ -1,12 +1,12 @@
-# Topology Routing And Artifact Contracts Implementation Plan
+# Workspace-First Topology Routing And Artifact Contracts Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make topology the active runtime authority for agent routing, skill enforcement, and typed artifact handoffs instead of passive configuration.
+**Goal:** Make topology the active runtime authority for workspace-aware routing, conditional design contracts, skill enforcement, and typed artifact handoffs.
 
-**Architecture:** Extend the current topology manifest with artifact contract definitions and route policies, then build a runtime layer that can validate artifacts, choose the right agent for a request, enforce allowed skills/bundles, and expose those capabilities through new CLI commands. Keep existing local tool execution intact and layer routing on top of it rather than rewriting the tool bridge.
+**Architecture:** Extend topology with universal planning artifacts and route defaults, then build a runtime layer that validates artifacts, routes requests based on domain plus workspace reality, computes required artifacts, and exposes those results through the CLI. `workspace_inventory` is universal, `design_contract` is conditional, `verification_report` is universal.
 
-**Tech Stack:** TypeScript, Bun, Zod, YAML, existing `src/engine/*`, existing `src/cli.ts`, generated topology/runtime artifacts, Bun test
+**Tech Stack:** TypeScript, Bun, YAML, existing `src/engine/*`, existing `src/cli.ts`, generated topology/runtime artifacts, Bun test
 
 ---
 
@@ -14,6 +14,7 @@
 
 ### New Files
 
+- `topology/artifacts/workspace_inventory.yaml`
 - `topology/artifacts/task_handoff.yaml`
 - `topology/artifacts/design_contract.yaml`
 - `topology/artifacts/build_result.yaml`
@@ -33,29 +34,29 @@
 - `src/engine/contracts.ts`
 - `src/engine/topology-loader.ts`
 - `src/engine/policy.ts`
-- `src/engine/resolver.ts`
 - `src/engine/navigation.ts`
 - `src/cli.ts`
 - `scripts/generate-topology-artifacts.ts`
-- `generated/routing/allow-deny.md`
 - `generated/runtime-context/topology.bootstrap.md`
+- `generated/routing/allow-deny.md`
 - `tests/topology-artifacts-behaviour.test.ts`
 
 ### Responsibility Boundaries
 
-- `topology/artifacts/` defines handoff schemas and proof expectations.
-- `topology/routes/` defines request-to-agent defaults and domain preference rules.
-- `src/engine/artifact-*` owns schema loading and validation only.
-- `src/engine/router.ts` owns agent selection and strictest-proof computation.
-- `src/engine/skill-enforcer.ts` owns allowed-skill checks for an already-routed agent.
-- `src/cli.ts` remains a thin transport layer over engine functions.
+- `workspace_inventory` is mandatory for any routed work.
+- `design_contract` is conditional and only required for new surfaces or visual-semantic changes.
+- `verification_report` remains mandatory before completion claims.
+- `src/engine/router.ts` owns route choice and required-artifact computation.
+- `src/engine/skill-enforcer.ts` owns allowed-skill checks for a routed agent.
+- `src/cli.ts` is transport only. No policy logic belongs there.
 
 ---
 
-### Task 1: Add Artifact Definitions To Topology And Load Them
+### Task 1: Add Workspace-First Artifact Contracts And Route Defaults
 
 **Files:**
 - Modify: `topology/manifest.yaml`
+- Create: `topology/artifacts/workspace_inventory.yaml`
 - Create: `topology/artifacts/task_handoff.yaml`
 - Create: `topology/artifacts/design_contract.yaml`
 - Create: `topology/artifacts/build_result.yaml`
@@ -65,32 +66,48 @@
 - Modify: `src/engine/topology-loader.ts`
 - Test: `tests/topology-manifest-behaviour.test.ts`
 
-- [ ] **Step 1: Extend the failing topology test with artifact and route expectations**
+- [ ] **Step 1: Extend the failing topology test**
 
 ```ts
 import { expect, test } from "bun:test";
 import { loadTopology } from "../src/engine/topology-loader.ts";
 
-test("loadTopology reads artifact contracts and route defaults", () => {
+test("loadTopology reads workspace-first artifacts and route defaults", () => {
   const topology = loadTopology(process.cwd());
 
   expect(topology.artifacts.map((a) => a.id)).toEqual([
+    "workspace_inventory",
     "task_handoff",
     "design_contract",
     "build_result",
     "verification_report",
   ]);
   expect(topology.routeDefaults.defaultAgent).toBe("hyper");
+  expect(topology.routeDefaults.requiresWorkspaceInventory).toBe(true);
   expect(topology.routeDefaults.domainPreference.frontend).toBe("frontend-builder");
+  expect(topology.routeDefaults.designContractRequiredWhen).toContain("new_surface");
 });
 ```
 
-- [ ] **Step 2: Run the focused test to verify it fails**
+- [ ] **Step 2: Run the test to verify it fails**
 
 Run: `bun test tests/topology-manifest-behaviour.test.ts`
-Expected: FAIL with `Cannot read properties of undefined` for `topology.artifacts` or `topology.routeDefaults`
+Expected: FAIL with `topology.artifacts` or `topology.routeDefaults` missing
 
-- [ ] **Step 3: Add artifact and route files**
+- [ ] **Step 3: Add topology YAMLs**
+
+```yaml
+# topology/artifacts/workspace_inventory.yaml
+id: workspace_inventory
+required_fields:
+  - repo_type
+  - stack
+  - touched_surfaces
+  - existing_patterns
+  - verification_commands
+  - project_mode
+proof_mode: discovery_only
+```
 
 ```yaml
 # topology/artifacts/task_handoff.yaml
@@ -100,6 +117,9 @@ required_fields:
   - domain_targets
   - capability_targets
   - success_criteria
+  - change_classification
+  - requires_design_contract
+  - required_artifacts
 proof_mode: routing_only
 ```
 
@@ -113,24 +133,29 @@ required_fields:
   - spacing
   - component_states
   - motion_rules
-proof_mode: visual_contract
+proof_mode: visual_contract_conditional
 ```
 
 ```yaml
 # topology/routes/defaults.yaml
 default_agent: hyper
+requires_workspace_inventory: true
 domain_preference:
   frontend: frontend-builder
   backend: backend-builder
   shared: hyper
 cross_domain_agent: fullstack-builder
+design_contract_required_when:
+  - new_surface
+  - visual_semantic_change
+  - no_existing_pattern_match
 strictest_proof_order:
   - routing_and_verification
   - executable
   - visual_and_behavioral
 ```
 
-- [ ] **Step 4: Extend topology contracts**
+- [ ] **Step 4: Extend contracts**
 
 ```ts
 // src/engine/contracts.ts
@@ -142,9 +167,21 @@ export interface ArtifactContract {
 
 export interface RouteDefaults {
   defaultAgent: string;
+  requiresWorkspaceInventory: boolean;
   domainPreference: Record<string, string>;
   crossDomainAgent: string;
+  designContractRequiredWhen: string[];
   strictestProofOrder: string[];
+}
+
+export interface TopologyRoot {
+  version: 1;
+  defaultTransport: "local-tools";
+  entryAgent: string;
+  domains: string[];
+  agents: string[];
+  bundles: string[];
+  artifacts: string[];
 }
 
 export interface LoadedTopology {
@@ -159,7 +196,7 @@ export interface LoadedTopology {
 }
 ```
 
-- [ ] **Step 5: Extend the loader to read artifacts and route defaults**
+- [ ] **Step 5: Extend the loader**
 
 ```ts
 // src/engine/topology-loader.ts
@@ -171,8 +208,10 @@ interface ArtifactDocument {
 
 interface RouteDefaultsDocument {
   default_agent: string;
+  requires_workspace_inventory: boolean;
   domain_preference: Record<string, string>;
   cross_domain_agent: string;
+  design_contract_required_when: string[];
   strictest_proof_order: string[];
 }
 
@@ -187,55 +226,52 @@ function mapArtifactDocument(doc: ArtifactDocument): ArtifactContract {
 function mapRouteDefaultsDocument(doc: RouteDefaultsDocument): RouteDefaults {
   return {
     defaultAgent: doc.default_agent,
+    requiresWorkspaceInventory: doc.requires_workspace_inventory,
     domainPreference: doc.domain_preference,
     crossDomainAgent: doc.cross_domain_agent,
+    designContractRequiredWhen: doc.design_contract_required_when,
     strictestProofOrder: doc.strictest_proof_order,
   };
 }
-
-const artifacts = ["task_handoff", "design_contract", "build_result", "verification_report"].map((id) =>
-  mapArtifactDocument(readYaml<ArtifactDocument>(join(repoRoot, "topology", "artifacts", `${id}.yaml`))),
-);
-const routeDefaults = mapRouteDefaultsDocument(
-  readYaml<RouteDefaultsDocument>(join(repoRoot, "topology", "routes", "defaults.yaml")),
-);
 ```
 
-- [ ] **Step 6: Run the topology test and typecheck**
+- [ ] **Step 6: Run the test and typecheck**
 
 Run: `bun test tests/topology-manifest-behaviour.test.ts && bun run build`
-Expected: PASS, with artifact and route-default assertions green
+Expected: PASS
 
 - [ ] **Step 7: Commit**
 
 ```bash
 git add topology/manifest.yaml topology/artifacts topology/routes src/engine/contracts.ts src/engine/topology-loader.ts tests/topology-manifest-behaviour.test.ts
-git commit -m "feat: add topology artifact contracts and route defaults"
+git commit -m "feat: add workspace-first artifact contracts and route defaults"
 ```
 
 ---
 
-### Task 2: Implement Typed Artifact Validation
+### Task 2: Implement Artifact Validation For Planning And Verification
 
 **Files:**
 - Create: `src/engine/artifact-loader.ts`
 - Create: `src/engine/artifact-validator.ts`
 - Test: `tests/artifact-contracts-behaviour.test.ts`
 
-- [ ] **Step 1: Write the failing artifact validation test**
+- [ ] **Step 1: Write the failing test**
 
 ```ts
 import { expect, test } from "bun:test";
 import { loadTopology } from "../src/engine/topology-loader.ts";
 import { validateArtifactPayload } from "../src/engine/artifact-validator.ts";
 
-test("validateArtifactPayload accepts a complete task_handoff", () => {
+test("validateArtifactPayload accepts a complete workspace_inventory", () => {
   const topology = loadTopology(process.cwd());
-  const result = validateArtifactPayload(topology, "task_handoff", {
-    request_id: "req-1",
-    domain_targets: ["frontend"],
-    capability_targets: ["design.intent"],
-    success_criteria: ["produce design contract"],
+  const result = validateArtifactPayload(topology, "workspace_inventory", {
+    repo_type: "web-app",
+    stack: ["react", "tailwind"],
+    touched_surfaces: ["settings page"],
+    existing_patterns: ["shadcn form"],
+    verification_commands: ["bun test", "bun run build"],
+    project_mode: "existing",
   });
 
   expect(result.ok).toBe(true);
@@ -254,7 +290,7 @@ test("validateArtifactPayload rejects missing design_contract fields", () => {
 });
 ```
 
-- [ ] **Step 2: Run the artifact test to verify it fails**
+- [ ] **Step 2: Run the test to verify it fails**
 
 Run: `bun test tests/artifact-contracts-behaviour.test.ts`
 Expected: FAIL with `Cannot find module "../src/engine/artifact-validator.ts"`
@@ -274,12 +310,12 @@ export function getArtifactContract(topology: LoadedTopology, artifactId: string
 }
 ```
 
-- [ ] **Step 4: Implement payload validation**
+- [ ] **Step 4: Implement the validator**
 
 ```ts
 // src/engine/artifact-validator.ts
-import { getArtifactContract } from "./artifact-loader.js";
 import type { LoadedTopology } from "./contracts.js";
+import { getArtifactContract } from "./artifact-loader.js";
 
 export function validateArtifactPayload(
   topology: LoadedTopology,
@@ -298,7 +334,7 @@ export function validateArtifactPayload(
 }
 ```
 
-- [ ] **Step 5: Run artifact validation tests and build**
+- [ ] **Step 5: Run tests and build**
 
 Run: `bun test tests/artifact-contracts-behaviour.test.ts && bun run build`
 Expected: PASS
@@ -307,43 +343,73 @@ Expected: PASS
 
 ```bash
 git add src/engine/artifact-loader.ts src/engine/artifact-validator.ts tests/artifact-contracts-behaviour.test.ts
-git commit -m "feat: add typed artifact validation"
+git commit -m "feat: add artifact validation for planning and verification"
 ```
 
 ---
 
-### Task 3: Add Topology Router With Strictest-Proof Resolution
+### Task 3: Add Workspace-Aware Router With Conditional Design Contracts
 
 **Files:**
 - Create: `src/engine/router.ts`
 - Modify: `src/engine/policy.ts`
 - Test: `tests/router-behaviour.test.ts`
 
-- [ ] **Step 1: Write the failing router test**
+- [ ] **Step 1: Write the failing router tests**
 
 ```ts
 import { expect, test } from "bun:test";
 import { loadTopology } from "../src/engine/topology-loader.ts";
 import { routeRequest } from "../src/engine/router.ts";
 
-test("routeRequest sends frontend-only work to frontend-builder", () => {
+test("routeRequest sends existing-project frontend logic work to frontend-builder without design contract", () => {
   const topology = loadTopology(process.cwd());
   const route = routeRequest(topology, {
     requestId: "req-1",
     domainTargets: ["frontend"],
-    capabilityTargets: ["design.intent"],
+    capabilityTargets: ["frontend.patterns"],
+    workspaceInventory: {
+      projectMode: "existing",
+      existingPatterns: ["existing form shell"],
+    },
+    changeClassification: "frontend_logic",
   });
 
   expect(route.agent.id).toBe("frontend-builder");
+  expect(route.requiredArtifacts).toContain("workspace_inventory");
+  expect(route.requiredArtifacts).not.toContain("design_contract");
+});
+
+test("routeRequest requires design contract for a new visual surface", () => {
+  const topology = loadTopology(process.cwd());
+  const route = routeRequest(topology, {
+    requestId: "req-2",
+    domainTargets: ["frontend"],
+    capabilityTargets: ["design.intent"],
+    workspaceInventory: {
+      projectMode: "greenfield",
+      existingPatterns: [],
+    },
+    changeClassification: "frontend_visual",
+  });
+
+  expect(route.agent.id).toBe("frontend-builder");
+  expect(route.requiredArtifacts).toContain("workspace_inventory");
+  expect(route.requiredArtifacts).toContain("design_contract");
   expect(route.proofMode).toBe("visual_and_behavioral");
 });
 
 test("routeRequest sends mixed frontend+backend work to fullstack-builder", () => {
   const topology = loadTopology(process.cwd());
   const route = routeRequest(topology, {
-    requestId: "req-2",
+    requestId: "req-3",
     domainTargets: ["frontend", "backend"],
-    capabilityTargets: ["design.intent", "backend.http.patterns"],
+    capabilityTargets: ["frontend.patterns", "backend.http.patterns"],
+    workspaceInventory: {
+      projectMode: "existing",
+      existingPatterns: [],
+    },
+    changeClassification: "fullstack_slice",
   });
 
   expect(route.agent.id).toBe("fullstack-builder");
@@ -356,7 +422,7 @@ test("routeRequest sends mixed frontend+backend work to fullstack-builder", () =
 Run: `bun test tests/router-behaviour.test.ts`
 Expected: FAIL with `Cannot find module "../src/engine/router.ts"`
 
-- [ ] **Step 3: Add proof-order helper to policy**
+- [ ] **Step 3: Add a strictest-proof helper**
 
 ```ts
 // src/engine/policy.ts
@@ -374,12 +440,26 @@ export function getStrictestProofMode(order: string[], proofModes: string[]): st
 }
 ```
 
-- [ ] **Step 4: Implement route resolution**
+- [ ] **Step 4: Implement the router**
 
 ```ts
 // src/engine/router.ts
 import type { LoadedTopology } from "./contracts.js";
 import { getAgent, getDomain, getStrictestProofMode } from "./policy.js";
+
+function shouldRequireDesignContract(input: {
+  changeClassification: string;
+  workspaceInventory: { projectMode: "greenfield" | "existing"; existingPatterns: string[] };
+}): boolean {
+  if (input.changeClassification !== "frontend_visual") {
+    return false;
+  }
+
+  return (
+    input.workspaceInventory.projectMode === "greenfield" ||
+    input.workspaceInventory.existingPatterns.length === 0
+  );
+}
 
 export function routeRequest(
   topology: LoadedTopology,
@@ -387,6 +467,11 @@ export function routeRequest(
     requestId: string;
     domainTargets: string[];
     capabilityTargets: string[];
+    workspaceInventory: {
+      projectMode: "greenfield" | "existing";
+      existingPatterns: string[];
+    };
+    changeClassification: string;
   },
 ) {
   const uniqueDomains = [...new Set(input.domainTargets)];
@@ -401,17 +486,26 @@ export function routeRequest(
     uniqueDomains.map((domainId) => getDomain(topology, domainId).completionProof),
   );
 
+  const requiredArtifacts = ["workspace_inventory", "task_handoff"];
+  const requiresDesignContract = shouldRequireDesignContract(input);
+
+  if (requiresDesignContract) {
+    requiredArtifacts.push("design_contract");
+  }
+
   return {
     requestId: input.requestId,
     agent,
     proofMode,
     domains: uniqueDomains,
     capabilityTargets: input.capabilityTargets,
+    requiredArtifacts,
+    requiresDesignContract,
   };
 }
 ```
 
-- [ ] **Step 5: Run routing tests and build**
+- [ ] **Step 5: Run router tests and build**
 
 Run: `bun test tests/router-behaviour.test.ts && bun run build`
 Expected: PASS
@@ -420,7 +514,7 @@ Expected: PASS
 
 ```bash
 git add src/engine/policy.ts src/engine/router.ts tests/router-behaviour.test.ts
-git commit -m "feat: add topology router with strictest proof resolution"
+git commit -m "feat: add workspace-aware router with conditional design contracts"
 ```
 
 ---
@@ -429,23 +523,27 @@ git commit -m "feat: add topology router with strictest proof resolution"
 
 **Files:**
 - Create: `src/engine/skill-enforcer.ts`
-- Modify: `src/engine/router.ts`
 - Test: `tests/router-behaviour.test.ts`
 
-- [ ] **Step 1: Extend the router test with skill enforcement**
+- [ ] **Step 1: Extend the failing router test**
 
 ```ts
 import { expect, test } from "bun:test";
 import { loadTopology } from "../src/engine/topology-loader.ts";
-import { assertSkillAllowedForAgent } from "../src/engine/skill-enforcer.ts";
 import { routeRequest } from "../src/engine/router.ts";
+import { assertSkillAllowedForAgent } from "../src/engine/skill-enforcer.ts";
 
 test("assertSkillAllowedForAgent rejects backend-only review skill on frontend-builder", () => {
   const topology = loadTopology(process.cwd());
   const route = routeRequest(topology, {
-    requestId: "req-3",
+    requestId: "req-4",
     domainTargets: ["frontend"],
-    capabilityTargets: ["design.intent"],
+    capabilityTargets: ["frontend.patterns"],
+    workspaceInventory: {
+      projectMode: "existing",
+      existingPatterns: ["existing form shell"],
+    },
+    changeClassification: "frontend_logic",
   });
 
   expect(() => assertSkillAllowedForAgent(route.agent, "security-review")).toThrow(/not allowed/i);
@@ -454,9 +552,14 @@ test("assertSkillAllowedForAgent rejects backend-only review skill on frontend-b
 test("assertSkillAllowedForAgent accepts designer for frontend-builder", () => {
   const topology = loadTopology(process.cwd());
   const route = routeRequest(topology, {
-    requestId: "req-4",
+    requestId: "req-5",
     domainTargets: ["frontend"],
     capabilityTargets: ["design.intent"],
+    workspaceInventory: {
+      projectMode: "greenfield",
+      existingPatterns: [],
+    },
+    changeClassification: "frontend_visual",
   });
 
   expect(() => assertSkillAllowedForAgent(route.agent, "designer")).not.toThrow();
@@ -495,7 +598,7 @@ git commit -m "feat: enforce allowed skills for routed agents"
 
 ---
 
-### Task 5: Expose Routing And Artifact Validation Through CLI
+### Task 5: Expose Routing And Artifact Validation Through The CLI
 
 **Files:**
 - Modify: `src/cli.ts`
@@ -508,21 +611,22 @@ import { expect, test } from "bun:test";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
 
-test("CLI route command returns the routed agent and proof mode", () => {
+test("CLI route command returns routed agent and required artifacts", () => {
   const result = spawnSync(
     process.execPath,
     [
       resolve("bin/hyperstack.mjs"),
       "route",
       "--json",
-      '{"requestId":"req-1","domainTargets":["frontend"],"capabilityTargets":["design.intent"]}',
+      '{"requestId":"req-1","domainTargets":["frontend"],"capabilityTargets":["frontend.patterns"],"workspaceInventory":{"projectMode":"existing","existingPatterns":["existing form shell"]},"changeClassification":"frontend_logic"}',
     ],
     { cwd: process.cwd(), encoding: "utf8" },
   );
 
   expect(result.status).toBe(0);
   expect(result.stdout).toMatch(/frontend-builder/);
-  expect(result.stdout).toMatch(/visual_and_behavioral/);
+  expect(result.stdout).toMatch(/workspace_inventory/);
+  expect(result.stdout).not.toMatch(/design_contract/);
 });
 
 test("CLI artifact validate command reports missing fields", () => {
@@ -532,16 +636,16 @@ test("CLI artifact validate command reports missing fields", () => {
       resolve("bin/hyperstack.mjs"),
       "artifact",
       "validate",
-      "design_contract",
+      "workspace_inventory",
       "--json",
-      '{"visual_theme":"dark"}',
+      '{"repo_type":"web-app"}',
     ],
     { cwd: process.cwd(), encoding: "utf8" },
   );
 
   expect(result.status).toBe(0);
   expect(result.stdout).toMatch(/missingFields/);
-  expect(result.stdout).toMatch(/typography/);
+  expect(result.stdout).toMatch(/stack/);
 });
 ```
 
@@ -550,7 +654,7 @@ test("CLI artifact validate command reports missing fields", () => {
 Run: `bun test tests/local-cli-routing-behaviour.test.ts`
 Expected: FAIL because `src/cli.ts` only supports `tool`
 
-- [ ] **Step 3: Extend `src/cli.ts`**
+- [ ] **Step 3: Extend the CLI**
 
 ```ts
 // src/cli.ts
@@ -562,7 +666,7 @@ import { invokeLocalTool } from "./adapters/local-tools/index.js";
 const topology = loadTopology(process.cwd());
 
 if (command === "tool") {
-  // existing path unchanged
+  // existing path
 }
 
 if (command === "route" && flag === "--json" && json) {
@@ -570,7 +674,10 @@ if (command === "route" && flag === "--json" && json) {
     requestId: string;
     domainTargets: string[];
     capabilityTargets: string[];
+    workspaceInventory: { projectMode: "greenfield" | "existing"; existingPatterns: string[] };
+    changeClassification: string;
   };
+
   process.stdout.write(`${JSON.stringify(routeRequest(topology, input), null, 2)}\n`);
   process.exit(0);
 }
@@ -579,15 +686,19 @@ if (command === "artifact" && process.argv[3] === "validate") {
   const artifactId = process.argv[4];
   const jsonFlag = process.argv[5];
   const jsonPayload = process.argv[6];
+
+  if (jsonFlag !== "--json" || !artifactId || !jsonPayload) {
+    process.stderr.write("Usage: hyperstack artifact validate <artifact-id> --json '{...}'\n");
+    process.exit(1);
+  }
+
   const payload = JSON.parse(jsonPayload) as Record<string, unknown>;
-  process.stdout.write(
-    `${JSON.stringify(validateArtifactPayload(topology, artifactId, payload), null, 2)}\n`,
-  );
+  process.stdout.write(`${JSON.stringify(validateArtifactPayload(topology, artifactId, payload), null, 2)}\n`);
   process.exit(0);
 }
 ```
 
-- [ ] **Step 4: Run CLI routing tests and build**
+- [ ] **Step 4: Run CLI tests and build**
 
 Run: `bun test tests/local-cli-routing-behaviour.test.ts && bun run build`
 Expected: PASS
@@ -596,18 +707,18 @@ Expected: PASS
 
 ```bash
 git add src/cli.ts tests/local-cli-routing-behaviour.test.ts
-git commit -m "feat: expose topology routing and artifact validation via cli"
+git commit -m "feat: expose routing and artifact validation via cli"
 ```
 
 ---
 
-### Task 6: Regenerate Topology Artifacts To Include Artifacts And Routing Rules
+### Task 6: Regenerate Topology Summaries With Workspace-First Rules
 
 **Files:**
 - Modify: `scripts/generate-topology-artifacts.ts`
 - Modify: `tests/topology-artifacts-behaviour.test.ts`
-- Modify: `generated/routing/allow-deny.md`
 - Modify: `generated/runtime-context/topology.bootstrap.md`
+- Modify: `generated/routing/allow-deny.md`
 
 - [ ] **Step 1: Extend the failing topology artifact test**
 
@@ -616,18 +727,19 @@ import { expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-test("generated topology bootstrap includes artifact and route defaults", () => {
+test("generated topology bootstrap includes workspace-first routing markers", () => {
   const bootstrap = readFileSync(resolve("generated/runtime-context/topology.bootstrap.md"), "utf8");
-  expect(bootstrap).toMatch(/task_handoff/);
+  expect(bootstrap).toMatch(/workspace_inventory/);
   expect(bootstrap).toMatch(/design_contract/);
-  expect(bootstrap).toMatch(/cross-domain agent: fullstack-builder/);
+  expect(bootstrap).toMatch(/design contract is conditional/i);
+  expect(bootstrap).toMatch(/cross-domain agent: fullstack-builder/i);
 });
 ```
 
 - [ ] **Step 2: Run the artifact test to verify it fails**
 
 Run: `bun test tests/topology-artifacts-behaviour.test.ts`
-Expected: FAIL because the generator does not emit artifact or route sections yet
+Expected: FAIL because current topology summaries do not include workspace-first routing markers
 
 - [ ] **Step 3: Extend the generator**
 
@@ -640,6 +752,8 @@ writeFileSync(
     "",
     `Entry agent: ${topology.entryAgent}`,
     `Cross-domain agent: ${topology.routeDefaults.crossDomainAgent}`,
+    `Workspace inventory required: ${topology.routeDefaults.requiresWorkspaceInventory}`,
+    "Design contract is conditional",
     "",
     "## Artifacts",
     ...topology.artifacts.map((artifact) => `- ${artifact.id}: ${artifact.proofMode}`),
@@ -662,20 +776,20 @@ Expected: PASS
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scripts/generate-topology-artifacts.ts generated/routing/allow-deny.md generated/runtime-context/topology.bootstrap.md tests/topology-artifacts-behaviour.test.ts
-git commit -m "feat: generate topology route and artifact summaries"
+git add scripts/generate-topology-artifacts.ts generated/runtime-context/topology.bootstrap.md generated/routing/allow-deny.md tests/topology-artifacts-behaviour.test.ts
+git commit -m "feat: generate workspace-first topology summaries"
 ```
 
 ---
 
 ## Spec Coverage Check
 
-- Topology becomes active runtime authority: covered by Tasks 3, 4, and 5.
-- Typed artifact contracts: covered by Tasks 1 and 2.
+- Workspace-first planning: covered by Tasks 1, 2, 3, and 5.
+- Conditional `design_contract` for existing projects: covered by Tasks 3, 5, and 6.
+- Universal `verification_report`: preserved by route and artifact model.
 - Strictest touched-domain proof model: covered by Task 3.
-- Skill enforcement by routed agent: covered by Task 4.
+- Skill allow/deny enforcement: covered by Task 4.
 - CLI/runtime exposure for routing and validation: covered by Task 5.
-- Generated topology artifacts expanded to reflect the new runtime semantics: covered by Task 6.
 
 ## Placeholder Scan
 
@@ -685,13 +799,13 @@ git commit -m "feat: generate topology route and artifact summaries"
 
 ## Type Consistency Check
 
-- Artifact IDs are consistently `task_handoff`, `design_contract`, `build_result`, `verification_report`.
-- Agent IDs stay `hyper`, `frontend-builder`, `backend-builder`, `fullstack-builder`.
-- Bundle IDs stay `shared.system`, `frontend.design`, `frontend.react`, `backend.http`, `backend.lang.go`, `backend.lang.rust`.
+- Artifact IDs are consistently `workspace_inventory`, `task_handoff`, `design_contract`, `build_result`, `verification_report`.
+- Route inputs consistently use `workspaceInventory` and `changeClassification`.
 - Proof mode names stay `routing_and_verification`, `executable`, `visual_and_behavioral`.
+- Agent IDs stay `hyper`, `frontend-builder`, `backend-builder`, `fullstack-builder`.
 
 ## Notes For Execution
 
-- Keep using the existing local tool runtime from the previous phase; this plan adds routing/validation above it.
-- Do not migrate deep corpus content in this phase; use topology authority first, corpus migration later.
-- Keep commits small and phase-aligned exactly as listed.
+- Do not force `design_contract` for every frontend request.
+- Treat client existing-project work as workspace-first by default.
+- Keep local tool execution intact; this phase layers routing and planning logic above it.

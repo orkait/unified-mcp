@@ -17,3 +17,9 @@ bundles:
   - backend.http
   - backend.lang.go
   - backend.lang.rust
+artifacts:
+  - workspace_inventory
+  - task_handoff
+  - design_contract
+  - build_result
+  - verification_report
