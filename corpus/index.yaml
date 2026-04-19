@@ -1,3 +1,4 @@
 namespaces:
   backend.golang: corpus/backend/golang
+  frontend.designer: corpus/frontend/designer
   frontend.ui-ux: corpus/frontend/ui-ux

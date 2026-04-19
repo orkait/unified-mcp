@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import { invokeRegisteredTool } from "../src/engine/tool-bridge.ts";
 import { register as registerGetPractice } from "../src/plugins/golang/tools/get-practice.ts";
 import { register as registerGetPrinciple } from "../src/plugins/ui-ux/tools/get-principle.ts";
+import { register as registerGetPersonality } from "../src/plugins/designer/tools/get-personality.ts";
 
 test("golang_get_practice reads corpus-backed practice documents first", async () => {
   const result = await invokeRegisteredTool(registerGetPractice, {
@@ -19,4 +20,13 @@ test("ui_ux_get_principle reads corpus-backed frontend knowledge first", async (
 
   expect(result.content?.[0]?.text).toMatch(/Body text: 4\.5:1/);
   expect(result.content?.[0]?.text).toMatch(/\*\*Corpus Source:\*\* frontend\.ui-ux/);
+});
+
+test("designer_get_personality reads corpus-backed designer knowledge first", async () => {
+  const result = await invokeRegisteredTool(registerGetPersonality, {
+    cluster: "premium-precision",
+  });
+
+  expect(result.content?.[0]?.text).toMatch(/Ultra-minimal, zero decoration/);
+  expect(result.content?.[0]?.text).toMatch(/\*\*Corpus Source:\*\* frontend\.designer/);
 });

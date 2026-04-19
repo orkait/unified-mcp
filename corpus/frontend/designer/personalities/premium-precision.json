@@ -1,0 +1,19 @@
+{
+  "cluster": "premium-precision",
+  "description": "Ultra-minimal, zero decoration, surgical whitespace. Every pixel is justified. The product disappears behind its content.",
+  "exemplars": [
+    { "name": "Linear", "signature": "Tight type (-0.03em), purple accent, no gradients" },
+    { "name": "Vercel", "signature": "Black + white only, Geist font, mathematical spacing" },
+    { "name": "Apple", "signature": "Massive whitespace, cinematic imagery, SF Pro" },
+    { "name": "Stripe", "signature": "Weight-300 elegance, purple gradient, rich docs" }
+  ],
+  "vocabulary": {
+    "colors": "Monochromatic or single accent, zero chromatic noise",
+    "typography": "Tight tracking (-0.02 to -0.03em) on headings, weight 300-600 only",
+    "radius": "0-8px, sharp and precise",
+    "shadows": "None or ultra-subtle single layer",
+    "motion": "Subtle hover 200-250ms, no bounce",
+    "density": "normal"
+  },
+  "defaultMode": "light"
+}
