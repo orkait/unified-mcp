@@ -1,0 +1,3 @@
+principles:
+  type-scale: corpus/frontend/ui-ux/principles/type-scale.json
+  wcag-contrast: corpus/frontend/ui-ux/principles/wcag-contrast.json

@@ -1,6 +1,31 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { z } from "zod";
+import YAML from "yaml";
+import { loadCorpusIndex, loadCorpusDocument } from "../../../engine/corpus-loader.js";
+import { getNamespaceRoot } from "../../../engine/corpus-registry.js";
 import { PRINCIPLES } from "../data.js";
+
+type CorpusPrinciple = {
+  name: string;
+  domain: string;
+  rule: string;
+  detail: string;
+  examples?: string[];
+  antiPatterns?: string[];
+};
+
+function loadCorpusPrinciple(repoRoot: string, name: string): CorpusPrinciple | null {
+  const index = loadCorpusIndex(repoRoot);
+  const root = getNamespaceRoot(index, "frontend.ui-ux");
+  const registry = YAML.parse(readFileSync(join(repoRoot, root, "index.yaml"), "utf8")) as {
+    principles: Record<string, string>;
+  };
+
+  const path = registry.principles[name];
+  return path ? loadCorpusDocument<CorpusPrinciple>(repoRoot, path) : null;
+}
 
 export function register(server: McpServer): void {
   server.tool(
@@ -10,11 +35,12 @@ export function register(server: McpServer): void {
       name: z.string().describe("Principle name (e.g. 'type-scale', 'wcag-contrast', 'dark-mode-principles', 'touch-targets', 'easing-rules')"),
     },
     async ({ name }) => {
+      const corpusPrinciple = loadCorpusPrinciple(process.cwd(), name.toLowerCase());
       const principle = PRINCIPLES.find(
         (p) => p.name.toLowerCase() === name.toLowerCase()
       );
 
-      if (!principle) {
+      if (!corpusPrinciple && !principle) {
         const available = PRINCIPLES.map((p) => p.name).join(", ");
         return {
           content: [{ type: "text", text: `Principle "${name}" not found.\n\nAvailable: ${available}` }],
@@ -22,23 +48,25 @@ export function register(server: McpServer): void {
         };
       }
 
-      let text = `# ${principle.name} [${principle.domain}]\n\n`;
-      text += `**Rule:** ${principle.rule}\n\n`;
-      text += `${principle.detail}\n\n`;
+      const source = corpusPrinciple ?? principle!;
+      let text = `# ${source.name} [${source.domain}]\n\n`;
+      text += `**Rule:** ${source.rule}\n\n`;
+      text += `${source.detail}\n\n`;
+      if (corpusPrinciple) text += `**Corpus Source:** frontend.ui-ux\n\n`;
 
-      if (principle.cssExample) {
+      if (!corpusPrinciple && principle?.cssExample) {
         text += `## CSS Example\n\`\`\`css\n${principle.cssExample}\n\`\`\`\n\n`;
       }
 
-      if (principle.examples?.length) {
+      if (source.examples?.length) {
         text += `## Examples\n`;
-        for (const ex of principle.examples) text += `- ${ex}\n`;
+        for (const ex of source.examples) text += `- ${ex}\n`;
         text += "\n";
       }
 
-      if (principle.antiPatterns?.length) {
+      if (source.antiPatterns?.length) {
         text += `## Anti-patterns (avoid)\n`;
-        for (const ap of principle.antiPatterns) text += `- ❌ ${ap}\n`;
+        for (const ap of source.antiPatterns) text += `- ❌ ${ap}\n`;
       }
 
       return { content: [{ type: "text", text }] };

@@ -1,0 +1,12 @@
+{
+  "name": "type-scale",
+  "domain": "typography",
+  "rule": "Use mathematical ratios for type scale, not arbitrary sizes.",
+  "detail": "Recommended web scale starts from a fixed body size and uses consistent ratios for larger text.",
+  "examples": [],
+  "antiPatterns": [
+    "Random px values with no ratio",
+    "Fluid body text",
+    "More than 2 type families"
+  ]
+}
