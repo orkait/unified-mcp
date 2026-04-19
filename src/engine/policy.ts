@@ -23,3 +23,16 @@ export function getDomain(topology: LoadedTopology, domainId: string): DomainPol
   }
   return domain;
 }
+
+export function getStrictestProofMode(order: string[], proofModes: string[]): string {
+  const ranked = proofModes
+    .map((mode) => ({ mode, index: order.indexOf(mode) }))
+    .filter((entry) => entry.index >= 0)
+    .sort((left, right) => right.index - left.index);
+
+  if (ranked.length === 0) {
+    throw new Error(`No proof mode could be ranked from: ${proofModes.join(", ")}`);
+  }
+
+  return ranked[0].mode;
+}
