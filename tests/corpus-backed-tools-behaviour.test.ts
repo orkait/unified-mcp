@@ -6,6 +6,7 @@ import { register as registerGetPersonality } from "../src/plugins/designer/tool
 import { register as registerGetIndustryRules } from "../src/plugins/designer/tools/get-industry-rules.ts";
 import { register as registerResolveIntent } from "../src/plugins/designer/tools/resolve-intent.ts";
 import { register as registerGetTokenCategory } from "../src/plugins/design-tokens/tools/get-category.ts";
+import { register as registerGetTokenGotchas } from "../src/plugins/design-tokens/tools/get-gotchas.ts";
 
 test("golang_get_practice reads corpus-backed practice documents first", async () => {
   const result = await invokeRegisteredTool(registerGetPractice, {
@@ -60,4 +61,11 @@ test("design_tokens_get_category reads corpus-backed token knowledge first", asy
 
   expect(result.content?.[0]?.text).toMatch(/Three-layer architecture/);
   expect(result.content?.[0]?.text).toMatch(/\*\*Corpus Source:\*\* frontend\.design-tokens/);
+});
+
+test("design_tokens_get_gotchas reads corpus-backed token gotchas first", async () => {
+  const result = await invokeRegisteredTool(registerGetTokenGotchas, {});
+
+  expect(result.content?.[0]?.text).toMatch(/frontend\.design-tokens/);
+  expect(result.content?.[0]?.text).toMatch(/Status colors often need lower lightness for contrast/);
 });
