@@ -1,0 +1,18 @@
+{
+  "industry": "saas",
+  "primaryStyle": "glassmorphism + flat",
+  "secondaryStyle": "soft-ui",
+  "mustHave": [
+    "Subtle hover transitions",
+    "Smooth state changes",
+    "Clear data hierarchy",
+    "Empty states"
+  ],
+  "neverUse": [
+    "Excessive animation",
+    "More than 2 accent colors",
+    "AI purple as default"
+  ],
+  "colorMood": "Trust blue + single accent contrast",
+  "emotionalTarget": "trustworthy"
+}

@@ -3,6 +3,7 @@ import { invokeRegisteredTool } from "../src/engine/tool-bridge.ts";
 import { register as registerGetPractice } from "../src/plugins/golang/tools/get-practice.ts";
 import { register as registerGetPrinciple } from "../src/plugins/ui-ux/tools/get-principle.ts";
 import { register as registerGetPersonality } from "../src/plugins/designer/tools/get-personality.ts";
+import { register as registerGetIndustryRules } from "../src/plugins/designer/tools/get-industry-rules.ts";
 
 test("golang_get_practice reads corpus-backed practice documents first", async () => {
   const result = await invokeRegisteredTool(registerGetPractice, {
@@ -28,5 +29,14 @@ test("designer_get_personality reads corpus-backed designer knowledge first", as
   });
 
   expect(result.content?.[0]?.text).toMatch(/Ultra-minimal, zero decoration/);
+  expect(result.content?.[0]?.text).toMatch(/\*\*Corpus Source:\*\* frontend\.designer/);
+});
+
+test("designer_get_industry_rules reads corpus-backed designer knowledge first", async () => {
+  const result = await invokeRegisteredTool(registerGetIndustryRules, {
+    industry: "saas",
+  });
+
+  expect(result.content?.[0]?.text).toMatch(/Primary style:/);
   expect(result.content?.[0]?.text).toMatch(/\*\*Corpus Source:\*\* frontend\.designer/);
 });

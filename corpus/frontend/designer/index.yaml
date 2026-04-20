@@ -1,2 +1,4 @@
 personalities:
   premium-precision: corpus/frontend/designer/personalities/premium-precision.json
+industryRules:
+  saas: corpus/frontend/designer/industry-rules/saas.json
