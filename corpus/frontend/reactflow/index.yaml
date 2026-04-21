@@ -6,3 +6,5 @@ apis:
     file: handle.yaml
   background:
     file: background.yaml
+  controls:
+    file: controls.yaml
