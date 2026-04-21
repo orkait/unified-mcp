@@ -1,0 +1,4 @@
+namespace: frontend.design-tokens
+procedures:
+  step-1:
+    file: step-1.yaml

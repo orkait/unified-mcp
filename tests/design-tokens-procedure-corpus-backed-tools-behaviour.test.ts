@@ -1,0 +1,32 @@
+import { expect, test } from "bun:test";
+import { captureTool, extractTextContent } from "./helpers";
+import { register as registerDesignTokensGetProcedure } from "../src/plugins/design-tokens/tools/get-procedure.ts";
+
+const designTokensGetProcedure = captureTool(registerDesignTokensGetProcedure);
+
+test("design_tokens_get_procedure prefers corpus metadata for step 1", async () => {
+  const result = await designTokensGetProcedure.invoke({ step: 1 });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Step 1: Define color ramp primitives in @theme");
+  expect(text).toContain("**Corpus Source:** frontend.design-tokens");
+  expect(text).toContain("--color-brand-50: oklch(0.98 0.01 291);");
+});
+
+test("design_tokens_get_procedure falls back to in-file data for other steps", async () => {
+  const result = await designTokensGetProcedure.invoke({ step: 2 });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Step 2: Map semantic tokens in :root and .dark");
+  expect(text).toContain("## Code");
+  expect(text).not.toContain("**Corpus Source:** frontend.design-tokens");
+});
+
+test("design_tokens_get_procedure summary includes corpus source when corpus metadata is present", async () => {
+  const result = await designTokensGetProcedure.invoke({});
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Design Token Build Procedure");
+  expect(text).toContain("**Corpus Source:** frontend.design-tokens");
+  expect(text).toContain("## Step 1: Define color ramp primitives in @theme");
+});
