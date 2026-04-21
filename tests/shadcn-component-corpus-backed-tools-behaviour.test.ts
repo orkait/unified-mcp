@@ -31,10 +31,11 @@ test("shadcn_get_component prefers corpus metadata for Field", async () => {
   expect(text).toContain("<FieldLabel>Username</FieldLabel>");
 });
 
-test("shadcn_get_component falls back to in-file data for non-corpus components", async () => {
+test("shadcn_get_component prefers corpus metadata for Select", async () => {
   const result = await shadcnGetComponent.invoke({ name: "Select" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# Select");
-  expect(text).not.toContain("**Corpus Source:** frontend.shadcn");
+  expect(text).toContain("**Corpus Source:** frontend.shadcn");
+  expect(text).toContain('<Select defaultValue="apple">');
 });

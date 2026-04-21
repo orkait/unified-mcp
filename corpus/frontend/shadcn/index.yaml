@@ -6,3 +6,5 @@ components:
     file: dialog.yaml
   field:
     file: field.yaml
+  select:
+    file: select.yaml
