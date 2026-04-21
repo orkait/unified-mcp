@@ -13,3 +13,5 @@ namespaces:
     index: frontend/shadcn/index.yaml
   frontend.ui-ux:
     index: frontend/ui-ux/index.yaml
+  frontend.react:
+    index: frontend/react/index.yaml
