@@ -10,3 +10,5 @@ apis:
     file: controls.yaml
   minimap:
     file: minimap.yaml
+  usereactflow:
+    file: usereactflow.yaml

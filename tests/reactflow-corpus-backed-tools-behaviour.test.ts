@@ -49,10 +49,19 @@ test("reactflow_get_api prefers corpus metadata for MiniMap", async () => {
   expect(text).toContain("import { MiniMap } from '@xyflow/react'");
 });
 
-test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+test("reactflow_get_api prefers corpus metadata for useReactFlow", async () => {
   const result = await reactFlowGetApi.invoke({ name: "useReactFlow" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# useReactFlow (hook)");
+  expect(text).toContain("**Corpus Source:** frontend.reactflow");
+  expect(text).toContain("fitView, zoomIn, zoomOut");
+});
+
+test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+  const result = await reactFlowGetApi.invoke({ name: "NodeResizer" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# NodeResizer (component)");
   expect(text).not.toContain("**Corpus Source:** frontend.reactflow");
 });
