@@ -22,10 +22,19 @@ test("rust_get_practice prefers corpus metadata for result-not-panic", async () 
   expect(text).toContain("fs::read_to_string(path)?");
 });
 
-test("rust_get_practice falls back to in-file data for non-corpus practices", async () => {
+test("rust_get_practice prefers corpus metadata for no-unwrap-in-prod", async () => {
   const result = await rustGetPractice.invoke({ name: "no-unwrap-in-prod" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# no-unwrap-in-prod [error-handling]");
+  expect(text).toContain("**Corpus Source:** backend.rust");
+  expect(text).toContain("map.get(&key)?");
+});
+
+test("rust_get_practice falls back to in-file data for non-corpus practices", async () => {
+  const result = await rustGetPractice.invoke({ name: "prefer-iterators" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# prefer-iterators [performance]");
   expect(text).not.toContain("**Corpus Source:** backend.rust");
 });
