@@ -2,3 +2,5 @@ namespace: frontend.react
 patterns:
   rsc-default:
     file: rsc-default.yaml
+  zustand-store:
+    file: zustand-store.yaml
