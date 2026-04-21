@@ -22,11 +22,20 @@ test("reactflow_get_api prefers corpus metadata for Handle", async () => {
   expect(text).toContain("import { Handle, Position } from '@xyflow/react'");
 });
 
-test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+test("reactflow_get_api prefers corpus metadata for Background", async () => {
   const result = await reactFlowGetApi.invoke({ name: "Background" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# Background (component)");
+  expect(text).toContain("**Corpus Source:** frontend.reactflow");
   expect(text).toContain("import { Background, BackgroundVariant } from '@xyflow/react'");
+});
+
+test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+  const result = await reactFlowGetApi.invoke({ name: "Controls" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Controls (component)");
+  expect(text).toContain("import { Controls, ControlButton } from '@xyflow/react'");
   expect(text).not.toContain("**Corpus Source:** frontend.reactflow");
 });

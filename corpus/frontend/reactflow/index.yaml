@@ -4,3 +4,5 @@ apis:
     file: reactflow.yaml
   handle:
     file: handle.yaml
+  background:
+    file: background.yaml
