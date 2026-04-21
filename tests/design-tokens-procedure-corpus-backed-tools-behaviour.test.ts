@@ -40,11 +40,20 @@ test("design_tokens_get_procedure prefers corpus metadata for step 4", async () 
   expect(text).toContain("--spacing: 0.25rem;");
 });
 
-test("design_tokens_get_procedure falls back to in-file data for other steps", async () => {
+test("design_tokens_get_procedure prefers corpus metadata for step 5", async () => {
   const result = await designTokensGetProcedure.invoke({ step: 5 });
   const text = extractTextContent(result);
 
   expect(text).toContain("# Step 5: Set up typography scale");
+  expect(text).toContain("**Corpus Source:** frontend.design-tokens");
+  expect(text).toContain("--font-sans:");
+});
+
+test("design_tokens_get_procedure falls back to in-file data for other steps", async () => {
+  const result = await designTokensGetProcedure.invoke({ step: 6 });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Step 6: Define shadows and elevation");
   expect(text).toContain("## Code");
   expect(text).not.toContain("**Corpus Source:** frontend.design-tokens");
 });
