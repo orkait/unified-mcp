@@ -6,3 +6,5 @@ patterns:
     file: full-page.yaml
   next-js:
     file: next-js.yaml
+  framer-motion-integration:
+    file: framer-motion-integration.yaml

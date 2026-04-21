@@ -31,6 +31,15 @@ test("lenis_get_pattern prefers corpus metadata for next-js", async () => {
   expect(text).toContain("SmoothScrollProvider");
 });
 
+test("lenis_get_pattern prefers corpus metadata for framer-motion-integration", async () => {
+  const result = await lenisGetPattern.invoke({ name: "framer-motion-integration" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# Lenis Pattern: framer-motion-integration");
+  expect(text).toContain("**Corpus Source:** frontend.lenis");
+  expect(text).toContain('import { frame } from "motion";');
+});
+
 test("lenis_get_pattern falls back to in-file data for non-corpus patterns", async () => {
   const result = await lenisGetPattern.invoke({ name: "accessibility" });
   const text = extractTextContent(result);
