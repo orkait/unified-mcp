@@ -1,0 +1,4 @@
+namespace: frontend.motion
+apis:
+  motion:
+    file: motion.yaml

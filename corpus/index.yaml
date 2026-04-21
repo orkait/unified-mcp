@@ -1,0 +1,3 @@
+namespaces:
+  frontend.motion:
+    index: frontend/motion/index.yaml
