@@ -33,11 +33,21 @@ test("motion_get_api prefers corpus metadata for useScroll", async () => {
   expect(text).toContain('import { useScroll } from "motion/react"');
 });
 
-test("motion_get_api falls back to in-file data for non-corpus motion APIs", async () => {
+test("motion_get_api prefers corpus metadata for useSpring", async () => {
   const result = await motionGetApi.invoke({ name: "useSpring" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# useSpring");
+  expect(text).toContain("**Kind:** hook");
+  expect(text).toContain("**Corpus Source:** frontend.motion");
+  expect(text).toContain('import { useSpring } from "motion/react"');
+});
+
+test("motion_get_api falls back to in-file data for non-corpus motion APIs", async () => {
+  const result = await motionGetApi.invoke({ name: "useAnimate" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# useAnimate");
   expect(text).toContain("**Kind:** hook");
   expect(text).not.toContain("**Corpus Source:** frontend.motion");
 });
