@@ -1,0 +1,4 @@
+namespace: backend.rust
+practices:
+  borrow-over-clone:
+    file: borrow-over-clone.yaml
