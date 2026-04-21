@@ -17,3 +17,5 @@ namespaces:
     index: frontend/ui-ux/index.yaml
   frontend.react:
     index: frontend/react/index.yaml
+  backend.rust:
+    index: backend/rust/index.yaml
