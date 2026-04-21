@@ -1,0 +1,4 @@
+namespace: backend.golang
+practices:
+  error-wrapping:
+    file: error-wrapping.yaml
