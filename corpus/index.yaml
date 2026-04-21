@@ -1,3 +1,7 @@
 namespaces:
   frontend.motion:
     index: frontend/motion/index.yaml
+  frontend.lenis:
+    index: frontend/lenis/index.yaml
+  frontend.design-tokens:
+    index: frontend/design-tokens/index.yaml
