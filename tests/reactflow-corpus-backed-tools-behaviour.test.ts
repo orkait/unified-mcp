@@ -40,11 +40,19 @@ test("reactflow_get_api prefers corpus metadata for Controls", async () => {
   expect(text).toContain("import { Controls, ControlButton } from '@xyflow/react'");
 });
 
-test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+test("reactflow_get_api prefers corpus metadata for MiniMap", async () => {
   const result = await reactFlowGetApi.invoke({ name: "MiniMap" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# MiniMap (component)");
+  expect(text).toContain("**Corpus Source:** frontend.reactflow");
   expect(text).toContain("import { MiniMap } from '@xyflow/react'");
+});
+
+test("reactflow_get_api falls back to in-file data for non-corpus APIs", async () => {
+  const result = await reactFlowGetApi.invoke({ name: "useReactFlow" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# useReactFlow (hook)");
   expect(text).not.toContain("**Corpus Source:** frontend.reactflow");
 });
