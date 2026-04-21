@@ -22,10 +22,19 @@ test("ui_ux_get_principle prefers corpus metadata for wcag-contrast", async () =
   expect(text).toContain("4.5:1 (AA)");
 });
 
-test("ui_ux_get_principle falls back to in-file data for non-corpus principles", async () => {
+test("ui_ux_get_principle prefers corpus metadata for dark-mode-principles", async () => {
   const result = await uiUxGetPrinciple.invoke({ name: "dark-mode-principles" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# dark-mode-principles [color]");
+  expect(text).toContain("**Corpus Source:** frontend.ui-ux");
+  expect(text).toContain("oklch(0.13 0.008 265)");
+});
+
+test("ui_ux_get_principle falls back to in-file data for non-corpus principles", async () => {
+  const result = await uiUxGetPrinciple.invoke({ name: "touch-targets" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# touch-targets [accessibility]");
   expect(text).not.toContain("**Corpus Source:** frontend.ui-ux");
 });

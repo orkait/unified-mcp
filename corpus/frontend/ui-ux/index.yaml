@@ -4,3 +4,5 @@ principles:
     file: type-scale.yaml
   wcag-contrast:
     file: wcag-contrast.yaml
+  dark-mode-principles:
+    file: dark-mode-principles.yaml
