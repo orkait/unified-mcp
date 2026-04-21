@@ -6,3 +6,5 @@ principles:
     file: wcag-contrast.yaml
   dark-mode-principles:
     file: dark-mode-principles.yaml
+  touch-targets:
+    file: touch-targets.yaml

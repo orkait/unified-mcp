@@ -31,10 +31,19 @@ test("ui_ux_get_principle prefers corpus metadata for dark-mode-principles", asy
   expect(text).toContain("oklch(0.13 0.008 265)");
 });
 
-test("ui_ux_get_principle falls back to in-file data for non-corpus principles", async () => {
+test("ui_ux_get_principle prefers corpus metadata for touch-targets", async () => {
   const result = await uiUxGetPrinciple.invoke({ name: "touch-targets" });
   const text = extractTextContent(result);
 
   expect(text).toContain("# touch-targets [accessibility]");
+  expect(text).toContain("**Corpus Source:** frontend.ui-ux");
+  expect(text).toContain("min 44×44px");
+});
+
+test("ui_ux_get_principle falls back to in-file data for non-corpus principles", async () => {
+  const result = await uiUxGetPrinciple.invoke({ name: "easing-rules" });
+  const text = extractTextContent(result);
+
+  expect(text).toContain("# easing-rules [motion]");
   expect(text).not.toContain("**Corpus Source:** frontend.ui-ux");
 });
