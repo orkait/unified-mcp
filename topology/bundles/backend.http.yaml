@@ -3,7 +3,7 @@ domain: backend
 capabilities:
   - backend.http.patterns
 sources:
-  - corpus/backend/echo
+  - src/plugins/echo/snippets
 tool_prefixes:
   - echo_
 output_contracts:

@@ -3,7 +3,7 @@ domain: shared
 capabilities:
   - system.setup
 sources:
-  - corpus/shared/system
+  - topology
 tool_prefixes:
   - hyperstack_
 output_contracts:

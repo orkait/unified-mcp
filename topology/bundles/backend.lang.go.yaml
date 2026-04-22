@@ -3,7 +3,7 @@ domain: backend
 capabilities:
   - backend.go.patterns
 sources:
-  - corpus/backend/golang
+  - src/plugins/golang/snippets
 tool_prefixes:
   - golang_
 output_contracts:

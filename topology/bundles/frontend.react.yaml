@@ -5,11 +5,11 @@ capabilities:
   - frontend.motion
   - frontend.flow
 sources:
-  - corpus/frontend/react
-  - corpus/frontend/shadcn
-  - corpus/frontend/motion
-  - corpus/frontend/lenis
-  - corpus/frontend/reactflow
+  - src/plugins/react/snippets
+  - src/plugins/shadcn/snippets
+  - src/plugins/motion/snippets
+  - src/plugins/lenis/snippets
+  - src/plugins/reactflow/snippets
 tool_prefixes:
   - react_
   - shadcn_
