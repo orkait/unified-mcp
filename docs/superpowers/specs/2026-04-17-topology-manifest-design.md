@@ -1,14 +1,15 @@
 # Topology Manifest V1 Design
 
 Date: 2026-04-17
+Revised: 2026-04-22 (removed corpus/ translation layer in favor of direct directory-based navigation over existing plugin snippets)
 Status: Approved design, pre-implementation
-Scope: Replace Docker-MCP-first wiring with a topology-manifest-driven local navigation engine while preserving stable tool-call identities
+Scope: Replace Docker-MCP-first wiring with a topology-manifest-driven local navigation engine while preserving stable tool-call identities and existing plugin snippet trees
 
 ## 1. Goal
 
 Hyperstack currently has three high-value assets:
 
-- researched domain truth
+- researched domain truth, already on disk as `src/plugins/<plugin>/snippets/**/*.txt`
 - strong skill/process discipline
 - internal agent routing ideas
 
@@ -19,7 +20,7 @@ The failure mode is not missing research. The failure mode is wiring drift:
 - long frontend skills create skip behavior because the active runtime surface is too large
 - frontend and backend are treated too symmetrically even though their proof paths are different
 
-V1 solves wiring drift by introducing a topology manifest as the single source of truth for runtime contracts while replacing the Docker MCP layer with a local navigation/injection engine backed by a file-based corpus.
+V1 solves wiring drift by introducing a topology manifest as the single source of truth for runtime wiring and routing, while replacing the Docker MCP layer with a local navigation engine that reads directly from existing plugin snippet directories. **No translation layer, no duplicate data store, no YAML corpus.**
 
 ## 2. Design Summary
 
@@ -31,19 +32,19 @@ User
     -> builder agent
       -> skills
         -> local navigation engine
-          -> corpus folders
+          -> src/plugins/<plugin>/snippets/**/*.txt
 ```
 
 Previous architecture:
 
 ```text
-Agents -> Skills -> Docker MCP Server -> Data
+Agents -> Skills -> Docker MCP Server -> plugin data
 ```
 
 V1 architecture:
 
 ```text
-Agents -> Skills -> Local Navigation/Injection Engine -> Corpus
+Agents -> Skills -> Local Navigation/Injection Engine -> existing plugin snippets
 ```
 
 Key decisions:
@@ -51,9 +52,10 @@ Key decisions:
 - topology manifest becomes source of truth for runtime wiring
 - tool-call names stay stable
 - Docker MCP stops being the primary runtime transport
-- corpus remains file-backed and researched
-- engine resolves domain, capability, allowed links, and injection slices
-- generated files cover topology-derived artifacts only
+- `src/plugins/*` stays the single source of researched content; the filesystem is the content store
+- the engine resolves a tool call to a plugin + snippet path and reads it on demand
+- generated files cover topology-derived artifacts only (routing tables, allow/deny, tool index)
+- no parallel `corpus/` directory is created
 
 ## 3. Core Principles
 
@@ -61,23 +63,23 @@ Key decisions:
 
 The MCP transport is not the product. The product is:
 
-- domain truth
+- domain truth (already on disk in `src/plugins/*/snippets/`)
 - contract-aware routing
 - enforceable skill usage
 - proof-aware autonomy
 
-V1 removes Docker MCP as the default transport but keeps stable tool-call identities through local adapters.
+V1 removes Docker MCP as the default transport but keeps stable tool-call identities through local adapters that navigate the existing snippet tree. No new transport is introduced.
 
-### 3.2 Skills Enforce, Corpus Informs
+### 3.2 Skills Enforce, Plugins Inform
 
-Skills should not carry the full research corpus. Skills should be short enforcement contracts that define:
+Skills should not carry the full research content. Skills are short enforcement contracts that define:
 
 - call order
 - required artifacts
 - forbidden actions
 - proof required before completion
 
-The researched material remains in the corpus.
+The researched material remains where it already lives: `src/plugins/<plugin>/snippets/**/*.txt` and `src/plugins/<plugin>/data.ts` (which indexes those snippets).
 
 ### 3.3 Frontend and Backend Are Not Symmetric
 
@@ -134,8 +136,14 @@ It is not a universal gate for:
 
 Tool identities such as `designer_resolve_intent`, `reactflow_get_api`, and `golang_get_practice` remain stable. What changes is the resolver behind them:
 
-- old: server transport
-- new: local adapter -> capability resolver -> corpus injection
+- old: MCP server transport
+- new: local adapter -> capability resolver -> snippet reader
+
+The snippet reader reads `src/plugins/<plugin>/snippets/**/*.txt` on demand. It does not copy, mirror, or translate those files.
+
+### 3.6 Single Source of Truth on Disk
+
+There is one truth-location for researched content: `src/plugins/<plugin>/snippets/`. The engine navigates into it; it does not build a parallel store. Any design that proposes a second truth-location (including a YAML corpus) is considered architectural drift.
 
 ## 4. V1 Repo Shape
 
@@ -162,40 +170,42 @@ hyperstack/
 │     ├─ backend.lang.go.yaml
 │     ├─ backend.lang.rust.yaml
 │     └─ shared.system.yaml
-├─ corpus/
-│  ├─ frontend/
+├─ src/
+│  ├─ plugins/
 │  │  ├─ designer/
+│  │  │  ├─ snippets/   (existing researched .txt content)
+│  │  │  ├─ data.ts     (in-file index of snippets)
+│  │  │  └─ tools/
 │  │  ├─ design-tokens/
 │  │  ├─ ui-ux/
 │  │  ├─ react/
 │  │  ├─ shadcn/
 │  │  ├─ motion/
 │  │  ├─ lenis/
-│  │  └─ reactflow/
-│  ├─ backend/
+│  │  ├─ reactflow/
 │  │  ├─ echo/
 │  │  ├─ golang/
-│  │  └─ rust/
-│  └─ shared/
-│     └─ system/
-├─ engine/
-│  ├─ registry.ts
-│  ├─ resolver.ts
-│  ├─ injector.ts
-│  ├─ contracts.ts
-│  ├─ navigation.ts
-│  └─ policy.ts
-├─ adapters/
-│  └─ local-tools/
+│  │  ├─ rust/
+│  │  └─ hyperstack/
+│  ├─ engine/
+│  │  ├─ registry.ts
+│  │  ├─ resolver.ts
+│  │  ├─ injector.ts
+│  │  ├─ contracts.ts
+│  │  ├─ navigation.ts
+│  │  └─ policy.ts
+│  ├─ adapters/
+│  │  └─ local-tools/
+│  └─ cli.ts
 ├─ agents/
 ├─ skills/
-├─ generated/
-│  ├─ routing/
-│  ├─ runtime-context/
-│  ├─ tool-index/
-│  └─ tests/
-└─ tests/
+└─ generated/
+   ├─ routing/
+   ├─ runtime-context/
+   └─ tool-index/
 ```
+
+Note: there is no `corpus/` directory. Plugin snippets remain the only content tree.
 
 ## 5. Domain Model
 
@@ -219,7 +229,7 @@ Domains are not decorative labels. They enforce:
 
 - write policy: `constrained`
 - completion proof: `visual_and_behavioral`
-- truth source: frontend design/react bundles
+- truth source: frontend plugin snippet trees (designer, design-tokens, ui-ux, react, shadcn, motion, lenis, reactflow)
 - required gates: `designer`, `behaviour-analysis`
 - optional gate: `shadcn-expert`
 
@@ -227,7 +237,7 @@ Domains are not decorative labels. They enforce:
 
 - write policy: `direct`
 - completion proof: `executable`
-- truth source: backend http/language bundles
+- truth source: backend plugin snippet trees (echo, golang, rust)
 - required gate: none beyond shared quality gates
 - optional gate: `security-review`
 
@@ -339,23 +349,23 @@ These remain installed but are not part of the default routed working group.
 
 ## 8. Bundle Model
 
-Bundles replace the old MCP-layer mental model in runtime topology. A bundle is a capability-backed grouping of corpus sources and stable tool prefixes.
+Bundles replace the old MCP-layer mental model in runtime topology. A bundle is a capability-backed grouping of plugin source trees and stable tool prefixes.
 
 ### 8.1 V1 Bundles
 
 #### `shared.system`
 
 - domain: `shared`
-- source: system/topology/runtime guidance
-- stable tool family: system setup and policy tooling
+- plugin sources: `src/plugins/hyperstack/`
+- capability: `system.setup`
 
 #### `frontend.design`
 
 - domain: `frontend`
-- sources:
-  - `designer`
-  - `design-tokens`
-  - `ui-ux`
+- plugin sources:
+  - `src/plugins/designer/`
+  - `src/plugins/design-tokens/`
+  - `src/plugins/ui-ux/`
 - capabilities:
   - `design.intent`
   - `design.contract`
@@ -364,12 +374,12 @@ Bundles replace the old MCP-layer mental model in runtime topology. A bundle is 
 #### `frontend.react`
 
 - domain: `frontend`
-- sources:
-  - `react`
-  - `shadcn`
-  - `motion`
-  - `lenis`
-  - `reactflow`
+- plugin sources:
+  - `src/plugins/react/`
+  - `src/plugins/shadcn/`
+  - `src/plugins/motion/`
+  - `src/plugins/lenis/`
+  - `src/plugins/reactflow/`
 - capabilities:
   - `frontend.patterns`
   - `frontend.motion`
@@ -378,26 +388,25 @@ Bundles replace the old MCP-layer mental model in runtime topology. A bundle is 
 #### `backend.http`
 
 - domain: `backend`
-- source:
-  - `echo`
+- plugin source: `src/plugins/echo/`
 - capabilities:
   - `backend.http.patterns`
 
 #### `backend.lang.go`
 
 - domain: `backend`
-- source:
-  - `golang`
+- plugin source: `src/plugins/golang/`
 - capabilities:
   - `backend.go.patterns`
 
 #### `backend.lang.rust`
 
 - domain: `backend`
-- source:
-  - `rust`
+- plugin source: `src/plugins/rust/`
 - capabilities:
   - `backend.rust.patterns`
+
+A bundle references plugin directories by path. It does not copy content out of them.
 
 ## 9. Capability Model
 
@@ -421,9 +430,9 @@ V1 capability set:
 
 Why capability names matter:
 
-- tools can stay stable while storage changes
+- tools can stay stable while plugin organization changes
 - bundles can be reorganized without breaking every agent
-- tests can assert capability coverage directly
+- allow/deny tests can assert capability coverage directly
 
 ## 10. Artifact Contracts
 
@@ -540,12 +549,13 @@ Every stable tool call resolves through the same pipeline:
 tool name
 -> capability
 -> bundle
--> corpus paths
--> injector
+-> plugin source directory
+-> snippet path (on disk)
+-> lazy read
 -> shaped artifact
 ```
 
-This replaces the previous server-centric model.
+This replaces the previous server-centric model. No intermediate data store is created.
 
 ### 11.1 Example: `designer_resolve_intent`
 
@@ -553,87 +563,90 @@ User asks for a developer analytics landing page.
 
 Flow:
 
-1. `hyper` receives the request
+1. `hyper` receives the request.
 2. `hyper` classifies:
    - domain = frontend
    - capability = `design.intent`
-3. `hyper` routes to `frontend-builder`
-4. `frontend-builder` is required to use `frontend.design`
-5. `hyper` builds `workspace_inventory`
-6. local adapter `designer_resolve_intent` resolves the call when route classification requires it
-7. engine maps the tool to:
+3. `hyper` routes to `frontend-builder`.
+4. `frontend-builder` is scoped to bundle `frontend.design`.
+5. `hyper` builds `workspace_inventory`.
+6. Local adapter `designer_resolve_intent` resolves the call when route classification requires it.
+7. Engine maps the tool to:
    - capability: `design.intent`
    - bundle: `frontend.design`
-   - corpus paths:
-     - `corpus/frontend/designer`
-     - `corpus/frontend/ui-ux`
-     - `corpus/frontend/design-tokens`
-8. injector builds a short context pack
-9. adapter returns a shaped `intent_resolution` artifact
-10. `designer` produces `design_contract` only when route classification marks it required
-11. no completion path may claim done before required proof exists
+   - plugin sources:
+     - `src/plugins/designer/`
+     - `src/plugins/ui-ux/`
+     - `src/plugins/design-tokens/`
+8. Engine navigates the relevant snippet paths (for example `src/plugins/designer/snippets/...`), reads only what the capability requires, and builds a short injection pack.
+9. Adapter returns a shaped `intent_resolution` artifact.
+10. `designer` produces `design_contract` only when route classification marks it required.
+11. No completion path may claim done before required proof exists.
 
 ## 12. Local Navigation Engine
 
-The engine is the new runtime center. It is not plain folder search.
+The engine is the new runtime center. It is a directory-aware filesystem walker over `src/plugins/<plugin>/snippets/`, not a server-first runtime and not a new content store.
 
 Responsibilities:
 
-- register tools, capabilities, bundles, and sources
+- register tools, capabilities, bundles, and plugin source roots
 - enforce allowed and forbidden links
-- resolve minimal corpus slices
+- resolve the smallest set of snippet paths required for a given tool call
+- lazily read snippet `.txt` files from disk on demand
 - build short injection packs
 - return shaped artifacts
 - support stable local tool handlers
 
-The engine should not:
+The engine must not:
 
 - act as a generic server-first runtime
-- dump giant markdown payloads by default
+- dump entire snippet trees by default
 - depend on Docker
 - bypass manifest policy
+- duplicate snippet content into another location (no corpus, no cache file format, no YAML mirrors)
 
 ## 13. Smart Injection Rules
 
 To avoid long-skill skip behavior:
 
 - default injection must be minimal
-- domain truth stays in corpus
-- adapters inject only what the capability needs
+- domain truth stays in existing plugin snippets
+- adapters inject only the snippet excerpts the capability needs
 - long references are annex material, not default runtime payload
 
 Rule:
 
 - Skills define order and gates
-- Bundles define accessible truth
-- Engine injects the smallest valid slice
+- Bundles define accessible plugin sources
+- Engine injects the smallest valid snippet slice
 
-This preserves research while shrinking active prompt load.
+This preserves the existing research investment while shrinking active prompt load.
 
 ## 14. Generation Scope
 
-V1 generation should cover topology-derived outputs only.
+V1 generation covers topology-derived outputs only.
 
 Generate:
 
 - routing matrix
 - allow/deny link tables
-- tool index
+- tool index (stable names -> plugin tool modules)
 - runtime topology bootstrap
-- contract tests
-- stale-link tests
+- stale-link tests (if tests are reintroduced later)
 
 Do not generate:
 
 - full skill prose
-- deep domain corpus
+- any form of domain content store
 - implementation code for researched tools
+- YAML mirrors of snippet data
 
 Reason:
 
 - topology owns wiring
-- corpus owns knowledge
+- plugins own knowledge
 - hand-authored process prose remains curated
+- snippet `.txt` files already encode domain truth; duplicating them is drift
 
 ## 15. Validation and Proof
 
@@ -644,7 +657,7 @@ Frontend completion requires stronger proof because code correctness is not enou
 Required proof path:
 
 - workspace inventory exists
-- frontend truth bundles used
+- frontend plugin bundles used
 - design contract exists only when route classification requires it
 - behavior audit completed
 - final report marks residual risks explicitly
@@ -682,6 +695,7 @@ Backend proof alone cannot close a fullstack task that changes frontend behavior
 - no cross-domain execution without declared domain union
 - no runtime link outside topology manifest
 - no generated artifact used as hand-authored source of truth
+- no parallel content store (no `corpus/`, no duplicate snippet mirror)
 
 ## 17. Migration Strategy
 
@@ -692,11 +706,12 @@ V1 should migrate in this order:
 3. define four V1 agents
 4. define bundles and capability mapping
 5. define first artifact contracts
-6. build local navigation engine registry/resolver
+6. build local navigation engine registry/resolver over existing `src/plugins/*/snippets/`
 7. add local tool adapters preserving stable tool names
-8. generate routing/bootstrap/tests from topology
-9. progressively move deep researched data into `corpus/`
-10. retire Docker MCP as default runtime path
+8. generate routing/bootstrap artifacts from topology
+9. retire Docker MCP as default runtime path
+
+There is no content migration step. Plugin snippets stay where they are.
 
 ## 18. Risks
 
@@ -708,13 +723,13 @@ Mitigation:
 - keep capability set focused
 - generate only what is needed
 
-### Risk 2: Corpus migration becomes a rewrite
+### Risk 2: Re-introduction of a parallel content store
 
 Mitigation:
 
-- keep existing researched files first
-- map them into corpus gradually
-- do not rewrite deep content during topology phase
+- invariant forbidding a second truth-location
+- engine contract typed against plugin roots, not a virtual namespace
+- PR review rejects any YAML/JSON mirror of snippet content
 
 ### Risk 3: Tool compatibility breaks
 
@@ -722,7 +737,7 @@ Mitigation:
 
 - preserve stable tool names
 - swap transport behind adapters
-- add compatibility tests per tool family
+- add compatibility tests per tool family only when a tests tree is reintroduced
 
 ### Risk 4: Frontend still over-injects
 
@@ -730,7 +745,7 @@ Mitigation:
 
 - enforce bundle-level injection
 - keep skills short
-- move long theory to corpus annexes
+- move long theory references to annex loading, not default payload
 
 ### Risk 5: Fullstack becomes wildcard
 
@@ -738,21 +753,21 @@ Mitigation:
 
 - declare exact domain union
 - enforce strictest-proof rule
-- test forbidden links
+- enforce forbidden-link checks
 
 ## 19. Recommendation
 
 Ship V1 as:
 
 - topology manifest
-- local navigation engine
+- local navigation engine walking existing `src/plugins/*/snippets/`
 - local stable tool adapters
 - four-agent working group:
   - `hyper`
   - `frontend-builder`
   - `backend-builder`
   - `fullstack-builder`
-- existing researched knowledge preserved in corpus-backed storage
+- existing researched content preserved in place, without copying
 - Docker MCP removed from the default runtime path
 
-This is the smallest design that meaningfully reduces drift while preserving the existing research investment.
+This is the smallest design that meaningfully reduces drift while preserving the existing research investment and avoiding the introduction of a second content store.
